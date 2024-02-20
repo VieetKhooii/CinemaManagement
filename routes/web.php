@@ -13,4 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'home');
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\DB;
+
+// Route::get('/users/{id}', [UserController::class, 'index']);
+Route::get('/users/add', [UserController::class, 'addUser']);
+// Route::view("/", "welcome");
+// Route::get("/", function(){
+//     $users = DB::select("select* from users");
+//     dd($users);
+// });
