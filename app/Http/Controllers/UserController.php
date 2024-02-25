@@ -6,19 +6,20 @@ use App\Models\User;
 use App\Models\Users;
 use App\Repositories\Interface\UserRepositoryInterface;
 use Illuminate\Contracts\View\View;
+use UserService;
 
 class UserController extends Controller
 {
-    protected $userRepository;
+    protected $userService;
 
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct(UserService $userService)
     {
-        $this->userRepository = $userRepository;
+        $this->userService = $userService;
     }
 
-    public function index(string $User_Id)
+    public function index()
     {
-        $users = $this->userRepository->getAllUsers($User_Id);
+        $users = $this->userService->getAllUsers();
         return $users;
         // return view('home', compact('users'));
     }
@@ -36,7 +37,7 @@ class UserController extends Controller
             'Status' => true,
             'Role_Id' => 1,
         ];
-        $user1 = $this->userRepository->addUser($userArray);
+        $user1 = $this->userService->addUser($userArray);
         return $user1;
     }
 }

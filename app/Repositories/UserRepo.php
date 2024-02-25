@@ -8,13 +8,15 @@ use Illuminate\Support\Facades\DB;
 
 class UserRepo implements UserRepositoryInterface
 {
-    public function getAllUsers(string $User_Id)
+    public function getAllUsers()
     {
-        $users = Users::findOrFail($User_Id);
+        $users = Users::all();
         return $users;
     }
 
     public function addUser(array $users){
         return Users::create($users);
     }
+
+    
 }

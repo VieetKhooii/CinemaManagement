@@ -6,6 +6,6 @@ use App\Models\Users;
 
 interface UserRepositoryInterface
 {
-    public function getAllUsers(string $User_Id);
+    public function getAllUsers();
     public function addUser(array $user);
 }
