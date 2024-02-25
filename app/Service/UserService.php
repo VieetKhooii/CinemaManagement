@@ -1,7 +1,9 @@
 <?php
+namespace App\Service;
 
 use App\Models\Users;
 use App\Repositories\Interface\UserRepositoryInterface;
+use Illuminate\Http\Request;
 
 class UserService{
     protected $userRepository;
@@ -17,9 +19,17 @@ class UserService{
         return $users;
     }
 
+    public function getAUser(string $id){
+        return $this->userRepository->getAUser($id);
+    }
+
     public function addUser(array $user)
     {
         $user = $this->userRepository->addUser($user);
         return $user;
+    }
+
+    public function updateUser(array $user){
+        return $this->userRepository->updateUser($user);
     }
 }
