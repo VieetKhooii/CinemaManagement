@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AreaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,3 +27,6 @@ Route::resource('users', UserController::class);
 //     $users = DB::select("select* from users");
 //     dd($users);
 // });
+
+//Area Routes
+Route::resource('areas', AreaController::class);
