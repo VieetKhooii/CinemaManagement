@@ -11,6 +11,7 @@ class Areas extends Model
     protected $primaryKey = 'Area_Id';
 
     public $incrementing = true;
+    public $timestamps = false;
 
     protected $fillable = [
         'Area_Id',

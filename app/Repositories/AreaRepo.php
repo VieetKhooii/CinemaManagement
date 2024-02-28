@@ -23,7 +23,8 @@ class AreaRepo implements AreaRepositoryInterface
         return Areas::create($area);
     }
 
-    public function updateArea(array $area){
-        return Areas::update($area);   
+    public function updateArea(array $area, string $id){
+        $areaModel = Areas::findOrFail($id);
+        return $areaModel->update($area);
     }
 }
