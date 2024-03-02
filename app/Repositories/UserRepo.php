@@ -69,7 +69,7 @@ class UserRepo implements UserRepositoryInterface
         
             // Authentication failed, return an error response
             echo("Error UserRepo (login): Wrong information");
-            
+            return null;
         }
         catch (\Exception $exception){
             echo("Error UserRepo (login): " . $exception->getMessage());
