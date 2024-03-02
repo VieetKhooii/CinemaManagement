@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 
 // Users CRUD routes
 Route::resource('users', UserController::class);
-
+Route::post('login', [UserController::class, 'login']);
 
 // Route::get('/users/add', [UserController::class, 'addUser']);
 // Route::view("/", "home");

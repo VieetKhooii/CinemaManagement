@@ -8,6 +8,8 @@ use App\Repositories\Interface\UserRepositoryInterface;
 use Illuminate\Contracts\View\View;
 use App\Service\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
 {
@@ -28,35 +30,54 @@ class UserController extends Controller
     public function show(string $id){
         return $this->userService->getAUser($id);
     }
-
+    
     public function store(Request $request){
-        // $array = $request->all();
         $userArray = [
-            'User_Id' => $request->input('User_Id'),
-            'User_Name' => $request->input('User_Name'),
-            'Email' => 'john.doe@example.com',
-            'Phone' => '1234567890',
-            'Date_Of_Birth' => '1990-01-01',
-            'Gender' => 'M',
-            'Address' => '123 Main St',
-            'Score' => 0,
-            'Status' => true,
-            'Role_Id' => 1,
+            'user_id' => $request->input('user_id'),
+            'user_name' => $request->input('user_name'),
+            'email' => $request->input('email'),
+            'password' => $request->input('password'),
+            'phone' => $request->input('phone'),
+            'date_of_birth' => $request->input('date_of_birth'),
+            'gender' => $request->input('gender'),
+            'address' => $request->input('address'),
+            'score' => 0,
+            'status' => true,
+            'role_id' => $request->input('role_id'),
         ];
-        $user1 = $this->userService->addUser($userArray);
-        return $user1;
+        $user = $this->userService->addUser($userArray);
+        if ($user){
+            return response()->json(['message' => 'User created successfully', 'users' => $user], 201);
+        }
+        // auth()->login($user);
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
-    public function update(Request $request){
-        $id = $request->input('User_Id');
-        $name = $request->input('User_Name');
-        $email = $request->input('Email');
+    public function update($id, Request $request){
         $user = [
-            'User_Id' => $id,
-            'User_Name' => $name,
-            'Email' => $email,
+            'user_name' => $request->input('user_name'),
+            'email' => $request->input('email'),
         ];
-        $result = $this->userService->updateUser($user);
-        return redirect('/users')->with('success', 'User updated successfully');
+        $result = $this->userService->updateUser($user, $id);
+        if ($result){
+            return response()->json(['message' => 'update successfully'], 200);
+        }
+        else {
+            return response()->json(['error' => 'update failed'], 422);
+        }
     }
-}
+
+    public function login(Request $request){
+        $email = $request->input('email');
+        $password = $request->input('password');
+        $result = $this->userService->login($email, $password);
+        if ($result){
+            return response()->json(['message' => 'Login Successfully'], 201);
+        }
+        else {
+            return response()->json(['error' => 'Invalid credentials'], 401);
+        }
+    }
+} 

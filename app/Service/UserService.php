@@ -29,7 +29,11 @@ class UserService{
         return $user;
     }
 
-    public function updateUser(array $user){
-        return $this->userRepository->updateUser($user);
+    public function updateUser(array $user, string $id){
+        return $this->userRepository->updateUser($user, $id);
     }
+
+    public function login(string $nameOrEmail, string $password){
+        return $this->userRepository->login($nameOrEmail, $password);
+    } 
 }
