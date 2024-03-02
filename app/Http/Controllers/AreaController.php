@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Service\AreaService;
 use Illuminate\Http\Request;
+use App\Models\Areas;
 
 class AreaController extends Controller
 {
@@ -39,8 +40,8 @@ class AreaController extends Controller
     {
         //
         $areaArray = [
-            'Name' => $request->input('Name'),
-            'Number_Of_Branch' => $request->input('Number_Of_Branch'),
+            'name' => $request->input('name'),
+            'number_of_branch' => 0
         ];
         return $this->areaService->addArea($areaArray);
     }
@@ -60,11 +61,9 @@ class AreaController extends Controller
     public function update(Request $request, string $id)
     {
         $areaArray = [
-            'Area_Id' => $id,
-            'Name' => $request->input('Name'),
-            'Number_Of_Branch' => $request->input('Number_Of_Branch'),
+            'name'=> $request->input('name'),
         ];
-        return $this->areaService->updateArea($areaArray);    
+        return $this->areaService->updateArea($areaArray, $id);
     }
 
     /**
@@ -73,5 +72,12 @@ class AreaController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function search(Request $request){
+        $areaArray = [
+            'area_id' => $request->input('area'),
+            'name'=> $request->input('name'),
+        ];
     }
 }

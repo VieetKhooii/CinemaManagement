@@ -8,14 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Areas extends Model
 {
     protected $table = 'area';
-    protected $primaryKey = 'Area_Id';
+    protected $primaryKey = 'area_id';
 
     public $incrementing = true;
+    public $timestamps = false;
 
     protected $fillable = [
-        'Area_Id',
-        'Name',
-        'Number_Of_Branch',
+        'area_id',
+        'name',
+        'number_of_branch',
     ];
     
 

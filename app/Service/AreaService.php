@@ -28,7 +28,12 @@ class AreaService{
         return $this->areaRepository->addArea($area);
     }
 
-    public function updateArea(array $area){
-        return $this->areaRepository->updateArea($area);
+    public function updateArea(array $area, string $id){
+        return $this->areaRepository->updateArea($area, $id);
+    }
+
+    public function searchArea(array $area)
+    {
+        return $this->areaRepository->searchArea($area);
     }
 }
