@@ -41,7 +41,8 @@ class AreaController extends Controller
         //
         $areaArray = [
             'name' => $request->input('name'),
-            'number_of_branch' => 0
+            'number_of_branch' => 0,
+            'display'=> true,
         ];
         return $this->areaService->addArea($areaArray);
     }
@@ -76,8 +77,16 @@ class AreaController extends Controller
 
     public function search(Request $request){
         $areaArray = [
-            'area_id' => $request->input('area'),
+            'area_id' => $request->input('area_id'),
             'name'=> $request->input('name'),
         ];
+        return $this->areaService->searchArea($areaArray);
+    }
+
+    public function hide(string $id){
+        $areaArray = [
+            'display'=> false,
+        ];
+        return $this->areaService->updateArea($areaArray, $id);
     }
 }
