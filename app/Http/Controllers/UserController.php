@@ -107,16 +107,4 @@ class UserController extends Controller
             return response()->json(['error' => 'update failed'], 422);
         }
     }
-
-    public function login(Request $request){
-        $email = $request->input('email');
-        $password = $request->input('password');
-        $result = $this->userService->login($email, $password);
-        if ($result){
-            return response()->json(['message' => 'Login Successfully'], 201);
-        }
-        else {
-            return response()->json(['error' => 'Invalid credentials'], 401);
-        }
-    }
 } 

@@ -3,10 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\Authenticatable;
+// use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Users extends Model implements Authenticatable
+class Users extends Model implements Authenticatable, CanResetPassword
 {
     protected $table = 'users'; // The name must match the table name in database
     protected $primaryKey = 'user_id';
@@ -71,5 +75,38 @@ class Users extends Model implements Authenticatable
     public function getRememberTokenName()
     {
         return 'remember_token';
+    }
+
+    // use Notifiable;
+
+    // Other model code...
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param string $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPassword($token));
+    }
+
+    /**
+     * Determine if the user can reset the password.
+     *
+     * @param string $token
+     * @return bool
+     */
+    public function canResetPassword($token)
+    {
+        // Add your logic here to determine if the user can reset the password
+        // For example, check if the token is still valid or if the user is active
+
+        return true; // Return true if the user can reset the password, false otherwise
+    }
+    public function getEmailForPasswordReset()
+    {
+        
     }
 }

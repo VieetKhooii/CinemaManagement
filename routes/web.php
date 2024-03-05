@@ -1,7 +1,13 @@
 <?php
 
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Support\Facades\Facade\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Http\Request;
+use App\Http\Middleware\TrustHosts;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +21,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\DB;
 
 // Users CRUD routes
 Route::resource('users', UserController::class);
-Route::post('login', [UserController::class, 'login']);
+
+// Login routes
+Route::post('login', [LoginController::class, 'login']);
+
+// Forgot password
+Route::post('forgot-password', [ForgotPasswordController::class, 'forgotPassword'])->name('password.email');
+Route::auth();
 
 // Route::get('/users/add', [UserController::class, 'addUser']);
 // Route::view("/", "home");
@@ -30,3 +41,6 @@ Route::post('login', [UserController::class, 'login']);
 
 //Area Routes
 Route::resource('areas', AreaController::class);
+// Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -54,26 +54,4 @@ class UserRepo implements UserRepositoryInterface
         }
     }
 
-    public function login(string $nameOrEmail, string $password){
-        try {
-            $credentials = [
-                'email' => $nameOrEmail,
-                'password' => $password,
-            ];
-            
-            if (Auth::attempt($credentials)) {
-                // $request->session()->regenerate();
-                return "true";
-                //  return redirect()->intended('/');
-            }
-        
-            // Authentication failed, return an error response
-            echo("Error UserRepo (login): Wrong information");
-            return null;
-        }
-        catch (\Exception $exception){
-            echo("Error UserRepo (login): " . $exception->getMessage());
-            return null;
-        }
-    }
 }

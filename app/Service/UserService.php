@@ -32,8 +32,4 @@ class UserService{
     public function updateUser(array $user, string $id){
         return $this->userRepository->updateUser($user, $id);
     }
-
-    public function login(string $nameOrEmail, string $password){
-        return $this->userRepository->login($nameOrEmail, $password);
-    } 
 }
