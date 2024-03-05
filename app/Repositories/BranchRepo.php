@@ -26,7 +26,7 @@ class BranchRepo implements BranchRepositoryInterface
             return Branches::findOrFail($id);
         }
         catch (\Exception $exception){
-            echo("Error BranchRepo (getaBranch): " . $exception->getMessage());
+            echo("Error BranchRepo (get a Branch): " . $exception->getMessage());
             return null;    
         }
     }

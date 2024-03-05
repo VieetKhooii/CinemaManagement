@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AreaController;
+use App\Http\Controllers\BranchController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Facade\Auth;
@@ -41,6 +42,12 @@ Route::auth();
 
 //Area Routes
 Route::resource('areas', AreaController::class);
+Route::post('areas/search', [AreaController::class, 'search']);
+Route::put('areas/hide/{id}', [AreaController::class, 'hide']);
+//Branch Routes
+Route::resource('branches', BranchController::class);
+Route::post('branches/search', [BranchController::class,'search']);
+Route::put('branches/hide/{id}', [BranchController::class,'hide']);
 // Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

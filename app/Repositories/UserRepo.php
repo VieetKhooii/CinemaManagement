@@ -12,7 +12,7 @@ class UserRepo implements UserRepositoryInterface
     public function getAllUsers()
     {
         try {
-            $result = Users::all();
+            $result = Users::paginate(5);
             return $result;
         }
         catch (\Exception $exception){
