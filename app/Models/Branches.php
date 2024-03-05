@@ -5,19 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Areas extends Model
+class Branches extends Model
 {
-    protected $table = 'area';
-    protected $primaryKey = 'area_id';
+    protected $table = 'branch';
+    protected $primaryKey = 'branch_id';
 
-    public $incrementing = true;
+    public $incrementing = false;
     public $timestamps = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
-        'area_id',
+        'branch_id',
+        'address',
         'name',
-        'number_of_branch',
+        'number_of_room',
+        'area_id',
         'display',
+    ];
+
+    protected $casts = [
+        'display'=> 'boolean',
     ];
 
     public static function search(array $searchParams)
@@ -32,11 +39,6 @@ class Areas extends Model
 
         return $query->get();
     }
-    
-    protected $casts = [
-        'display' => 'boolean',
-    ];
-
 
     use HasFactory;
 }
