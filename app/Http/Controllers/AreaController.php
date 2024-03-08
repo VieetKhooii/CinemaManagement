@@ -25,6 +25,9 @@ class AreaController extends Controller
         return $areas;
     }
 
+    public function getAllAreasForCustomer(){
+        return $this->areaService->getAllAreasForCustomer();
+    }
     /**
      * Show the form for creating a new resource.
      */

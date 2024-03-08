@@ -24,6 +24,9 @@ class BranchController extends Controller
         return $this->branchService->getAllBranches();
     }
 
+    public function getAllBranchesForCustomer(){
+        return $this->branchService->getAllBranchesForCustomer();
+    }
     /**
      * Show the form for creating a new resource.
      */

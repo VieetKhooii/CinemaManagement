@@ -18,6 +18,12 @@ class BranchService{
         return $branches;
     }
 
+    public function getAllBranchesForCustomer()
+    {
+        $branches = $this->branchRepository->getAllBranchesForCustomer();
+        return $branches;
+    }
+
     public function getABranch(string $id){
         return $this->branchRepository->getABranch($id);
     }

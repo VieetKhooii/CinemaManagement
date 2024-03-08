@@ -12,11 +12,21 @@ class AreaRepo implements AreaRepositoryInterface
     public function getAllAreas()
     {      
         try {
-            $areas = Areas::all();
+            $areas = Areas::paginate(5);
             return $areas;
         }
         catch (\Exception $exception){
             echo("Error AreaRepo (get): " . $exception->getMessage());
+            return null;    
+        }
+    }
+
+    public function getAllAreasForCustomer(){
+        try {
+            return Areas::where('display', 1)->get();   
+        }
+        catch (\Exception $exception){
+            echo("Error AreaRepo (get by display): " . $exception->getMessage());
             return null;    
         }
     }
