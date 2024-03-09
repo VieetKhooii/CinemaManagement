@@ -21,6 +21,16 @@ class BranchRepo implements BranchRepositoryInterface
         }
     }
 
+    public function getAllBranchesForCustomer(){
+        try {
+            return Branches::where('display', 1)->get();
+        }
+        catch (\Exception $exception){
+            echo("Error BranchRepo (get by customer): " . $exception->getMessage());
+            return null;    
+        }
+    }
+
     public function getABranch(string $id){
         try {
             return Branches::findOrFail($id);

@@ -19,6 +19,10 @@ class AreaService{
         return $areas;
     }
 
+    public function getAllAreasForCustomer(){
+        return $this->areaRepository->getAllAreasForCustomer();
+    }
+
     public function getAnArea(string $id){
         return $this->areaRepository->getAnArea($id);
     }
