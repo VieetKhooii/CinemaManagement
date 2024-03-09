@@ -20,8 +20,10 @@ class VerifyCsrfToken extends Middleware
         '/areas',
         '/areas/hide/*',
         '/branches',
-        'branches/*',
+        '/branches/*',
         '/branches/hide/*',
-        '/forgot-password',
+        '/reset-password/*',
+        '/password',
+        '/password/*',
     ];
 }

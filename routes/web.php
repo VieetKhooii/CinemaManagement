@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\BranchController;
+
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
-use Illuminate\Support\Facades\Facade\Auth;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Http\Request;
@@ -21,8 +23,6 @@ use App\Http\Middleware\TrustHosts;
 |
 */
 
-use App\Http\Controllers\UserController;
-
 // Users CRUD routes
 Route::resource('users', UserController::class);
 
@@ -30,11 +30,14 @@ Route::resource('users', UserController::class);
 Route::post('login', [LoginController::class, 'login']);
 
 // Forgot password
-Route::post('forgot-password', [ForgotPasswordController::class, 'forgotPassword'])->name('password.email');
-Route::auth();
+Route::post('password/resent', [ForgotPasswordController::class, 'forgotPassword'])->name('password.email');
+Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'resetRequest'])->middleware('guest')->name('password.reset');
+Route::post('password/pass-reset', [ForgotPasswordController::class, 'updatePassword'])->name('password.update');
+// Route::auth();
+Auth::routes(['verify' => true]);
 
 // Route::get('/users/add', [UserController::class, 'addUser']);
-// Route::view("/", "home");
+// Route::view("/", "auth.login");
 // Route::get("/", function(){
 //     $users = DB::select("select* from users");
 //     dd($users);

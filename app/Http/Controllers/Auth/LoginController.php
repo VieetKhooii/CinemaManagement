@@ -30,20 +30,19 @@ class LoginController extends Controller
             'email' => $email,
             'password' => $password,
         ];
-        
         if (Auth::attempt($credentials)) {
             // $request->session()->regenerate();
             return response()->json(['message' => 'Login Successfully'], 201);
             //  return redirect()->intended('/');
         }
-            return response()->json(['error' => 'Email or Password incorrect!'], 401);
+            return response()->json(['error' => 'Email or Password incorrect!'], 403);
     }
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    // protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -52,6 +51,6 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        // $this->middleware('guest')->except('logout');
     }
 }
