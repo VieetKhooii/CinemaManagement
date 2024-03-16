@@ -18,11 +18,23 @@ class ComboController extends Controller
     public function index()
     {
         //
-        return $this->comboService->getAllCombos();
+        $combo = $this->comboService->getAllCombos();
+        if ($combo){
+            return response()->json(['message' => 'combo got successfully', 'combo' => $combo], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     public function getAllCombosForCustomer(){
-        return $this->comboService->getAllCombosForCustomer();
+        $combo = $this->comboService->getAllCombosForCustomer();
+        if ($combo){
+            return response()->json(['message' => 'combo 4 cus got successfully', 'combo' => $combo], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
     /**
      * Show the form for creating a new resource.
@@ -43,9 +55,16 @@ class ComboController extends Controller
             'price'=> $request->input('price'),
             'name'=> $request->input('name'),
             'description'=> $request->input('description'),
+            'image' => $request->input('image'),
             'display'=> true,
         ];
-        return $this->comboService->addCombo($array);
+        $combo = $this->comboService->addCombo($array);
+        if ($combo){
+            return response()->json(['message' => 'combo added successfully', 'combo' => $combo], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     /**
@@ -54,7 +73,13 @@ class ComboController extends Controller
     public function show(string $id)
     {
         //
-        return $this->comboService->getACombo($id);
+        $combo = $this->comboService->getACombo($id);
+        if ($combo){
+            return response()->json(['message' => 'combo showed successfully', 'combo' => $combo], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     /**
@@ -75,9 +100,16 @@ class ComboController extends Controller
             'price'=> $request->input('price'),
             'name'=> $request->input('name'),
             'description'=> $request->input('description'),
+            'image'=> $request->input('image'),
         ];
 
-        return $this->comboService->updateCombo($array, $id);
+        $combo = $this->comboService->updateCombo($array, $id);
+        if ($combo){
+            return response()->json(['message' => 'combo updated successfully', 'combo' => $combo], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     /**
@@ -88,15 +120,21 @@ class ComboController extends Controller
         //
     }
 
-    public function search(Request $request)
+    public function search(Request $request) //thiếu tìm kiếm trong khoảng giá
     {
         $array = [
             'combo_id' => $request->input('combo_id'),
-            'price'=> $request->input('price'),
+            //'price'=> $request->input('price'),
             'name'=> $request->input('name'),
             'description'=> $request->input('description'),      
         ];
-        return $this->comboService->searchCombo($array);
+        $combo = $this->comboService->searchCombo($array);
+        if ($combo){
+            return response()->json(['message' => 'combo searched successfully', 'combo' => $combo], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     public function hide(string $id)
@@ -104,6 +142,12 @@ class ComboController extends Controller
         $array = [
             'display' => 0,  
         ];
-        return $this->comboService->updateCombo($array, $id);
+        $combo = $this->comboService->updateCombo($array, $id);
+        if ($combo){
+            return response()->json(['message' => 'combo hid successfully', 'combo' => $combo], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 }

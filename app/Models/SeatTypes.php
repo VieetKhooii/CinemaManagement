@@ -5,21 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Combos extends Model
+class SeatTypes extends Model
 {
-    protected $table = 'combo';
-    protected $primaryKey = 'combo_id';
+    protected $table = 'seat_type';
+    protected $primaryKey = 'seat_type_id';
 
-    public $incrementing = false;
+    public $incrementing = true;
     public $timestamps = false;
-    protected $keyType = 'string';
 
     protected $fillable = [
-        'combo_id',
-        'price',
-        'name',
-        'description',
-        'image',
+        'seat_type_id',
+        'type',
+        'bonus_price',
         'display',
     ];
 
@@ -39,6 +36,7 @@ class Combos extends Model
     protected $casts = [
         'display' => 'boolean',
     ];
+
 
     use HasFactory;
 }

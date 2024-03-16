@@ -19,6 +19,7 @@ class Movies extends Model
         'movie_id',
         'movie_name',
         'movie_description',
+        'image',
         'duration',
         'bonus_price',
         'category_id',

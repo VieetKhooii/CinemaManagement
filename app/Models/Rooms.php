@@ -5,22 +5,27 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Combos extends Model
+class Rooms extends Model
 {
-    protected $table = 'combo';
-    protected $primaryKey = 'combo_id';
+    protected $table = 'room';
+    protected $primaryKey = 'room_id';
 
     public $incrementing = false;
     public $timestamps = false;
     protected $keyType = 'string';
 
     protected $fillable = [
-        'combo_id',
-        'price',
+        'room_id',
+        'room_name',
         'name',
-        'description',
-        'image',
+        'status',
+        'number_of_seat',
         'display',
+    ];
+
+    protected $casts = [
+        'status'=> 'boolean',
+        'display'=> 'boolean',
     ];
 
     public static function search(array $searchParams)
@@ -35,10 +40,7 @@ class Combos extends Model
 
         return $query->get();
     }
-    
-    protected $casts = [
-        'display' => 'boolean',
-    ];
+
 
     use HasFactory;
 }

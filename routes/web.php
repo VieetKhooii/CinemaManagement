@@ -1,9 +1,17 @@
 <?php
 
-use App\Http\Controllers\AreaController;
-use App\Http\Controllers\BranchController;
+use App\Http\Controllers\SeatTypeController;
+use App\Http\Controllers\SeatController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ComboController;
+use App\Http\Controllers\ConsumeController;
+use App\Http\Controllers\MovieController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\ShowtimeController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Facade\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Password;
@@ -22,6 +30,7 @@ use App\Http\Middleware\TrustHosts;
 */
 
 use App\Http\Controllers\UserController;
+use App\Models\Transactions;
 
 // Users CRUD routes
 Route::resource('users', UserController::class);
@@ -40,14 +49,56 @@ Route::auth();
 //     dd($users);
 // });
 
-//Area Routes
-Route::resource('areas', AreaController::class);
-Route::post('areas/search', [AreaController::class, 'search']);
-Route::put('areas/hide/{id}', [AreaController::class, 'hide']);
-//Branch Routes
-Route::resource('branches', BranchController::class);
-Route::post('branches/search', [BranchController::class,'search']);
-Route::put('branches/hide/{id}', [BranchController::class,'hide']);
+//Seat Type Routes
+Route::get('seatTypes/customerget', [SeatTypeController::class,'getAllSeatTypesForCustomer']);
+Route::resource('seatTypes', SeatTypeController::class);
+Route::post('seatTypes/search', [SeatTypeController::class, 'search']);
+Route::put('seatTypes/hide/{id}', [SeatTypeController::class, 'hide']);
+//Seat Routes
+Route::get('seats/customerget', [SeatController::class,'getAllSeatsForCustomer']);
+Route::resource('seats', SeatController::class);
+Route::post('seats/search', [SeatController::class,'search']);
+Route::put('seats/hide/{id}', [SeatController::class,'hide']);
+//Category Routes
+Route::get('categories/customerget', [CategoryController::class,'getAllCategoriesForCustomer']);
+Route::resource('categories', CategoryController::class);
+Route::post('categories/search', [CategoryController::class,'search']);
+Route::put('categories/hide/{id}', [CategoryController::class,'hide']);
+//Combo Routes
+Route::get('combos/customerget', [ComboController::class,'getAllCombosForCustomer']);
+Route::resource('combos',ComboController::class);
+Route::post('combos/search', [ComboController::class,'search']);
+Route::put('combos/hide/{id}', [ComboController::class,'hide']);
+//Consume Routes
+Route::get('consumes/customerget', [ConsumeController::class,'getAllConsumesForCustomer']);
+Route::resource('consumes',ConsumeController::class);
+Route::post('consumes/search', [ConsumeController::class,'search']);
+Route::put('consumes/hide/{id}', [ConsumeController::class,'hide']);
+//Movie Routes
+Route::get('movies/customerget', [MovieController::class,'getAllMoviesForCustomer']);
+Route::resource('movies',MovieController::class);
+Route::post('movies/search', [MovieController::class,'search']);
+Route::put('movies/hide/{id}', [MovieController::class,'hide']);
+//Room Routes
+Route::get('rooms/customerget', [RoomController::class,'getAllRoomsForCustomer']);
+Route::resource('rooms',RoomController::class);
+Route::post('rooms/search', [RoomController::class,'search']);
+Route::put('rooms/hide/{id}', [RoomController::class,'hide']);
+//Showtime Routes
+Route::get('showtimes/customerget', [ShowtimeController::class,'getAllShowtimesForCustomer']);
+Route::resource('showtimes',ShowtimeController::class);
+Route::post('showtimes/search', [ShowtimeController::class,'search']);
+Route::put('showtimes/hide/{id}', [ShowtimeController::class,'hide']);
+//Transaction Routes
+Route::get('transactions/customerget', [TransactionController::class,'getAllTransactionsForCustomer']);
+Route::resource('transactions',TransactionController::class);
+Route::post('transactions/search', [TransactionController::class,'search']);
+Route::put('transactions/hide/{id}', [TransactionController::class,'hide']);
+//Reservation Routes
+Route::get('reservations/customerget', [ReservationController::class,'getAllReservationsForCustomer']);
+Route::resource('reservations',ReservationController::class);
+Route::post('reservations/search', [ReservationController::class,'search']);
+Route::put('reservations/hide/{id}', [ReservationController::class,'hide']);
 // Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

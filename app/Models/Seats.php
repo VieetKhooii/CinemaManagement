@@ -5,22 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Combos extends Model
+class Seats extends Model
 {
-    protected $table = 'combo';
-    protected $primaryKey = 'combo_id';
+    protected $table = 'seat';
+    protected $primaryKey = 'seat_id';
 
     public $incrementing = false;
     public $timestamps = false;
     protected $keyType = 'string';
 
     protected $fillable = [
-        'combo_id',
-        'price',
-        'name',
-        'description',
-        'image',
+        'seat_id',
+        'seat_row',
+        'seat_number',
+        'is_reserved',
+        'seat_type_id',
+        'room_id',
         'display',
+    ];
+
+    protected $casts = [
+        'display'=> 'boolean',
+        'is_reserved'=> 'boolean',
     ];
 
     public static function search(array $searchParams)
@@ -35,10 +41,6 @@ class Combos extends Model
 
         return $query->get();
     }
-    
-    protected $casts = [
-        'display' => 'boolean',
-    ];
 
     use HasFactory;
 }

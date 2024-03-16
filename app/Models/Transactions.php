@@ -5,19 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Areas extends Model
+class Transactions extends Model
 {
-    protected $table = 'area';
-    protected $primaryKey = 'area_id';
+    protected $table = 'transactions';
+    protected $primaryKey = 'transaction_id';
 
-    public $incrementing = true;
+    public $incrementing = false;
     public $timestamps = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
-        'area_id',
-        'name',
-        'number_of_branch',
+        'transaction_id',
+        'user_id',
+        'total_cost',
+        'voucher_id',
+        'payment_method',
+        'purchase_date',
         'display',
+    ];
+
+    protected $casts = [
+        'purchase_date'=> 'datetime',
+        'display'=> 'boolean',
     ];
 
     public static function search(array $searchParams)
@@ -30,13 +39,7 @@ class Areas extends Model
             }
         }
 
-        return $query->get();
+        return $query->paginate(10);
     }
-    
-    protected $casts = [
-        'display' => 'boolean',
-    ];
-
-
     use HasFactory;
 }

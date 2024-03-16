@@ -5,22 +5,27 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Combos extends Model
+class Showtimes extends Model
 {
-    protected $table = 'combo';
-    protected $primaryKey = 'combo_id';
+    protected $table = 'showtime';
+    protected $primaryKey = 'showtime_id';
 
     public $incrementing = false;
     public $timestamps = false;
     protected $keyType = 'string';
 
     protected $fillable = [
-        'combo_id',
-        'price',
-        'name',
-        'description',
-        'image',
+        'showtime_id',
+        'movie_id',
+        'date',
+        'start_time',
         'display',
+    ];
+
+    protected $casts = [
+        'date'=> 'datetime',
+        'start_time'=> 'datetime',
+        'display'=> 'boolean',
     ];
 
     public static function search(array $searchParams)
@@ -35,10 +40,7 @@ class Combos extends Model
 
         return $query->get();
     }
-    
-    protected $casts = [
-        'display' => 'boolean',
-    ];
 
+   
     use HasFactory;
 }
