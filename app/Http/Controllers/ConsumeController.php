@@ -42,7 +42,7 @@ class ConsumeController extends Controller
             'amount'=> $request->input('amount'),
             'price'=> $request->input('price'),
             'image'=> $request->input('image'),
-            'display'=> true,
+            // 'display'=> true,
         ];
         return $this->consumeService->addConsume($array);
     }

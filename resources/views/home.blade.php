@@ -11,7 +11,7 @@
 
 <ul id="userList"></ul>
 
-<script>
+<!-- <script>
 document.addEventListener('DOMContentLoaded', function () {
     // Function to make an AJAX request
     function getUsers() {
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Call the function to get users when the page loads
     getUsers();
 });
-</script>
+</script> -->
 
 </body>
 </html>

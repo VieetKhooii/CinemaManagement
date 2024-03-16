@@ -5,6 +5,8 @@ use App\Http\Controllers\BranchController;
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ConsumeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -24,10 +26,27 @@ use App\Http\Middleware\TrustHosts;
 */
 
 // Users CRUD routes
-Route::resource('users', UserController::class);
+Route::middleware(['auth:api'])->group(function () {
+    // Your protected routes go here
+    Route::resource('users', UserController::class);
+    // Add more routes as needed
+});
+Route::controller(LoginController::class)->group(function () {
+    Route::post('login', 'login');
+    Route::post('register', 'register');
+    Route::post('logout', 'logout');
+    Route::post('refresh', 'refresh');
+});
+// Route::post('/login', 'Auth\LoginController@login')->name('login');
+// Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/register', 'Auth\RegisterController@register');
+
+
+// Register route
+Route::post('sign-up', [RegisterController::class, 'create']);
 
 // Login routes
-Route::post('login', [LoginController::class, 'login']);
+// Route::post('login', [LoginController::class, 'login']);
 
 // Forgot password
 Route::post('password/resent', [ForgotPasswordController::class, 'forgotPassword'])->name('password.email');
@@ -52,5 +71,8 @@ Route::resource('branches', BranchController::class);
 Route::post('branches/search', [BranchController::class,'search']);
 Route::put('branches/hide/{id}', [BranchController::class,'hide']);
 // Auth::routes();
+Route::resource('consume', ConsumeController::class);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::view('/home', 'home');
+Route::view('/login', 'login');
