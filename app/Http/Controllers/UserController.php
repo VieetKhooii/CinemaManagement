@@ -6,14 +6,17 @@ use App\Service\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    use AuthenticatesUsers;
     protected $userService;
 
     public function __construct(UserService $userService)
     {
+        // $this->middleware('auth:api');   
         $this->userService = $userService;
     }
 
@@ -29,7 +32,6 @@ class UserController extends Controller
     }
     
     public function store(Request $request){
-
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|string|size:6',
             'user_name' => 'required|string|between:1,50',
@@ -64,7 +66,7 @@ class UserController extends Controller
         ];
         $user = $this->userService->addUser($userArray);
         if ($user){
-            return response()->json(['message' => 'User created successfully', 'users' => $user], 201);
+            return response()->json(['message' => 'User created successfully', 'status' => 'success','users' => $user], 201);
         }
         // auth()->login($user);
         else {
@@ -74,14 +76,13 @@ class UserController extends Controller
 
     public function update($id, Request $request){
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|string|size:6',
             'user_name' => 'required|string|between:1,50',
             'email' => 'required|string|between:1,100|email|ends_with:@gmail.com',
-            'password' => 'required|string|between:1,100|min:8|confirmed|regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)/', 
             'phone' => 'required|string|size:10',
             'date_of_birth' => 'required|date',
             'gender' => 'required|string|between:1,20',
             'address' => 'required|string|between:1,100',
+            'score' => 'required|int',
             'role_id' => 'required|int',
         ]);
 
@@ -102,6 +103,9 @@ class UserController extends Controller
         $result = $this->userService->updateUser($user, $id);
         if ($result){
             return response()->json(['message' => 'update successfully'], 200);
+        }
+        else if ($result == 0){
+            return response()->json(['message' => 'Data stays the same'], 200);
         }
         else {
             return response()->json(['error' => 'update failed'], 422);

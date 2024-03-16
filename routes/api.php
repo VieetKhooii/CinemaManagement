@@ -13,7 +13,20 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/users', function (Request $request) {
     return $request->user();
 });
+// Route::middleware(['auth:api'])->group(function () {
+//     // Your protected routes go here
+//     Route::get('/dashboard', 'DashboardController@index');
+//     // Add more routes as needed
+// });
+
+// // Public routes (no authentication required)
+// Route::post('/login', 'Auth\LoginController@login');
+// Route::post('/register', 'Auth\RegisterController@register');
+
+
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
