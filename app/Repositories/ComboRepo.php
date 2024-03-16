@@ -9,7 +9,7 @@ class ComboRepo implements ComboRepositoryInterface{
 
     public function getAllCombos(){       
         try {
-            return Combos::paginate(5);
+            return Combos::paginate(6);
         }
         catch (\Exception $exception){
             echo("Error ComboRepo (get): " . $exception->getMessage());
@@ -18,7 +18,7 @@ class ComboRepo implements ComboRepositoryInterface{
     }
     public function getAllCombosForCustomer(){       
         try {
-            return Combos::where('display', 1)->get();
+            return Combos::where('display', 1)->paginate(6);
         }
         catch (\Exception $exception){
             echo("Error ComboRepo (get by customer): " . $exception->getMessage());

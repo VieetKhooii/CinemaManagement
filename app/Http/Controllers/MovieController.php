@@ -17,11 +17,23 @@ class MovieController extends Controller
     public function index()
     {
         //
-        return $this->movieService->getAllMovies();
+        $movie = $this->movieService->getAllMovies();
+        if ($movie){
+            return response()->json(['message' => 'movie got successfully', 'movie' => $movie], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     public function getAllMoviesForCustomer(){
-        return $this->movieService->getAllMoviesForCustomer();
+        $movie = $this->movieService->getAllMoviesForCustomer();
+        if ($movie){
+            return response()->json(['message' => 'movie 4 cus got successfully', 'movie' => $movie], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
     /**
      * Show the form for creating a new resource.
@@ -41,12 +53,19 @@ class MovieController extends Controller
             'movie_id'=> $request->input('movie_id'),
             'movie_name'=> $request->input('movie_name'),
             'movie_description'=> $request->input('movie_description'),
+            'image'=> $request->input('image'),
             'duration'=> $request->input('duration'),
             'bonus_price'=> $request->input('bonus_price'),
             'category_id'=> $request->input('category_id'),
             'display'=> 1,
         ];
-        return $this->movieService->addMovie($array);
+        $movie = $this->movieService->addMovie($array);
+        if ($movie){
+            return response()->json(['message' => 'movie added successfully', 'movie' => $movie], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     /**
@@ -55,7 +74,13 @@ class MovieController extends Controller
     public function show(string $id)
     {
         //
-        return $this->movieService->getAMovie($id);
+        $movie = $this->movieService->getAMovie($id);
+        if ($movie){
+            return response()->json(['message' => 'movie showed successfully', 'movie' => $movie], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     /**
@@ -75,12 +100,19 @@ class MovieController extends Controller
         $array = [           
             'movie_name'=> $request->input('movie_name'),
             'movie_description'=> $request->input('movie_description'),
+            'image'=> $request->input('image'),
             'duration'=> $request->input('duration'),
             'bonus_price'=> $request->input('bonus_price'),
             'category_id'=> $request->input('category_id'),
         ];
 
-        return $this->movieService->updateMovie($array, $id);
+        $movie = $this->movieService->updateMovie($array, $id);
+        if ($movie){
+            return response()->json(['message' => 'movie updated successfully', 'movie' => $movie], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     public function search(Request $request){
@@ -92,14 +124,26 @@ class MovieController extends Controller
             'bonus_price'=> $request->input('bonus_price'),
             'category_id'=> $request->input('category_id'),
         ];
-        return $this->movieService->searchMovie($array);
+        $movie = $this->movieService->searchMovie($array);
+        if ($movie){
+            return response()->json(['message' => 'movie searched successfully', 'movie' => $movie], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     public function hide(string $id){
         $array = [
             'display'=> 0,
         ];
-        return $this->movieService->updateMovie( $array, $id);
+        $movie = $this->movieService->updateMovie( $array, $id);
+        if ($movie){
+            return response()->json(['message' => 'movie hid successfully', 'movie' => $movie], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
     /**
      * Remove the specified resource from storage.

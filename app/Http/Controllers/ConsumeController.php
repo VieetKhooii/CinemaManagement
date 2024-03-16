@@ -16,11 +16,23 @@ class ConsumeController extends Controller
     public function index()
     {
         //
-        return $this->consumeService->getAllConsumes();
+        $consume = $this->consumeService->getAllConsumes();
+        if ($consume){
+            return response()->json(['message' => 'consume got successfully', 'consume' => $consume], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     public function getAllConsumesForCustomer(){
-        return $this->consumeService->getAllConsumesForCustomer();
+        $consume = $this->consumeService->getAllConsumesForCustomer();
+        if ($consume){
+            return response()->json(['message' => 'consume 4 cus got successfully', 'consume' => $consume], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     /**
@@ -44,7 +56,13 @@ class ConsumeController extends Controller
             'image'=> $request->input('image'),
             // 'display'=> true,
         ];
-        return $this->consumeService->addConsume($array);
+        $consume = $this->consumeService->addConsume($array);
+        if ($consume){
+            return response()->json(['message' => 'consume added successfully', 'consume' => $consume], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     /**
@@ -53,7 +71,13 @@ class ConsumeController extends Controller
     public function show(string $id)
     {
         //
-        return $this->consumeService->getAConsume($id);
+        $consume = $this->consumeService->getAConsume($id);
+        if ($consume){
+            return response()->json(['message' => 'consume showed successfully', 'consume' => $consume], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     /**
@@ -76,23 +100,41 @@ class ConsumeController extends Controller
             'price'=> $request->input('price'),
             'image'=> $request->input('image'),
         ];
-        return $this->consumeService->updateConsume($array, $id);
+        $consume = $this->consumeService->updateConsume($array, $id);
+        if ($consume){
+            return response()->json(['message' => 'consume udpated successfully', 'consume' => $consume], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
-    public function search(Request $request){
+    public function search(Request $request){//thiếu tìm kiếm trong khoảng giá
         $array = [
             'name'=> $request->input('name'),
             'amount'=> $request->input('amount'),
-            'price'=> $request->input('price'),
+            //'price'=> $request->input('price'),
         ];
-        return $this->consumeService->searchConsume($array);
+        $consume = $this->consumeService->searchConsume($array);
+        if ($consume){
+            return response()->json(['message' => 'consume searched successfully', 'consume' => $consume], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     public function hide(string $id){
         $array = [
             'display'=> false,
         ];
-        return $this->consumeService->updateConsume($array, $id);
+        $consume = $this->consumeService->updateConsume($array, $id);
+        if ($consume){
+            return response()->json(['message' => 'consume hid successfully', 'consume' => $consume], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
     /**
      * Remove the specified resource from storage.

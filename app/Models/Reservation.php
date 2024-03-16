@@ -5,21 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Branches extends Model
+class Reservation extends Model
 {
-    protected $table = 'branch';
-    protected $primaryKey = 'branch_id';
+    protected $table = 'reservation';
+    protected $primaryKey = 'id';
 
     public $incrementing = false;
     public $timestamps = false;
     protected $keyType = 'string';
 
     protected $fillable = [
-        'branch_id',
-        'address',
-        'name',
-        'number_of_room',
-        'area_id',
+        'id',
+        'price',
+        'showtime_id',
+        'seat_id',
+        'transaction_id',
         'display',
     ];
 

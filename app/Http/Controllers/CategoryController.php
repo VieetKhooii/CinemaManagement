@@ -18,13 +18,25 @@ class CategoryController extends Controller
     public function index()
     {
         //
-        return $this->categoryService->getAllCategories();
+        $category = $this->categoryService->getAllCategories();
+        if ($category){
+            return response()->json(['message' => 'category got successfully', 'categories' => $category], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     public function getAllCategoriesForCustomer()
     {
         //
-        return $this->categoryService->getAllCategoriesForCustomer();
+        $category = $this->categoryService->getAllCategoriesForCustomer();
+        if ($category){
+            return response()->json(['message' => 'category 4 cus got successfully', 'categories' => $category], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     /**
@@ -46,7 +58,13 @@ class CategoryController extends Controller
             'category_name'=> $request->input('category_name'),
             'display'=> true,
         ];
-        return $this->categoryService->addCategory($array);
+        $category = $this->categoryService->addCategory($array);
+        if ($category){
+            return response()->json(['message' => 'category added successfully', 'categories' => $category], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     /**
@@ -55,7 +73,13 @@ class CategoryController extends Controller
     public function show(string $id)
     {
         //
-        return $this->categoryService->getACategory($id);
+        $category = $this->categoryService->getACategory($id);
+        if ($category){
+            return response()->json(['message' => 'category showed successfully', 'categories' => $category], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     /**
@@ -75,7 +99,13 @@ class CategoryController extends Controller
         $array = [
             'category_name'=> $request->input('category_name'),
         ];
-        return $this->categoryService->updateCategory($array, $id);
+        $category = $this->categoryService->updateCategory($array, $id);
+        if ($category){
+            return response()->json(['message' => 'category updated successfully', 'categories' => $category], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     /**
@@ -91,13 +121,25 @@ class CategoryController extends Controller
             'category_id'=> $request->input('category_id'), 
             'category_name'=> $request->input('category_name'),
         ];
-        return $this->categoryService->searchCategory($array);
+        $category = $this->categoryService->searchCategory($array);
+        if ($category){
+            return response()->json(['message' => 'category searched successfully', 'categories' => $category], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     public function hide (string $id){
         $array = [
             'display' => false,
         ];
-        return $this->categoryService->updateCategory($array, $id);
+        $category = $this->categoryService->updateCategory($array, $id);
+        if ($category){
+            return response()->json(['message' => 'category hid successfully', 'categories' => $category], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 }

@@ -21,9 +21,9 @@ class ConsumeService{
         return $this->consumeRepository->addConsume($data);
     }
     public function updateConsume(array $data, string $id){
-        $this->consumeRepository->updateConsume($data,$id);
+        return $this->consumeRepository->updateConsume($data,$id);
     }
     public function searchConsume(array $data){
-        $this->consumeRepository->searchConsume($data);
+        return $this->consumeRepository->searchConsume($data);
     }
 }
