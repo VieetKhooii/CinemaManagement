@@ -1,0 +1,237 @@
+header h5:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: coral;
+    font-size: 14px;
+}
+
+header h3:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: coral;
+}
+
+header button:hover {
+    cursor: pointer;
+    color: coral;
+
+}
+
+#header_contain {
+    display: flex;
+    justify-content: space-between;
+    background-color: antiquewhite;
+}
+
+#start_Header {
+    display: block;
+}
+
+#end_Header {
+    display: block;
+}
+
+#start_submenu {
+    padding-left: 100px;
+    display: flex;
+}
+
+#end_submenu {
+    padding-right: 30px;
+    display: flex;
+}
+
+#start_submenu h5 {
+    padding-left: 20px;
+    font-weight: bold;
+}
+
+#end_submenu h5 {
+    padding-right: 20px;
+    font-weight: lighter;
+}
+
+#end_submenu button {
+    height: 20px;
+    border-radius: 10px;
+    border: none;
+    background-color: bisque;
+    font-weight: bold;
+}
+
+#logo {
+    text-align: center;
+    border-bottom: 3px solid antiquewhite;
+    padding: 10px 0;
+}
+
+#header_menu {
+    display: flex;
+    justify-content: center;
+    border-bottom: 2px antiquewhite solid;
+    padding: 10px 0;
+}
+
+#header_menu h3 {
+    font-weight: lighter;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#shopquatang {
+    border-right: 1px solid gray;
+    padding-right: 15px;
+}
+
+#muave {
+    border-right: 1px solid gray;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+#phim {
+    border-right: 1px solid gray;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+#rapchieuphim {
+    border-right: 1px solid gray;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+#khuyenmai {
+    border-right: 1px solid gray;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+#lienhe {
+    padding-left: 15px;
+}
+
+
+/* *********************************login**************************** */
+form {
+    width: 300px;
+    margin: 30px auto;
+    padding: 0 30px 40px 30px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+
+}
+
+form h2 {
+    text-align: center;
+}
+
+form #khung {
+    text-align: center;
+}
+
+#khung input {
+    height: 25px;
+    border: none;
+    border-bottom: 1px solid gray;
+    width: 250px;
+}
+
+#khung #continue {
+    border-radius: 10px;
+    padding: 10px 100px;
+    margin-top: 20px;
+    font-weight: bolder;
+    border: none;
+    background-color: blanchedalmond;
+    color: grey;
+}
+
+#khung #continue:hover {
+    cursor: pointer;
+    color: black;
+    background-color: burlywood;
+}
+
+#google {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 1px;
+    background-color: aliceblue;
+    padding: 10px 10px;
+    margin-right: 30px;
+}
+
+#google:hover {
+    border: 1px solid black;
+    font-weight: bolder;
+}
+
+#apple {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 1px;
+    background-color: aliceblue;
+    padding: 10px 15px;
+    margin-top: 5px;
+}
+
+#apple:hover {
+    border: 1px solid black;
+    font-weight: bolder;
+}
+
+#google img {
+    padding-bottom: 7px;
+}
+
+#apple img {
+    padding-bottom: 7px;
+}
+
+
+/* *************************************************footer *************************/
+footer {
+    font-family: Arial, Helvetica, sans-serif;
+    border-top: 3px solid antiquewhite;
+}
+
+footer p {
+    font-weight: lighter;
+    font-size: 13px;
+    color: gray;
+}
+
+#footer_menu {
+    display: flex;
+    font-size: 13px;
+}
+
+#cskh {
+    padding-right: 10px;
+}
+
+#cskh:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#csbaomat {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#csbaomat:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#dieukhoan {
+    padding-left: 10px;
+}
+
+#dieukhoan:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}

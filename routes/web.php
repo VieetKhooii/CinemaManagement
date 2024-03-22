@@ -17,6 +17,7 @@ use App\Http\Controllers\AreaController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\AttachJwtToken;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Password;
@@ -36,44 +37,18 @@ use App\Http\Middleware\TrustHosts;
 
 use App\Models\Transactions;
 
-// Users CRUD routes
-Route::middleware(['auth:api'])->group(function () {
-    // Your protected routes go here
-    Route::resource('users', UserController::class);
-    // Add more routes as needed
-});
-Route::controller(LoginController::class)->group(function () {
-    Route::post('login', 'login');
-    Route::post('register', 'register');
-    Route::post('logout', 'logout');
-    Route::post('refresh', 'refresh');
-});
-// Route::post('/login', 'Auth\LoginController@login')->name('login');
-// Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-Route::post('/register', 'Auth\RegisterController@register');
-
-
-// Register route
-Route::post('sign-up', [RegisterController::class, 'create']);
-
-// Login routes
-// Route::post('login', [LoginController::class, 'login']);
-
-// Forgot password
-Route::post('password/resent', [ForgotPasswordController::class, 'forgotPassword'])->name('password.email');
-Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'resetRequest'])->middleware('guest')->name('password.reset');
-Route::post('password/pass-reset', [ForgotPasswordController::class, 'updatePassword'])->name('password.update');
-// Route::auth();
-Auth::routes(['verify' => true]);
-
-// Route::get('/users/add', [UserController::class, 'addUser']);
-// Route::view("/", "auth.login");
-// Route::get("/", function(){
-//     $users = DB::select("select* from users");
-//     dd($users);
+// Route::middleware(['auth:api'])->group(function () {
+//     // Your protected routes go here
+//     Route::resource('users', UserController::class);
+    
+//     // Add more routes as needed
 // });
 
-//Seat Type Routes
+Route::middleware(['jwt.attach'])->group(function () {
+    // Your protected routes go here
+    Route::resource('users', UserController::class);
+    
+    //Seat Type Routes
 Route::get('seatTypes/customerget', [SeatTypeController::class,'getAllSeatTypesForCustomer']);
 Route::resource('seatTypes', SeatTypeController::class);
 Route::post('seatTypes/search', [SeatTypeController::class, 'search']);
@@ -125,7 +100,33 @@ Route::post('reservations/search', [ReservationController::class,'search']);
 Route::put('reservations/hide/{id}', [ReservationController::class,'hide']);
 // Auth::routes();
 Route::resource('consume', ConsumeController::class);
+});
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::view('/home', 'home');
-Route::view('/login', 'login');
+Route::controller(LoginController::class)->group(function () {
+    Route::post('login', 'login')->middleware('pass.login');
+    Route::post('register', 'register');
+    Route::get('logout', 'logout');
+    Route::post('refresh', 'refresh');
+});
+
+// Route::post('/login', 'Auth\LoginController@login')->name('login');
+// Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/register', 'Auth\RegisterController@register');
+
+
+// Register route
+Route::post('sign-up', [RegisterController::class, 'create']);
+
+// Forgot password
+Route::post('password/resent', [ForgotPasswordController::class, 'forgotPassword'])->name('password.email');
+Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'resetRequest'])->middleware('guest')->name('password.reset');
+Route::post('password/pass-reset', [ForgotPasswordController::class, 'updatePassword'])->name('password.update');
+// Route::auth();
+Auth::routes(['verify' => true]);
+
+
+// View
+Route::middleware(['jwt.attach'])->group(function () {
+    Route::view('/users', 'home');
+});
+Route::view('/login', 'signin')->middleware('pass.login');

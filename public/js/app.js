@@ -1,39 +1,228 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+let slideIndex = 0;
+showSlides(slideIndex);
 
-import './bootstrap';
-import { createApp } from 'vue';
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
 
-/**
- * Next, we will create a fresh Vue application instance. You may then begin
- * registering components with the application instance so they are ready
- * to use in your application's views. An example is included for you.
- */
+function currentSlide(n) {
+  showSlides(slideIndex = n - 1);
+}
 
-const app = createApp({});
+function showSlides(n) {
+  let i;
+  let slides = document.getElementsByClassName("slides");
+  let dots = document.getElementsByClassName("dot");
 
-import ExampleComponent from './components/ExampleComponent.vue';
-app.component('example-component', ExampleComponent);
+  if (n >= slides.length) {
+    slideIndex = 0;
+  }
+  if (n < 0) {
+    slideIndex = slides.length - 1;
+  }
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+  // Ẩn tất cả các slide
+  for (i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
 
-// Object.entries(import.meta.glob('./**/*.vue', { eager: true })).forEach(([path, definition]) => {
-//     app.component(path.split('/').pop().replace(/\.\w+$/, ''), definition.default);
-// });
+  // Loại bỏ tất cả các lớp active từ nút tròn
+  for (i = 0; i < dots.length; i++) {
+    dots[i].className = dots[i].className.replace(" active", "");
+  }
 
-/**
- * Finally, we will attach the application instance to a HTML element with
- * an "id" attribute of "app". This element is included with the "auth"
- * scaffolding. Otherwise, you will need to add an element yourself.
- */
+  // Hiển thị slide hiện tại và đánh dấu nút tròn tương ứng là active
+  slides[slideIndex].style.display = "block";
+  dots[slideIndex].className += " active";
+}
 
-app.mount('#app');
+
+document.getElementById("header_contain").addEventListener("click", function (event) {
+  var target = event.target;
+  var value = target.textContent;
+  if (target.id === 'cinemaApp') {
+    alert(target.textContent);
+  }
+  else if (target.id === 'cinemaFB') {
+    alert(target.textContent);
+  }
+  else if (target.id === 'logIn') {
+    alert(target.textContent);
+  }
+  else if (target.id === 'theTV') {
+    alert(target.textContent);
+  }
+  else if (target.id === 'htKH') {
+    alert(target.textContent);
+  }
+});
+
+
+// Header và footer
+document.getElementById("header_menu").addEventListener("click", function (event) {
+  var target = event.target;
+  if (target.id === 'shopquatang') {
+    alert(target.textContent);
+  }
+  else if (target.id === 'muave') {
+    alert(target.textContent);
+  }
+  else if (target.id === 'phim') {
+    alert(target.textContent);
+  }
+  else if (target.id === 'rapchieuphim') {
+    alert(target.textContent);
+  }
+  else if (target.id === 'khuyenmai') {
+    alert(target.textContent);
+  }
+  else if (target.id === 'lienhe') {
+    alert(target.textContent);
+  }
+});
+
+// load phần content của app, đang là đăng nhập và đăng kí
+function loadContent(file) {
+  fetch(file).then(response => response.text())
+    .then(data => {
+      document.getElementById('content').innerHTML = data;
+    })
+    .catch(error => console.error('error', error));
+}
+
+// GATCHA
+
+// Bắt sự kiện submit của form
+document.getElementById('form_signUp').addEventListener("submit", function (event) {
+  // Ngăn chặn hành động mặc định của form
+  event.preventDefault();
+
+  // Gọi hàm validateSignUp() khi submit form
+  validateSignUp();
+});
+
+function validateSignUp() {
+  // Kiểm tra captcha
+  var isCaptchaValid = validateCaptcha();
+  
+  // Kiểm tra các trường của form
+  var isFormValid = validateForm();
+  
+  // Nếu cả form và captcha đều hợp lệ, thì hiển thị thông báo đăng ký thành công và ẩn form
+  if (isCaptchaValid && isFormValid) {
+      alert('Bạn đã đăng kí thành công!');
+      document.getElementById("form_signUp").style.display = "none";
+  }
+}
+
+// Hàm kiểm tra xem các trường đã được nhập đầy đủ chưa
+function validateForm() {
+  var fullname = document.getElementById('fullname').value;
+  var phone = document.getElementById('phone').value;
+  var email = document.getElementById('email').value;
+  var password = document.getElementById('password').value;
+  var dob = document.getElementById('dob').value;
+  var gender = document.getElementById('gender').value;
+  var region = document.getElementById('region').value;
+  var captcha = document.getElementById('captcha').value;
+  var check_captcha = document.getElementById('captchaCode').value;
+
+  // Kiểm tra điều kiện của từng trường
+  if (fullname === "" || phone === "" || email === "" || password === "" || dob === "" || gender === "" || region === "" || captcha != check_captcha) {
+    // Nếu có trường nào chưa được điền đầy đủ, trả về false
+    return false;
+  }
+  // Nếu tất cả các trường đều đã được điền đầy đủ, trả về true
+  return true;
+}
+
+function generateCaptcha() {
+  var canvas = document.getElementById("captchaCode");
+  var ctx = canvas.getContext("2d");
+
+  // Xóa nội dung cũ
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Tạo mã captcha ngẫu nhiên
+  var captchaText = '';
+  var possibleCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  for (var i = 0; i < 6; i++) {
+    captchaText += possibleCharacters.charAt(Math.floor(Math.random() * possibleCharacters.length));
+  }
+
+  // Hiển thị mã captcha trên canvas
+  ctx.font = "25px Arial";
+  ctx.fillStyle = "black";
+  ctx.textAlign = "center";
+  ctx.fillText(captchaText, canvas.width / 2, canvas.height / 2);
+
+  // Gán mã captcha vào canvas
+  canvas.setAttribute("data-captcha", captchaText);
+
+  // Trả về mã captcha để kiểm tra
+  return captchaText;
+}
+
+function refreshCaptcha() {
+  var captchaInput = document.getElementById("captcha");
+  captchaInput.value = '';
+  generateCaptcha();
+}
+
+function validateCaptcha() {
+  var captchaInput = document.getElementById("captcha").value;
+  var captchaText = document.getElementById("captchaCode").getAttribute("data-captcha");
+
+  if (captchaInput === captchaText) {
+    return true;
+  } else {
+    alert("Mã captcha không đúng. Vui lòng nhập lại.");
+    return false;
+  }
+}
+
+
+// Hỗ trợ KH 
+
+function showTab(tabName) {
+  // Lấy danh sách tất cả các tab
+
+  // Ẩn tất cả các nội dung tab
+  var tabContent = document.querySelectorAll('.tab_hoTro2');
+  tabContent.forEach(function (content) {
+    content.style.display = 'none';
+  });
+
+  // Hiển thị nội dung của tab được click
+  document.getElementById(tabName).style.display = 'block';
+}
+
+function showDetails(element) {
+  var detailsDiv = element.querySelector('.detailsDiv');
+  if (detailsDiv.classList.contains('active')) {
+    detailsDiv.classList.remove('active');
+  } else {
+    // Loại bỏ lớp active từ tất cả các .detailsDiv khác
+    var allDetailsDivs = document.querySelectorAll('.detailsDiv');
+    allDetailsDivs.forEach(function (item) {
+      item.classList.remove('active');
+    });
+    detailsDiv.classList.add('active');
+  }
+}
+
+function handleFileSelect(event) {
+  const input = event.target;
+  if ('files' in input && input.files.length > 0) {
+    const file = input.files[0];
+    console.log('Selected file:', file);
+    // Thực hiện các xử lý với tệp tại đây, ví dụ: upload lên server, hiển thị thông tin về tệp, vv.
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+});
+
+
+// Đặt vé

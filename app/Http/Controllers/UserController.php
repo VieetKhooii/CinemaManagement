@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Cookie;
 
 class UserController extends Controller
 {
@@ -22,6 +23,8 @@ class UserController extends Controller
 
     public function index()
     {
+        // $token = Cookie::get('jwt');
+        // echo("Token: ".$token);
         $users = $this->userService->getAllUsers();
         return $users;
         // return view('home', compact('users'));
