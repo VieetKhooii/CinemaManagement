@@ -1,0 +1,135 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#form_signUp {
+    width: 100%;
+}
+
+#form_signUp form {
+    width: 40%;
+    padding: 20px;
+    border: 1px solid #ffee53;
+    border-radius: 5px;
+    background-color: #FFFACD;
+    box-shadow: 5px 3px 10px rgb(243, 232, 110);
+    opacity: 0.9;
+}
+
+h2 {
+    text-align: center;
+    font-size: 36px;
+    text-transform: uppercase;
+}
+
+input[type="date"],
+#gender {
+    height: 30px;
+    border: none;
+    box-shadow: 4px 4px 7px #ecdb3f inset;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="tel"]:focus,
+input[type="date"]:focus,
+#gender:focus {
+    border: 3px solid #e1cc13;
+    outline: none;
+}
+
+/* Style cho các input */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"] {
+    width: calc(100% - 12px);
+    /* Trừ đi margin */
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ffee53;
+    border-radius: 3px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    box-shadow: 4px 4px 7px #ecdb3f inset;
+}
+
+
+
+/* Style cho nút gửi */
+input[type="submit"] {
+    width: 100%;
+    background-color: #ecdb3f;
+    color: black;
+    padding: 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 15px;
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+/* Hover effect cho nút gửi */
+input[type="submit"]:hover {
+    background-color: black;
+    color: #fae845;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.form-row div {
+    flex: 1;
+    margin-right: 10px;
+    /* Khoảng cách giữa các trường */
+}
+
+.form-row label,
+.form-row select,
+.form-row input {
+    width: 100%;
+}
+
+#captchaBackground {
+    justify-content: center;
+    align-items: center;
+}
+
+#captcha {
+    width: 45%;
+    margin: 0 5% 0 0;
+}
+
+#captchaCode {
+    padding-top: 10px;
+    text-align: center;
+    margin-right: 7%;
+    width: 35%;
+    height: 40px;
+    border: 1px solid #ffee53;
+    box-shadow: 4px 4px 7px #ecdb3f inset, -4px -4px 7px #ecdb3f inset;
+}
+
+#refreshButton {
+    border: none;
+    width: 30px;
+    height: 30px;
+    background-color: #e1cc13;
+}
+
+#form_signUp form small {
+    width: 100%;
+    height: auto;
+}
+
+#form_signUp form small span {
+    width: 100%;
+    height: 100%;
+}

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <title>Simple API Request</title>
 </head>
 <body>
@@ -10,6 +11,10 @@
 <h1>Users List</h1>
 
 <ul id="userList"></ul>
+
+<button id="logoutBtn">Logout</button>
+<script src="/js/login.js"></script>
+
 
 <!-- <script>
 document.addEventListener('DOMContentLoaded', function () {

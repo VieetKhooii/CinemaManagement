@@ -8,7 +8,6 @@ use App\Repositories\CategoryRepo;
 use App\Repositories\ComboRepo;
 use App\Repositories\ConsumeRepo;
 use App\Repositories\MovieRepo;
-use App\Repositories\ConsumeRepo;
 use App\Repositories\RoomRepo;
 use App\Repositories\ShowtimeRepo;
 use App\Repositories\TransactionRepo;
@@ -21,7 +20,6 @@ use App\Repositories\Interface\CategoryRepositoryInterface;
 use App\Repositories\Interface\ComboRepositoryInterface;
 use App\Repositories\Interface\ConsumeRepositoryInterface;
 use App\Repositories\Interface\MovieRepositoryInterface;
-use App\Repositories\Interface\ConsumeRepositoryInterface;
 use App\Repositories\Interface\RoomRepositoryInterface;
 use App\Repositories\Interface\ShowtimeRepositoryInterface;
 use App\Repositories\Interface\TransactionRepositoryInterface;
@@ -49,7 +47,6 @@ class AppServiceProvider extends ServiceProvider
        $this->app->bind(ShowtimeRepositoryInterface::class, ShowtimeRepo::class);
        $this->app->bind(TransactionRepositoryInterface::class, TransactionRepo::class);
        $this->app->bind(ReservationRepositoryInterface::class, ReservationRepo::class);
-
        $this->app->bind(UserService::class, UserRepo::class);
     }
 

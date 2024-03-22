@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\AttachJwtToken;
+use App\Models\Users;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Service\UserService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 
 class LoginController extends Controller
 {
@@ -23,7 +27,12 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
-
+    public function __construct()
+    {
+        // $this->middleware('guest')->except('logout');
+        $this->middleware('auth:api', ['except' => ['login','register','logout']]);
+    }
+    
     public function login(Request $request){
         $email = $request->input('email');
         $password = $request->input('password');
@@ -36,25 +45,33 @@ class LoginController extends Controller
         $token = Auth::attempt($credentials);
         if ($token) {
             // $request->session()->regenerate();
-            // return response()->json(['message' => 'Login Successfully'], 201);
             $user = Auth::user();
-            // $token = $request->user()->createToken($email, ['*'], now()->addMinutes(5));
-            return response()->json([
-                'message' => 'Login Successfully',
+            $responseJson = [
                 'status' => 'success',
+                'message' => 'Login Successfully',
                 'user' => $user,
                 'authorization' => [
                     'token' => $token,
                     'type' => 'bearer',
                 ]
-                ]);
+            ];
+            // $cookie = cookie('jwt', $token, 1, null, null, false, false);
+            $response = new Response($responseJson);
+            // Cookie::queue('jwt', $token, 1);
+            // $response->header('Set-Cookie', "jwt={$token}; Expires=" . gmdate('D, d M Y H:i:s T', time() + 1) . '; Path=/; Secure; ');
+            $response->withCookie(cookie('jwt', $token, 1, null, null, false, false));
+
+            // $token = $request->user()->createToken($email, ['*'], now()->addMinutes(5));
+            return $response;
             //  return redirect()->intended('/');
         }
         else {
-            return response()->json([
+             $responseJson = [
                 'status' => 'error',
-                'message' => 'Unauthorized',    
-            ], 401);
+                'message' => 'Email or password incorrect!',    
+            ];
+            $response = new Response($responseJson);
+            return $response;
         }
     }
     /**
@@ -71,15 +88,10 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        Auth::logout();
-        // DB::table('personal_access_tokens')->where('tokenable_id', auth()->id())->delete();
+        // Auth::logout();
         return response()->json(['message' => 'Successfully logged out']);
     }
-    public function __construct()
-    {
-        // $this->middleware('guest')->except('logout');
-        $this->middleware('auth:api', ['except' => ['login','register','logout']]);
-    }
+    
     public function refresh()
     {
         return response()->json([
