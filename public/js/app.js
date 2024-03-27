@@ -96,7 +96,6 @@ function loadContent(file) {
 document.getElementById('form_signUp').addEventListener("submit", function (event) {
   // Ngăn chặn hành động mặc định của form
   event.preventDefault();
-
   // Gọi hàm validateSignUp() khi submit form
   validateSignUp();
 });
@@ -104,32 +103,33 @@ document.getElementById('form_signUp').addEventListener("submit", function (even
 function validateSignUp() {
   // Kiểm tra captcha
   var isCaptchaValid = validateCaptcha();
-  
+   
   // Kiểm tra các trường của form
   var isFormValid = validateForm();
   
   // Nếu cả form và captcha đều hợp lệ, thì hiển thị thông báo đăng ký thành công và ẩn form
   if (isCaptchaValid && isFormValid) {
-      alert('Bạn đã đăng kí thành công!');
-      document.getElementById("form_signUp").style.display = "none";
-  }
+    alert('Bạn đã đăng kí thành công!');
+    window.location.href="/login";
+    // document.getElementById("form_signUp").style.display = "none";
+}
 }
 
 // Hàm kiểm tra xem các trường đã được nhập đầy đủ chưa
 function validateForm() {
-  var fullname = document.getElementById('fullname').value;
+  var fullname = document.getElementById('full_name').value;
   var phone = document.getElementById('phone').value;
   var email = document.getElementById('email').value;
   var password = document.getElementById('password').value;
-  var dob = document.getElementById('dob').value;
+  var dob = document.getElementById('date_of_birth').value;
   var gender = document.getElementById('gender').value;
-  var region = document.getElementById('region').value;
+  var region = document.getElementById('address').value;
   var captcha = document.getElementById('captcha').value;
   var check_captcha = document.getElementById('captchaCode').value;
-
   // Kiểm tra điều kiện của từng trường
-  if (fullname === "" || phone === "" || email === "" || password === "" || dob === "" || gender === "" || region === "" || captcha != check_captcha) {
+  if (fullname === "" || phone === "" || email === "" || password === "" || dob === "" || gender === "" || region === "" ) {
     // Nếu có trường nào chưa được điền đầy đủ, trả về false
+    // || captcha != check_captcha
     return false;
   }
   // Nếu tất cả các trường đều đã được điền đầy đủ, trả về true
@@ -172,15 +172,49 @@ function refreshCaptcha() {
 function validateCaptcha() {
   var captchaInput = document.getElementById("captcha").value;
   var captchaText = document.getElementById("captchaCode").getAttribute("data-captcha");
-
   if (captchaInput === captchaText) {
-    return true;
+    return submit();
   } else {
     alert("Mã captcha không đúng. Vui lòng nhập lại.");
     return false;
   }
 }
 
+function submit(){
+    const full_name = $('#full_name').val();
+    const phone = $('#phone').val();
+    const email = $('#email').val();
+    const password = $('#password').val();
+    const dateOfBirth = $('#date_of_birth').val();
+    const gender = $('#gender').val();
+    const address = $('#address').val();
+    flag = false;
+    $.ajax({
+      method: 'POST',
+      url: 'http://localhost:8000/sign-up',
+      data: {
+          'full_name': full_name,
+          'phone': phone,
+          'email': email,
+          'password': password,
+          'date_of_birth': dateOfBirth,
+          'gender': gender,
+          'address': address
+      },
+      async: false,
+      dataType: 'json',
+      success: function(data) {
+          if (data.status === 'success') {
+              // alert('Sign up successful!');
+              flag = true;
+          } else if (data.status === 'error'){
+              const message = data.error;
+              alert(message);
+          }
+        },
+    });
+    return flag;
+}
 
 // Hỗ trợ KH 
 
@@ -220,9 +254,9 @@ function handleFileSelect(event) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById('fileInput').addEventListener('change', handleFileSelect);
-});
+// document.addEventListener('DOMContentLoaded', function () {
+//   document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+// });
 
 
 // Đặt vé

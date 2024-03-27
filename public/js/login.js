@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $('#myForm').submit(function(e) {
+    $('#loginForm').submit(function(e) {
         e.preventDefault(); // Prevent default form submission
         
         const email = $('#email').val();

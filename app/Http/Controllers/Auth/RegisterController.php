@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Users;
+use Exception;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -67,42 +68,57 @@ class RegisterController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|string|size:6',
-            'user_name' => 'required|string|between:1,50',
+            'full_name' => 'required|string|between:1,75',
             'email' => 'required|string|between:1,100|email|ends_with:@gmail.com',
-            'password' => 'required|string|between:1,100|min:8|confirmed|regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)/', 
+            'password' => 'required|string|between:1,100|min:8|regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)/', 
             'phone' => 'required|string|size:10',
             'date_of_birth' => 'required|date',
             'gender' => 'required|string|between:1,20',
             'address' => 'required|string|between:1,100',
-            'role_id' => 'required|int',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json([
+                'status' => 'error',
+                'error' => $validator->errors()->first(),
+            ]);
         }
 
-        $user = Users::create([
-            'user_id' => $request->input('user_id'),
-            'user_name' => $request->input('user_name'),
-            'email' => $request->input('email'),
-            'password' => $request->input('password'),
-            'phone' => $request->input('phone'),
-            'date_of_birth' => $request->input('date_of_birth'),
-            'gender' => $request->input('gender'),
-            'address' => $request->input('address'),
-            'score' => 0,
-            'status' => true,
-            'role_id' => 3,
-        ]);
-        
-        return response()->json([
-            'status' => 'success',
-            'message' => 'User created successfully',
-            'user' => $user,
-            'authorization' => [
+        try {
+            $user = Users::create([
+                'user_id' => $request->input('user_id'),
+                'full_name' => $request->input('full_name'),
+                'email' => $request->input('email'),
+                'password' => $request->input('password'),
+                'phone' => $request->input('phone'),
+                'date_of_birth' => $request->input('date_of_birth'),
+                'gender' => $request->input('gender'),
+                'address' => $request->input('address'),
+                'score' => 0,
+                'status' => true,
+                'role_id' => 3,
+            ]);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User created successfully',
+                'user' => $user,
+                // 'authorization' => [
                 // 'token' => Auth::login($user),
-                'type' => 'bearer',
-            ]
-        ]);
+                // 'type' => 'bearer',
+                // ]
+            ]);
+        }
+        catch (Exception $exception){
+            if (strpos($exception->getMessage(),"Duplicate entry") == true){
+                return response()->json([
+                    'status' => 'error',
+                    'error' => "Email already existed!",
+                ]);
+            }
+            return response()->json([
+                'status' => 'error',
+                'error' => $exception->getMessage(),
+            ]);
+        }
     }
 }

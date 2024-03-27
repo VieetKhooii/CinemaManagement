@@ -37,10 +37,10 @@ class UserController extends Controller
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|string|size:6',
-            'user_name' => 'required|string|between:1,50',
+            'full_name' => 'required|string|between:1,50',
             'email' => 'required|string|between:1,100|email|ends_with:@gmail.com',
 // email: must be a valid email address format.
-            'password' => 'required|string|between:1,100|min:8|confirmed|regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)/', 
+            'password' => 'required|string|between:1,100|min:8|regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)/', 
 // confirmed: password_confirmation.
 // regex:pattern: Password must contain one uppercase letter, one lowercase letter, one digit, and one special character.
             'phone' => 'required|string|size:10',
@@ -51,12 +51,15 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json([
+                'errors' => $validator->errors()->first(),
+                'status' => 'error'], 
+                422);
         }
 
         $userArray = [
             'user_id' => $request->input('user_id'),
-            'user_name' => $request->input('user_name'),
+            'full_name' => $request->input('full_name'),
             'email' => $request->input('email'),
             'password' => $request->input('password'),
             'phone' => $request->input('phone'),
@@ -69,11 +72,15 @@ class UserController extends Controller
         ];
         $user = $this->userService->addUser($userArray);
         if ($user){
-            return response()->json(['message' => 'User created successfully', 'status' => 'success','users' => $user], 201);
+            return response()->json([
+                'message' => 'User created successfully',
+                'status' => 'success',
+                'users' => $user], 
+                201);
         }
         // auth()->login($user);
         else {
-            return response()->json(['error' => '$validator->errors()'], 422);
+            return response()->json(['error' => '$validator->errors()', 'status' => 'error'], 422);
         }
     }
 
@@ -90,7 +97,10 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json([
+                'errors' => $validator->errors(),
+                'status' => 'error'], 
+                422);
         }
         $user = [
             'user_name' => $request->input('user_name'),
@@ -105,13 +115,22 @@ class UserController extends Controller
         ];
         $result = $this->userService->updateUser($user, $id);
         if ($result){
-            return response()->json(['message' => 'update successfully'], 200);
+            return response()->json([
+                'message' => 'update successfully',
+                'status' => 'success'],
+                200);
         }
         else if ($result == 0){
-            return response()->json(['message' => 'Data stays the same'], 200);
+            return response()->json([
+                'message' => 'Data stays the same',
+                'status' => 'error'], 
+                200);
         }
         else {
-            return response()->json(['error' => 'update failed'], 422);
+            return response()->json([
+                'error' => 'update failed',
+                'status' => 'error'], 
+                422);
         }
     }
 } 

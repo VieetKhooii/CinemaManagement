@@ -30,7 +30,7 @@ class LoginController extends Controller
     public function __construct()
     {
         // $this->middleware('guest')->except('logout');
-        $this->middleware('auth:api', ['except' => ['login','register','logout']]);
+        $this->middleware('auth:api', ['except' => ['login','logout','refresh']]);
     }
     
     public function login(Request $request){
@@ -94,12 +94,9 @@ class LoginController extends Controller
     
     public function refresh()
     {
-        return response()->json([
-            'user' => Auth::user(),
-            'authorization' => [
-                'token' => Auth::refresh(),
-                'type' => 'bearer',
-            ]
-        ]);
+        $token = Auth::refresh();
+        $response = new Response();
+        $response->withCookie(cookie('jwt', $token, 1, null, null, false, false));
+        return $response;
     }
 }
