@@ -17,17 +17,13 @@ class UserController extends Controller
 
     public function __construct(UserService $userService)
     {
-        // $this->middleware('auth:api');   
         $this->userService = $userService;
     }
 
     public function index()
     {
-        // $token = Cookie::get('jwt');
-        // echo("Token: ".$token);
         $users = $this->userService->getAllUsers();
         return $users;
-        // return view('home', compact('users'));
     }
 
     public function show(string $id){
@@ -39,10 +35,7 @@ class UserController extends Controller
             'user_id' => 'required|string|size:6',
             'full_name' => 'required|string|between:1,50',
             'email' => 'required|string|between:1,100|email|ends_with:@gmail.com',
-// email: must be a valid email address format.
             'password' => 'required|string|between:1,100|min:8|regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)/', 
-// confirmed: password_confirmation.
-// regex:pattern: Password must contain one uppercase letter, one lowercase letter, one digit, and one special character.
             'phone' => 'required|string|size:10',
             'date_of_birth' => 'required|date',
             'gender' => 'required|string|between:1,20',

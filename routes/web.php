@@ -119,7 +119,6 @@ Route::post('password/pass-reset', [ForgotPasswordController::class, 'updatePass
 Route::auth();
 Auth::routes(['verify' => true]);
 
-
 // View
 Route::middleware(['jwt.attach'])->group(function () {
     Route::view('/users', 'home');
