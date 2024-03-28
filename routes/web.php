@@ -115,8 +115,8 @@ Route::post('sign-up', [RegisterController::class, 'create']);
 Route::post('password/resent', [ForgotPasswordController::class, 'forgotPassword'])->name('password.email');
 Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'resetRequest'])->middleware('guest')->name('password.reset');
 Route::post('password/pass-reset', [ForgotPasswordController::class, 'updatePassword'])->name('password.update');
-/
-/ Route::auth();
+
+Route::auth();
 Auth::routes(['verify' => true]);
 
 
