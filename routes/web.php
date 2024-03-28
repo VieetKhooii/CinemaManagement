@@ -44,7 +44,7 @@ use App\Models\Transactions;
 //     // Add more routes as needed
 // });
 
-Route::middleware(['jwt.attach'])->group(function () {
+Route::middleware(['jwt.attach', 'refresh.token'])->group(function () {
     // Your protected routes go here
     Route::resource('users', UserController::class);
     
