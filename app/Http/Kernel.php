@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\AuthenticateMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use PHPOpenSourceSaver\JWTAuth\Http\Middleware\RefreshToken;
 
 class Kernel extends HttpKernel
 {
@@ -67,6 +68,7 @@ class Kernel extends HttpKernel
         'pass.login' => \App\Http\Middleware\PassLogin::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'precognitive' => \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
+        'refresh.token' => \App\Http\Middleware\RefreshTokenMiddleware::class,
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
