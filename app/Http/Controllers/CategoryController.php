@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Service\CategoryService;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -20,7 +21,7 @@ class CategoryController extends Controller
         //
         $category = $this->categoryService->getAllCategories();
         if ($category){
-            return response()->json(['message' => 'category got successfully', 'categories' => $category], 201);
+            return response()->json(['message' => 'category got successfully', 'data' => $category], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -32,7 +33,7 @@ class CategoryController extends Controller
         //
         $category = $this->categoryService->getAllCategoriesForCustomer();
         if ($category){
-            return response()->json(['message' => 'category 4 cus got successfully', 'categories' => $category], 201);
+            return response()->json(['message' => 'category 4 cus got successfully', 'data' => $category], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -53,14 +54,20 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'category_name'=> 'required|string|between:1,50'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        
         $array = [
-            'category_id'=> $request->input('category_id'),
             'category_name'=> $request->input('category_name'),
             'display'=> true,
         ];
         $category = $this->categoryService->addCategory($array);
         if ($category){
-            return response()->json(['message' => 'category added successfully', 'categories' => $category], 201);
+            return response()->json(['message' => 'category added successfully', 'data' => $category], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -75,7 +82,7 @@ class CategoryController extends Controller
         //
         $category = $this->categoryService->getACategory($id);
         if ($category){
-            return response()->json(['message' => 'category showed successfully', 'categories' => $category], 201);
+            return response()->json(['message' => 'category showed successfully', 'data' => $category], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -96,12 +103,19 @@ class CategoryController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'category_name'=> 'required|string|between:1,50'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
         $array = [
             'category_name'=> $request->input('category_name'),
         ];
         $category = $this->categoryService->updateCategory($array, $id);
         if ($category){
-            return response()->json(['message' => 'category updated successfully', 'categories' => $category], 201);
+            return response()->json(['message' => 'category updated successfully', 'data' => $category], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -123,7 +137,7 @@ class CategoryController extends Controller
         ];
         $category = $this->categoryService->searchCategory($array);
         if ($category){
-            return response()->json(['message' => 'category searched successfully', 'categories' => $category], 201);
+            return response()->json(['message' => 'category searched successfully', 'data' => $category], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -136,7 +150,7 @@ class CategoryController extends Controller
         ];
         $category = $this->categoryService->updateCategory($array, $id);
         if ($category){
-            return response()->json(['message' => 'category hid successfully', 'categories' => $category], 201);
+            return response()->json(['message' => 'category hid successfully', 'data' => $category], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);

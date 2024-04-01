@@ -19,7 +19,7 @@ class TransactionController extends Controller
         //
         $transaction = $this->transactionService->getAllTransactions();
         if ($transaction){
-            return response()->json(['message' => 'transaction got successfully', 'transactions' => $transaction], 201);
+            return response()->json(['message' => 'transaction got successfully', 'data' => $transaction], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -31,7 +31,7 @@ class TransactionController extends Controller
         //
         $transaction = $this->transactionService->getAllTransactionsForCustomer();
         if ($transaction){
-            return response()->json(['message' => 'transaction for customer got successfully', 'transactions' => $transaction], 201);
+            return response()->json(['message' => 'transaction for customer got successfully', 'data' => $transaction], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -62,7 +62,7 @@ class TransactionController extends Controller
         ];
         $transaction = $this->transactionService->addTransaction($array);
         if ($transaction){
-            return response()->json(['message' => 'transaction added successfully', 'transactions' => $transaction], 201);
+            return response()->json(['message' => 'transaction added successfully', 'data' => $transaction], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -77,7 +77,7 @@ class TransactionController extends Controller
         //
         $transaction = $this->transactionService->getATransaction($id);
         if ($transaction){
-            return response()->json(['message' => 'transaction showed successfully', 'transactions' => $transaction], 201);
+            return response()->json(['message' => 'transaction showed successfully', 'data' => $transaction], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -105,7 +105,7 @@ class TransactionController extends Controller
         ];
         $transaction = $this->transactionService->updateTransaction($array, $id);
         if ($transaction){
-            return response()->json(['message' => 'transaction updated successfully', 'transactions' => $transaction], 201);
+            return response()->json(['message' => 'transaction updated successfully', 'data' => $transaction], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -123,7 +123,7 @@ class TransactionController extends Controller
         ];
         $transaction = $this->transactionService->searchTransaction($array);
         if ($transaction){
-            return response()->json(['message' => 'transaction added successfully', 'transactions' => $transaction], 201);
+            return response()->json(['message' => 'transaction added successfully', 'data' => $transaction], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -136,7 +136,7 @@ class TransactionController extends Controller
         ];
         $transaction = $this->transactionService->updateTransaction($array, $id);
         if ($transaction){
-            return response()->json(['message' => 'transaction hid successfully', 'transactions' => $transaction], 201);
+            return response()->json(['message' => 'transaction hid successfully', 'data' => $transaction], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);

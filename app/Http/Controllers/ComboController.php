@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Combos;
 use App\Service\ComboService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class ComboController extends Controller
 {
@@ -20,7 +23,7 @@ class ComboController extends Controller
         //
         $combo = $this->comboService->getAllCombos();
         if ($combo){
-            return response()->json(['message' => 'combo got successfully', 'combo' => $combo], 201);
+            return response()->json(['message' => 'combo got successfully', 'data' => $combo], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -30,7 +33,7 @@ class ComboController extends Controller
     public function getAllCombosForCustomer(){
         $combo = $this->comboService->getAllCombosForCustomer();
         if ($combo){
-            return response()->json(['message' => 'combo 4 cus got successfully', 'combo' => $combo], 201);
+            return response()->json(['message' => 'combo 4 cus got successfully', 'data' => $combo], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -50,17 +53,40 @@ class ComboController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|between:1,50',
+            'price' => 'required|numeric|min:0.01' // Giá tiền phải lớn hơn hoặc bằng 0.01
+            
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }     
+        if ($request->hasFile('image')) {
+            // Lưu file vào thư mục trên server
+            $file = $request->file('image');
+            $newName = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $directory = public_path('uploads/combo');
+            // Tạo thư mục nếu chưa tồn tại
+            if (!File::isDirectory($directory)) {
+                File::makeDirectory($directory, 0755, true, true);
+            }
+            $file->move($directory, $newName);
+            $filePath = '/uploads/combo/' . $newName;            
+        } else {
+            return response()->json(['message' => 'No file uploaded'], 400);
+        }
+
         $array = [
-            'combo_id' => $request->input('combo_id'),
             'price'=> $request->input('price'),
             'name'=> $request->input('name'),
             'description'=> $request->input('description'),
-            'image' => $request->input('image'),
+            'image' => $filePath,
             'display'=> true,
         ];
         $combo = $this->comboService->addCombo($array);
+
         if ($combo){
-            return response()->json(['message' => 'combo added successfully', 'combo' => $combo], 201);
+            return response()->json(['message' => 'combo added successfully', 'data' => $combo], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -75,7 +101,7 @@ class ComboController extends Controller
         //
         $combo = $this->comboService->getACombo($id);
         if ($combo){
-            return response()->json(['message' => 'combo showed successfully', 'combo' => $combo], 201);
+            return response()->json(['message' => 'combo showed successfully', 'data' => $combo], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -96,16 +122,39 @@ class ComboController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|between:1,50',
+            'price' => 'required|numeric|min:0.01' // Giá tiền phải lớn hơn hoặc bằng 0.01
+            
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }  
         $array = [
             'price'=> $request->input('price'),
             'name'=> $request->input('name'),
-            'description'=> $request->input('description'),
-            'image'=> $request->input('image'),
-        ];
+            'description'=> $request->input('description'),           
+        ]; 
 
+        if ($request->hasFile('image')) {
+            // Lưu file vào thư mục trên server
+            $file = $request->file('image');
+            $originalName = $file->getClientOriginalName();
+            $directory = public_path('uploads/combo');
+            if(!File::exists($directory . '/' . $originalName)){
+                $newName = Str::uuid() . '.' . $file->getClientOriginalExtension();
+                $file->move($directory, $newName);
+                $filePath = '/uploads/combo/' . $newName;
+                $array['image'] = $filePath;
+            }
+                        
+        }else {
+            return response()->json(['message' => 'No file uploaded'], 400);
+        }
+        
         $combo = $this->comboService->updateCombo($array, $id);
         if ($combo){
-            return response()->json(['message' => 'combo updated successfully', 'combo' => $combo], 201);
+            return response()->json(['message' => 'combo updated successfully', 'data' => $combo], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -130,7 +179,7 @@ class ComboController extends Controller
         ];
         $combo = $this->comboService->searchCombo($array);
         if ($combo){
-            return response()->json(['message' => 'combo searched successfully', 'combo' => $combo], 201);
+            return response()->json(['message' => 'combo searched successfully', 'data' => $combo], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -144,7 +193,7 @@ class ComboController extends Controller
         ];
         $combo = $this->comboService->updateCombo($array, $id);
         if ($combo){
-            return response()->json(['message' => 'combo hid successfully', 'combo' => $combo], 201);
+            return response()->json(['message' => 'combo hid successfully', 'data' => $combo], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);

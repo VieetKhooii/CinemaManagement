@@ -24,7 +24,7 @@ class ComboService{
         return $this->comboRepository->addCombo( $data );
     }
 
-    public function updateCombo(array $data, $id){
+    public function updateCombo(array $data, $id){       
         return $this->comboRepository->updateCombo( $data, $id);
     }
 

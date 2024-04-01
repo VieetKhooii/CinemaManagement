@@ -9,4 +9,5 @@ interface CategoryRepositoryInterface {
     public function addCategory(array $cate);
     public function updateCategory(array $cate, string $id);
     public function searchCategory(array $cate);
+    public function existByName($name);
 }
