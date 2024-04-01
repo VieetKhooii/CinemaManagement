@@ -29,6 +29,31 @@ class Seats extends Model
         'is_reserved'=> 'boolean',
     ];
 
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($seat) {
+            $latestId = static::max('seat_id');
+
+            // Nếu không có ID trước đó, bắt đầu từ CA0000
+            if (!$latestId) {
+                $newId = 'S001';
+            } else {
+                // Tách phần số từ ID cuối cùng
+                $numberPart = substr($latestId, 1);
+                // Tăng số lên 1 đơn vị
+                $nextNumber = intval($numberPart) + 1;
+                // Tạo ID mới
+                $newId = 'S' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+            }
+
+            // Gán ID mới cho model
+            $seat->seat_id = $newId;
+        });
+    }
+
     public static function search(array $searchParams)
     {
         $query = static::query();

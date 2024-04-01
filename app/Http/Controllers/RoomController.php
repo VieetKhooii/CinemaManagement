@@ -18,7 +18,7 @@ class RoomController extends Controller
         //
         $room = $this->roomService->getAllRooms();
         if ($room){
-            return response()->json(['message' => 'room got successfully', 'room' => $room], 201);
+            return response()->json(['message' => 'room got successfully', 'data' => $room], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -30,7 +30,7 @@ class RoomController extends Controller
         //
         $room = $this->roomService->getAllRoomsForCustomer();
         if ($room){
-            return response()->json(['message' => 'room 4 cus got successfully', 'room' => $room], 201);
+            return response()->json(['message' => 'room 4 cus got successfully', 'data' => $room], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -52,7 +52,6 @@ class RoomController extends Controller
     {
         //
         $array= [
-            'room_id'=> $request->input('room_id'),
             'room_name'=> $request->input('room_name'),
             'status'=> true,
             'number_of_seat'=> 0,
@@ -60,7 +59,7 @@ class RoomController extends Controller
         ];
         $room = $this->roomService->addRoom($array);
         if ($room){
-            return response()->json(['message' => 'room added successfully', 'room' => $room], 201);
+            return response()->json(['message' => 'room added successfully', 'data' => $room], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -75,7 +74,7 @@ class RoomController extends Controller
         //
         $room = $this->roomService->getARoom($id);
         if ($room){
-            return response()->json(['message' => 'room showed successfully', 'room' => $room], 201);
+            return response()->json(['message' => 'room showed successfully', 'data' => $room], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -102,7 +101,7 @@ class RoomController extends Controller
         ];
         $room = $this->roomService->updateRoom($array, $id);
         if ($room){
-            return response()->json(['message' => 'room updated successfully', 'room' => $room], 201);
+            return response()->json(['message' => 'room updated successfully', 'data' => $room], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -117,7 +116,7 @@ class RoomController extends Controller
         ];
         $room = $this->roomService->searchRoom($array);
         if ($room){
-            return response()->json(['message' => 'room searched successfully', 'room' => $room], 201);
+            return response()->json(['message' => 'room searched successfully', 'data' => $room], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -130,7 +129,7 @@ class RoomController extends Controller
         ];
         $room = $this->roomService->updateRoom($array, $id);
         if ($room){
-            return response()->json(['message' => 'room hid successfully', 'room' => $room], 201);
+            return response()->json(['message' => 'room hid successfully', 'data' => $room], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);

@@ -41,5 +41,30 @@ class Transactions extends Model
 
         return $query->paginate(10);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($transaction) {
+            $latestId = static::max('transaction');
+
+            // Nếu không có ID trước đó, bắt đầu từ TR00000000
+            if (!$latestId) {
+                $newId = 'TR00000000';
+            } else {
+                // Tách phần số từ ID cuối cùng
+                $numberPart = substr($latestId, 2);
+                // Tăng số lên 1 đơn vị
+                $nextNumber = intval($numberPart) + 1;
+                // Tạo ID mới
+                $newId = 'TR' . str_pad($nextNumber, 8, '0', STR_PAD_LEFT);
+            }
+
+            // Gán ID mới cho model
+            $transaction->transaction = $newId;
+        });
+    }
+
     use HasFactory;
 }

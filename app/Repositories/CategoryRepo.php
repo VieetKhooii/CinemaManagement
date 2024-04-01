@@ -61,4 +61,12 @@ class CategoryRepo implements CategoryRepositoryInterface{
             return null;    
         }
     }
+
+    public function existByName($name){
+        $count = Categories::where('category_name', $name)->count();
+
+        // Trả về true nếu tên đã tồn tại, ngược lại trả về false
+        return $count > 0; 
+    }
+
 }

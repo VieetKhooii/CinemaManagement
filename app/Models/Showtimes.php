@@ -28,6 +28,30 @@ class Showtimes extends Model
         'display'=> 'boolean',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($showTime) {
+            $latestId = static::max('showtime_id');
+
+            // Nếu không có ID trước đó, bắt đầu từ CA0000
+            if (!$latestId) {
+                $newId = 'SH00000001';
+            } else {
+                // Tách phần số từ ID cuối cùng
+                $numberPart = substr($latestId, 2);
+                // Tăng số lên 1 đơn vị
+                $nextNumber = intval($numberPart) + 1;
+                // Tạo ID mới
+                $newId = 'SH' . str_pad($nextNumber, 8, '0', STR_PAD_LEFT);
+            }
+
+            // Gán ID mới cho model
+            $showTime->showtime_id = $newId;
+        });
+    }
+
     public static function search(array $searchParams)
     {
         $query = static::query();

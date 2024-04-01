@@ -19,7 +19,7 @@ class ReservationController extends Controller
         //
         $reserve = $this->reservationService->getAllReservations();
         if ($reserve){
-            return response()->json(['message' => 'reservation got successfully', 'reservation' => $reserve], 201);
+            return response()->json(['message' => 'reservation got successfully', 'data' => $reserve], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -29,7 +29,7 @@ class ReservationController extends Controller
     public function getAllReservationsForCustomer(){
         $reservation = $this->reservationService->getAllReservationsForCustomer();
         if ($reservation){
-            return response()->json(['message' => 'reservation 4 cus got successfully', 'reservation' => $reservation], 201);
+            return response()->json(['message' => 'reservation 4 cus got successfully', 'data' => $reservation], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -50,7 +50,6 @@ class ReservationController extends Controller
     {
         //
         $array = [
-            'id'=> $request->input('id'),
             'price'=> 0, // auto-calculate here or service class!      
             'showtime_id'=> $request->input('showtime_id'),
             'seat_id'=> $request->input('seat_id'),
@@ -59,7 +58,7 @@ class ReservationController extends Controller
         ];
         $reservation = $this->reservationService->addReservation($array);
         if ($reservation){
-            return response()->json(['message' => 'reservation added successfully', 'reservation' => $reservation], 201);
+            return response()->json(['message' => 'reservation added successfully', 'data' => $reservation], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -74,7 +73,7 @@ class ReservationController extends Controller
         //
         $reservation = $this->reservationService->getAReservation( $id );
         if ($reservation){
-            return response()->json(['message' => 'reservation showed successfully', 'reservation' => $reservation], 201);
+            return response()->json(['message' => 'reservation showed successfully', 'data' => $reservation], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -102,7 +101,7 @@ class ReservationController extends Controller
         ];
         $reservation = $this->reservationService->updateReservation( $array, $id );
         if ($reservation){
-            return response()->json(['message' => 'reservation updated successfully', 'reservation' => $reservation], 201);
+            return response()->json(['message' => 'reservation updated successfully', 'data' => $reservation], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -120,7 +119,7 @@ class ReservationController extends Controller
         ];
         $reservation = $this->reservationService->searchReservation($array);
         if ($reservation){
-            return response()->json(['message' => 'reservation searched successfully', 'reservation' => $reservation], 201);
+            return response()->json(['message' => 'reservation searched successfully', 'data' => $reservation], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -133,7 +132,7 @@ class ReservationController extends Controller
         ];
         $reservation = $this->reservationService->updateReservation($array, $id);
         if ($reservation){
-            return response()->json(['message' => 'reservation hid successfully', 'reservation' => $reservation], 201);
+            return response()->json(['message' => 'reservation hid successfully', 'data' => $reservation], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
