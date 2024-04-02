@@ -1,0 +1,337 @@
+.container {
+    display: flex;
+    
+}
+#menu {
+    flex: 0 0 20%; /* Đặt chiều rộng cố định cho phần menu */
+    position: fixed;
+    width: 20%;
+    background-color: #f4f4f4;
+    padding-left: 10px;
+    border: 3px solid burlywood;
+    background-color: blanchedalmond;
+    height: 100vh; /* Set chiều cao bằng 100% của viewport */
+    overflow-y: auto; 
+}
+#menu button{
+    width: 100%;
+    text-align: left;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 30px;
+    border-radius: 20px 0 0 20px;
+    border: none;
+    background-color: transparent;
+    font-size: 15px;
+    margin-bottom: 5px;
+    border-bottom: 2px solid bisque;
+    box-shadow: 2px 2px 2px burlywood;
+    
+}
+
+#menu button:hover{
+    color:bisque ;
+    background-color: black;
+    cursor: pointer;
+    border-color: black;
+}
+
+#menu button.active{
+    color:bisque ;
+    border-bottom: none;
+    background-color: black;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, .2);
+    font-weight: bolder;
+}
+#content {
+    flex: 1;
+    margin-left: 23%;
+    overflow-y: hidden;
+    overflow-x: auto;
+    
+}
+
+
+
+/************************************************************** admin page _ users ***************************************************** */
+
+#table_query {
+    width: 100%;
+    border-collapse: separate;
+    overflow-x: auto;
+    border-spacing: 0;
+    border-radius: 10px; 
+    overflow: hidden; 
+    margin-top: 60px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+
+#table_query th, #table_query td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+    overflow: hidden;
+}
+
+
+#table_query tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#table_query th {
+    background-color: black;
+    color: blanchedalmond;
+}
+.table-cell {
+    white-space: pre-wrap;
+}
+#table_query .button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.edit-btn, .delete-btn {
+    padding: 5px 10px;
+    margin: 2px;
+    border: none;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+.edit-btn:hover{
+    background-color: green;
+    font-weight: bolder;
+}
+
+.delete-btn {
+    background-color: #f8594e;
+    color: white;
+}
+.delete-btn:hover{
+    background-color: red;
+    font-weight: bolder;
+}
+
+#add-btn{
+    background-color: blanchedalmond;
+    width: 10%;
+    right: 1%;
+    position: fixed;
+    height: 35px;
+    border-radius: 5px;
+    border:none;
+    float: right;
+    font-weight: bolder;
+    
+}
+
+#add-btn:hover{
+    background-color: black;
+    color: bisque;
+    cursor: pointer;
+}
+
+
+.pagination {
+    margin-top: 2%;
+    margin-bottom: 34%;
+    text-align: center;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 0 2px;
+    border: 1px solid #ddd;
+    color: black;
+    text-decoration: none;
+}
+
+.pagination a.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
+}
+
+
+
+/* *****************admin add form**************************** */
+#back-btn{
+    width: 10%;
+    height: 5%;
+    font-weight: bolder;
+    background-color: blanchedalmond;
+    border: none;
+    margin-bottom: 2%;
+    border-radius: 5px;
+    min-width: 15%;
+}
+#back-btn:hover{
+    cursor: pointer;
+    background-color: black;
+    color: blanchedalmond;
+    
+}
+#admin_add{
+    width: 80%;
+    height: auto;
+    padding-left: 10%;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: larger;
+    
+   
+}
+#add_form, #edit_form{
+    border: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background-color: antiquewhite;
+    border-radius: 10px;
+    border: 1px solid burlywood;
+    box-shadow: 7px 8px 20px burlywood;
+}
+
+#label_add{
+    border: none;
+    text-align: right;
+    width: 25%;
+    word-wrap: break-word;
+    margin-top:5%  ;
+    padding-right: 5%;
+    font-weight: bolder;
+   
+    
+}
+#input_add{
+    border: none;
+    width: 60%;
+    
+    word-wrap: break-word;
+    margin-top:5%  ;
+    padding-right: 10%;
+    
+
+}
+#input_add input{
+    width: 100%;
+    height: 100%;
+    border: none;
+    box-shadow: 5px 5px 10px burlywood ;
+    font-size: larger;
+    border-radius: 5px;
+    
+}
+#input_add input:focus{ 
+    outline: 2px solid burlywood;
+}
+#btn-submit{
+    width: 100%;
+    margin-top: 3%;
+    
+}
+#btn-submit button{
+    margin-left: 40%;
+    width: 20%;
+    padding: 2% 0;
+    font-weight: bolder;
+    border: none;
+    border-radius: 10px;
+    background-color:  blanchedalmond;
+    border: 1px solid burlywood;
+    margin-bottom: 4%;
+    
+}
+
+#btn-submit button:hover{
+    cursor: pointer;
+    background-color: black;
+    color:blanchedalmond;
+    border: none;
+    font-weight: bolder;
+}
+
+
+
+/* Style cho combobox */
+select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 5px;
+    font-size: 16px;
+
+    color: black; /* Màu chữ */
+    cursor: pointer; /* Con trỏ khi rê chuột */
+    box-shadow: 5px 5px 10px burlywood; /* Hiệu ứng bóng */
+}
+
+/* Style khi hover combobox */
+select:hover {
+    border-color: #aaa;
+}
+
+/* Style khi focus combobox */
+select:focus {
+    outline: none;
+    
+}
+
+
+
+/* Style cho trường input tệp */
+#image_upload {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 5px;
+    font-size: 16px;
+    background-color: #f4f4f4; /* Màu nền */
+    color: #333; /* Màu chữ */
+    cursor: pointer; /* Con trỏ khi rê chuột */
+    outline: none; /* Loại bỏ đường viền khi được focus */
+}
+
+/* Style khi hover trường input tệp */
+#image_upload:hover {
+    border-color: #aaa;
+}
+
+/* Style khi focus trường input tệp */
+#image_upload:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(0, 128, 0, 0.5); /* Hiệu ứng bóng khi focus */
+}
+
+/* Style cho nút chọn tệp */
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: #f4f4f4; /* Màu nền */
+    color: #333; /* Màu chữ */
+    border-radius: 4px;
+}
+
+/* Style khi hover nút chọn tệp */
+.custom-file-upload:hover {
+    background-color: #ddd;
+}
+
+
+
+
+
+
+
