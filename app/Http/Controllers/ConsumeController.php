@@ -18,7 +18,7 @@ class ConsumeController extends Controller
         //
         $consume = $this->consumeService->getAllConsumes();
         if ($consume){
-            return response()->json(['message' => 'consume got successfully', 'consume' => $consume], 201);
+            return response()->json(['status' => 'success', 'message' => 'consume got successfully', 'consume' => $consume], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -28,7 +28,7 @@ class ConsumeController extends Controller
     public function getAllConsumesForCustomer(){
         $consume = $this->consumeService->getAllConsumesForCustomer();
         if ($consume){
-            return response()->json(['message' => 'consume 4 cus got successfully', 'consume' => $consume], 201);
+            return response()->json(['status' => 'success', 'message' => 'consume 4 cus got successfully', 'consume' => $consume], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -58,7 +58,7 @@ class ConsumeController extends Controller
         ];
         $consume = $this->consumeService->addConsume($array);
         if ($consume){
-            return response()->json(['message' => 'consume added successfully', 'consume' => $consume], 201);
+            return response()->json(['status' => 'success', 'message' => 'consume added successfully', 'consume' => $consume], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -73,7 +73,7 @@ class ConsumeController extends Controller
         //
         $consume = $this->consumeService->getAConsume($id);
         if ($consume){
-            return response()->json(['message' => 'consume showed successfully', 'consume' => $consume], 201);
+            return response()->json(['status' => 'success', 'message' => 'consume showed successfully', 'consume' => $consume], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -102,7 +102,7 @@ class ConsumeController extends Controller
         ];
         $consume = $this->consumeService->updateConsume($array, $id);
         if ($consume){
-            return response()->json(['message' => 'consume udpated successfully', 'consume' => $consume], 201);
+            return response()->json(['status' => 'success', 'message' => 'consume udpated successfully', 'consume' => $consume], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -117,7 +117,7 @@ class ConsumeController extends Controller
         ];
         $consume = $this->consumeService->searchConsume($array);
         if ($consume){
-            return response()->json(['message' => 'consume searched successfully', 'consume' => $consume], 201);
+            return response()->json(['status' => 'success', 'message' => 'consume searched successfully', 'consume' => $consume], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -130,7 +130,7 @@ class ConsumeController extends Controller
         ];
         $consume = $this->consumeService->updateConsume($array, $id);
         if ($consume){
-            return response()->json(['message' => 'consume hid successfully', 'consume' => $consume], 201);
+            return response()->json(['status' => 'success', 'message' => 'consume hid successfully', 'consume' => $consume], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);

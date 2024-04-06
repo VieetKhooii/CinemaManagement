@@ -67,7 +67,7 @@ class RegisterController extends Controller
     protected function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|string|size:6',
+            // 'user_id' => 'required|string|size:6',
             'full_name' => 'required|string|between:1,75',
             'email' => 'required|string|between:1,100|email|ends_with:@gmail.com',
             'password' => 'required|string|between:1,100|min:8|regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)/', 
@@ -86,7 +86,8 @@ class RegisterController extends Controller
 
         try {
             $user = Users::create([
-                'user_id' => $request->input('user_id'),
+                // 'user_id' => $request->input('user_id'),
+                'user_id' => "123120",
                 'full_name' => $request->input('full_name'),
                 'email' => $request->input('email'),
                 'password' => $request->input('password'),

@@ -18,7 +18,7 @@ class ComboTransactionController extends Controller
         //
         $comboTran = $this->comboTransactionService->getAllComboTransactions();
         if ($comboTran){
-            return response()->json(['message' => 'combo_transaction got successfully', 'data' => $comboTran], 201);
+            return response()->json(['status' => 'success', 'message' => 'combo_transaction got successfully', 'data' => $comboTran], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -47,7 +47,7 @@ class ComboTransactionController extends Controller
         ];
         $comboTran = $this->comboTransactionService->addComboTransaction($array);
         if ($comboTran){
-            return response()->json(['message' => 'combo_transaction add successfully', 'data' => $comboTran], 201);
+            return response()->json(['status' => 'success', 'message' => 'combo_transaction add successfully', 'data' => $comboTran], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -86,7 +86,7 @@ class ComboTransactionController extends Controller
         //
         $comboTran = $this->comboTransactionService->removeComboTransaction($id1, $id2);
         if ($comboTran){
-            return response()->json(['message' => 'combo_transaction delete successfully']);
+            return response()->json(['status' => 'success', 'message' => 'combo_transaction delete successfully']);
         }else {
             return response()->json(['error' => 'Failed to delete combo transaction'], 500);
         }

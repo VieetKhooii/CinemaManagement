@@ -47,22 +47,22 @@ class Transactions extends Model
         parent::boot();
 
         static::creating(function ($transaction) {
-            $latestId = static::max('transaction');
+            $latestId = static::max('transaction_id');
 
             // Nếu không có ID trước đó, bắt đầu từ TR00000000
             if (!$latestId) {
-                $newId = 'TR00000000';
+                $newId = 'TRA0000';
             } else {
                 // Tách phần số từ ID cuối cùng
-                $numberPart = substr($latestId, 2);
+                $numberPart = substr($latestId, 4);
                 // Tăng số lên 1 đơn vị
                 $nextNumber = intval($numberPart) + 1;
                 // Tạo ID mới
-                $newId = 'TR' . str_pad($nextNumber, 8, '0', STR_PAD_LEFT);
+                $newId = 'TRA' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
             }
 
             // Gán ID mới cho model
-            $transaction->transaction = $newId;
+            $transaction->transaction_id = $newId;
         });
     }
 

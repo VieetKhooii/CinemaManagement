@@ -14,21 +14,28 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
+        '/admin/*',
         '/areas',
         '/areas/hide/*',
         '/branches',
         '/branches/*',
         '/branches/hide/*',
+        '/categories',
+        '/combos',
         '/logout',
         '/login',
+        '/movies',
         '/password',
         '/password/*',
         '/sign-up',
         '/refresh',
         '/reset-password/*',
+        '/rooms',
+        '/showtimes',
         '/tokens/create',
-        '/consume',
+        '/transactions',
         '/users',
         '/users/*',
+        '/vouchers'
     ];
 }

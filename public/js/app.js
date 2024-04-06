@@ -32,54 +32,54 @@ function showSlides(n) {
   }
 
   // Hiển thị slide hiện tại và đánh dấu nút tròn tương ứng là active
-  slides[slideIndex].style.display = "block";
-  dots[slideIndex].className += " active";
+  // slides[slideIndex].style.display = "block";
+  // dots[slideIndex].className += " active";
 }
 
 
-document.getElementById("header_contain").addEventListener("click", function (event) {
-  var target = event.target;
-  var value = target.textContent;
-  if (target.id === 'cinemaApp') {
-    alert(target.textContent);
-  }
-  else if (target.id === 'cinemaFB') {
-    alert(target.textContent);
-  }
-  else if (target.id === 'logIn') {
-    alert(target.textContent);
-  }
-  else if (target.id === 'theTV') {
-    alert(target.textContent);
-  }
-  else if (target.id === 'htKH') {
-    alert(target.textContent);
-  }
-});
+// document.getElementById("header_contain").addEventListener("click", function (event) {
+//   var target = event.target;
+//   var value = target.textContent;
+//   if (target.id === 'cinemaApp') {
+//     alert(target.textContent);
+//   }
+//   else if (target.id === 'cinemaFB') {
+//     alert(target.textContent);
+//   }
+//   else if (target.id === 'logIn') {
+//     alert(target.textContent);
+//   }
+//   else if (target.id === 'theTV') {
+//     alert(target.textContent);
+//   }
+//   else if (target.id === 'htKH') {
+//     alert(target.textContent);
+//   }
+// });
 
 
 // Header và footer
-document.getElementById("header_menu").addEventListener("click", function (event) {
-  var target = event.target;
-  if (target.id === 'shopquatang') {
-    alert(target.textContent);
-  }
-  else if (target.id === 'muave') {
-    alert(target.textContent);
-  }
-  else if (target.id === 'phim') {
-    alert(target.textContent);
-  }
-  else if (target.id === 'rapchieuphim') {
-    alert(target.textContent);
-  }
-  else if (target.id === 'khuyenmai') {
-    alert(target.textContent);
-  }
-  else if (target.id === 'lienhe') {
-    alert(target.textContent);
-  }
-});
+// document.getElementById("header_menu").addEventListener("click", function (event) {
+//   var target = event.target;
+//   if (target.id === 'shopquatang') {
+//     alert(target.textContent);
+//   }
+//   else if (target.id === 'muave') {
+//     alert(target.textContent);
+//   }
+//   else if (target.id === 'phim') {
+//     alert(target.textContent);
+//   }
+//   else if (target.id === 'rapchieuphim') {
+//     alert(target.textContent);
+//   }
+//   else if (target.id === 'khuyenmai') {
+//     alert(target.textContent);
+//   }
+//   else if (target.id === 'lienhe') {
+//     alert(target.textContent);
+//   }
+// });
 
 // load phần content của app, đang là đăng nhập và đăng kí
 function loadContent(file) {
@@ -112,7 +112,7 @@ function validateSignUp() {
     alert('Bạn đã đăng kí thành công!');
     window.location.href="/login";
     // document.getElementById("form_signUp").style.display = "none";
-}
+  }
 }
 
 // Hàm kiểm tra xem các trường đã được nhập đầy đủ chưa

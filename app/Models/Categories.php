@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 class Categories extends Model
 {
-    protected $table = 'category';
+    protected $table = 'categories';
     protected $primaryKey = 'category_id';
 
     public $incrementing = false;

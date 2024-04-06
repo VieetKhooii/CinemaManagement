@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rooms extends Model
 {
-    protected $table = 'room';
+    protected $table = 'rooms';
     protected $primaryKey = 'room_id';
 
     public $incrementing = false;
@@ -37,14 +37,14 @@ class Rooms extends Model
 
             // Nếu không có ID trước đó, bắt đầu từ CA0000
             if (!$latestId) {
-                $newId = 'ROOM00';
+                $newId = 'R0';
             } else {
                 // Tách phần số từ ID cuối cùng
                 $numberPart = substr($latestId, 4);
                 // Tăng số lên 1 đơn vị
                 $nextNumber = intval($numberPart) + 1;
                 // Tạo ID mới
-                $newId = 'ROOM00' . str_pad($nextNumber, 2, '0', STR_PAD_LEFT);
+                $newId = 'R' . str_pad($nextNumber, 2, '0', STR_PAD_LEFT);
             }
 
             // Gán ID mới cho model

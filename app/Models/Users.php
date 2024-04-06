@@ -118,6 +118,7 @@ class Users extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password',
         'remember_token',
+        'api_token',
     ];
     // public function getEmailForPasswordReset()
     // {
@@ -141,5 +142,35 @@ class Users extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $rolePrefixes = [
+                'admin' => 'AD',
+                'moderator' => 'MD',
+                'user' => 'MV'
+                // Add more roles and their prefixes as needed
+            ];
+            $latestId = static::max('user_id');
+
+            // Nếu không có ID trước đó, bắt đầu từ CA0000
+            if (!$latestId) {
+                $newId = 'MV000';
+            } else {
+                // Tách phần số từ ID cuối cùng
+                $numberPart = substr($latestId, 2);
+                // Tăng số lên 1 đơn vị
+                $nextNumber = intval($numberPart) + 1;
+                // Tạo ID mới
+                $newId = 'MV' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+            }
+
+            // Gán ID mới cho model
+            $user->user_id = $newId;
+        });
     }
 }

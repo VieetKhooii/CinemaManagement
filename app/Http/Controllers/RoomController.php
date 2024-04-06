@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Service\RoomService;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class RoomController extends Controller
@@ -18,7 +19,7 @@ class RoomController extends Controller
         //
         $room = $this->roomService->getAllRooms();
         if ($room){
-            return response()->json(['message' => 'room got successfully', 'data' => $room], 201);
+            return response()->json(['status' => 'success', 'message' => 'room got successfully', 'data' => $room], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -30,7 +31,7 @@ class RoomController extends Controller
         //
         $room = $this->roomService->getAllRoomsForCustomer();
         if ($room){
-            return response()->json(['message' => 'room 4 cus got successfully', 'data' => $room], 201);
+            return response()->json(['status' => 'success', 'message' => 'room 4 cus got successfully', 'data' => $room], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -50,7 +51,17 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'room_name' => 'required|string|between:1,20',
+            'number_of_seat' => 'required|int',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors()->first(),
+                'status' => 'error'], 
+                422);
+        }
         $array= [
             'room_name'=> $request->input('room_name'),
             'status'=> true,
@@ -59,7 +70,7 @@ class RoomController extends Controller
         ];
         $room = $this->roomService->addRoom($array);
         if ($room){
-            return response()->json(['message' => 'room added successfully', 'data' => $room], 201);
+            return response()->json(['status' => 'success', 'message' => 'room added successfully', 'data' => $room], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -74,7 +85,7 @@ class RoomController extends Controller
         //
         $room = $this->roomService->getARoom($id);
         if ($room){
-            return response()->json(['message' => 'room showed successfully', 'data' => $room], 201);
+            return response()->json(['status' => 'success', 'message' => 'room showed successfully', 'data' => $room], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -101,7 +112,7 @@ class RoomController extends Controller
         ];
         $room = $this->roomService->updateRoom($array, $id);
         if ($room){
-            return response()->json(['message' => 'room updated successfully', 'data' => $room], 201);
+            return response()->json(['status' => 'success', 'message' => 'room updated successfully', 'data' => $room], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -116,7 +127,7 @@ class RoomController extends Controller
         ];
         $room = $this->roomService->searchRoom($array);
         if ($room){
-            return response()->json(['message' => 'room searched successfully', 'data' => $room], 201);
+            return response()->json(['status' => 'success', 'message' => 'room searched successfully', 'data' => $room], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -129,7 +140,7 @@ class RoomController extends Controller
         ];
         $room = $this->roomService->updateRoom($array, $id);
         if ($room){
-            return response()->json(['message' => 'room hid successfully', 'data' => $room], 201);
+            return response()->json(['status' => 'success', 'message' => 'room hid successfully', 'data' => $room], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);

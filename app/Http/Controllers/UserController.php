@@ -23,7 +23,18 @@ class UserController extends Controller
     public function index()
     {
         $users = $this->userService->getAllUsers();
-        return $users;
+        if ($users){
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Get user successfully',
+                'data' => $users]);
+        }
+        else {
+            return response()->json([
+                'error' => '$validator->errors()', 
+                'status' => 'error'], 
+                422);
+        }
     }
 
     public function show(string $id){
@@ -32,7 +43,7 @@ class UserController extends Controller
     
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|string|size:6',
+            // 'user_id' => 'required|string|size:6',
             'full_name' => 'required|string|between:1,50',
             'email' => 'required|string|between:1,100|email|ends_with:@gmail.com',
             'password' => 'required|string|between:1,100|min:8|regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)/', 
@@ -45,13 +56,13 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'errors' => $validator->errors()->first(),
+                'error' => $validator->errors()->first(),
                 'status' => 'error'], 
                 422);
         }
 
         $userArray = [
-            'user_id' => $request->input('user_id'),
+            // 'user_id' => $request->input('user_id'),
             'full_name' => $request->input('full_name'),
             'email' => $request->input('email'),
             'password' => $request->input('password'),
@@ -91,7 +102,7 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
-                'errors' => $validator->errors(),
+                'error' => $validator->errors(),
                 'status' => 'error'], 
                 422);
         }

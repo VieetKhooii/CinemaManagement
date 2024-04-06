@@ -3,7 +3,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <div id="form_signUp">
-    <form id="signupForm" method="post">
+    <form method="post">
         <h2>Đăng ký</h2>
         <label for="full_name">Họ và tên:</label>
         <input type="text" id="full_name" name="full_name" required oninvalid="this.setCustomValidity('Vui lòng nhập Họ và tên.')" oninput="this.setCustomValidity('')">

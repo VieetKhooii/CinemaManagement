@@ -23,7 +23,7 @@ class MovieController extends Controller
         //
         $movie = $this->movieService->getAllMovies();
         if ($movie){
-            return response()->json(['message' => 'movie got successfully', 'data' => $movie], 201);
+            return response()->json(['status' => 'success', 'message' => 'movie got successfully', 'data' => $movie], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -33,7 +33,7 @@ class MovieController extends Controller
     public function getAllMoviesForCustomer(){
         $movie = $this->movieService->getAllMoviesForCustomer();
         if ($movie){
-            return response()->json(['message' => 'movie 4 cus got successfully', 'data' => $movie], 201);
+            return response()->json(['status' => 'success', 'message' => 'movie 4 cus got successfully', 'data' => $movie], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -52,7 +52,6 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $validator = Validator::make($request->all(), [
             'movie_name' => 'required|string|between:1,50',
             'bonus_price' => 'required|numeric|min:0.01',
@@ -60,7 +59,7 @@ class MovieController extends Controller
             'movie_description' => 'required|string',
         ]);
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json(['status' => 'error', 'error' => $validator->errors()->first()], 422);
         }    
         if ($request->hasFile('image')) {
             // Lưu file vào thư mục trên server
@@ -74,7 +73,7 @@ class MovieController extends Controller
             $file->move($directory, $newName);
             $filePath = '/uploads/movie/' . $newName;            
         } else {
-            return response()->json(['message' => 'No file uploaded'], 400);
+            return response()->json(['status' => 'success', 'message' => 'No file uploaded'], 400);
         }
         $array = [
             'movie_name'=> $request->input('movie_name'),
@@ -87,10 +86,10 @@ class MovieController extends Controller
         ];
         $movie = $this->movieService->addMovie($array);
         if ($movie){
-            return response()->json(['message' => 'movie added successfully', 'data' => $movie], 201);
+            return response()->json(['status' => 'success', 'message' => 'movie added successfully', 'data' => $movie], 201);
         }
         else {
-            return response()->json(['error' => '$validator->errors()'], 422);
+            return response()->json(['status' => 'error','error' => '$validator->errors()'], 422);
         }
     }
 
@@ -102,7 +101,7 @@ class MovieController extends Controller
         //
         $movie = $this->movieService->getAMovie($id);
         if ($movie){
-            return response()->json(['message' => 'movie showed successfully', 'data' => $movie], 201);
+            return response()->json(['status' => 'success', 'message' => 'movie showed successfully', 'data' => $movie], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -152,11 +151,11 @@ class MovieController extends Controller
             }
                         
         }else {
-            return response()->json(['message' => 'No file uploaded'], 400);
+            return response()->json(['status' => 'success', 'message' => 'No file uploaded'], 400);
         }
         $movie = $this->movieService->updateMovie($array, $id);
         if ($movie){
-            return response()->json(['message' => 'movie updated successfully', 'data' => $movie], 201);
+            return response()->json(['status' => 'success', 'message' => 'movie updated successfully', 'data' => $movie], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -174,7 +173,7 @@ class MovieController extends Controller
         ];
         $movie = $this->movieService->searchMovie($array);
         if ($movie){
-            return response()->json(['message' => 'movie searched successfully', 'data' => $movie], 201);
+            return response()->json(['status' => 'success', 'message' => 'movie searched successfully', 'data' => $movie], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -187,7 +186,7 @@ class MovieController extends Controller
         ];
         $movie = $this->movieService->updateMovie( $array, $id);
         if ($movie){
-            return response()->json(['message' => 'movie hid successfully', 'data' => $movie], 201);
+            return response()->json(['status' => 'success', 'message' => 'movie hid successfully', 'data' => $movie], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);

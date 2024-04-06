@@ -6,7 +6,7 @@ use App\Models\Reservation;
 class ReservationRepo implements ReservationRepositoryInterface{
     public function getAllReservations(){
         try {
-           return Reservation::all();
+           return Reservation::paginate(5);
         }
         catch (\Exception $exception){
             echo("Error ReservationRepo (get): " . $exception->getMessage());

@@ -19,20 +19,26 @@ class ReservationController extends Controller
         //
         $reserve = $this->reservationService->getAllReservations();
         if ($reserve){
-            return response()->json(['message' => 'reservation got successfully', 'data' => $reserve], 201);
+            return response()->json([
+                'status' => 'success', 
+                'message' => 'reservation got successfully', 
+                'data' => $reserve], 201);
         }
         else {
-            return response()->json(['error' => '$validator->errors()'], 422);
+            return response()->json(['error' => '$validator->errors()', 'status' => 'error'], 422);
         }
     }
 
     public function getAllReservationsForCustomer(){
         $reservation = $this->reservationService->getAllReservationsForCustomer();
         if ($reservation){
-            return response()->json(['message' => 'reservation 4 cus got successfully', 'data' => $reservation], 201);
+            return response()->json([
+                'status' => 'success', 
+                'message' => 'reservation 4 cus got successfully', 
+                'data' => $reservation], 201);
         }
         else {
-            return response()->json(['error' => '$validator->errors()'], 422);
+            return response()->json(['error' => '$validator->errors()', 'status' => 'error'], 422);
         }
     }
     /**
@@ -58,7 +64,7 @@ class ReservationController extends Controller
         ];
         $reservation = $this->reservationService->addReservation($array);
         if ($reservation){
-            return response()->json(['message' => 'reservation added successfully', 'data' => $reservation], 201);
+            return response()->json(['status' => 'success', 'message' => 'reservation added successfully', 'data' => $reservation], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -73,7 +79,7 @@ class ReservationController extends Controller
         //
         $reservation = $this->reservationService->getAReservation( $id );
         if ($reservation){
-            return response()->json(['message' => 'reservation showed successfully', 'data' => $reservation], 201);
+            return response()->json(['status' => 'success', 'message' => 'reservation showed successfully', 'data' => $reservation], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -101,7 +107,7 @@ class ReservationController extends Controller
         ];
         $reservation = $this->reservationService->updateReservation( $array, $id );
         if ($reservation){
-            return response()->json(['message' => 'reservation updated successfully', 'data' => $reservation], 201);
+            return response()->json(['status' => 'success', 'message' => 'reservation updated successfully', 'data' => $reservation], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -119,7 +125,7 @@ class ReservationController extends Controller
         ];
         $reservation = $this->reservationService->searchReservation($array);
         if ($reservation){
-            return response()->json(['message' => 'reservation searched successfully', 'data' => $reservation], 201);
+            return response()->json(['status' => 'success', 'message' => 'reservation searched successfully', 'data' => $reservation], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -132,7 +138,7 @@ class ReservationController extends Controller
         ];
         $reservation = $this->reservationService->updateReservation($array, $id);
         if ($reservation){
-            return response()->json(['message' => 'reservation hid successfully', 'data' => $reservation], 201);
+            return response()->json(['status' => 'success', 'message' => 'reservation hid successfully', 'data' => $reservation], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);

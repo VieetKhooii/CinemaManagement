@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Service\ShowtimeService;
+use Illuminate\Support\Facades\Validator;
 
 class ShowtimeController extends Controller
 {
@@ -19,7 +20,7 @@ class ShowtimeController extends Controller
         //
         $showTime = $this->showtimeService->getAllShowtimes();
         if ($showTime){
-            return response()->json(['message' => 'showtime got successfully', 'data' => $showTime], 201);
+            return response()->json(['status' => 'success', 'message' => 'showtime got successfully', 'data' => $showTime], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -29,7 +30,7 @@ class ShowtimeController extends Controller
     public function getAllShowtimesForCustomer(){
         $showTime = $this->showtimeService->getAllShowtimesForCustomer();
         if ($showTime){
-            return response()->json(['message' => 'showtime for customer got successfully', 'data' => $showTime], 201);
+            return response()->json(['status' => 'success', 'message' => 'showtime for customer got successfully', 'data' => $showTime], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -48,7 +49,18 @@ class ShowtimeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'movie_id' => 'required|string|between:1,6',
+            'date' => 'required|date',
+            'start_time' => 'required|date_format:H:i:s', 
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors()->first(),
+                'status' => 'error'], 
+                422);
+        }
         $array = [
             'showtime_id'=> $request->input('showtime_id'),
             'movie_id'=> $request->input('movie_id'),
@@ -58,7 +70,7 @@ class ShowtimeController extends Controller
         ];
         $showTime = $this->showtimeService->addShowtime($array);
         if ($showTime){
-            return response()->json(['message' => 'showtime added successfully', 'data' => $showTime], 201);
+            return response()->json(['status' => 'success', 'message' => 'showtime added successfully', 'data' => $showTime], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -73,7 +85,7 @@ class ShowtimeController extends Controller
         //
         $showTime = $this->showtimeService->getAShowtime( $id );
         if ($showTime){
-            return response()->json(['message' => 'showtime showed successfully', 'data' => $showTime], 201);
+            return response()->json(['status' => 'success', 'message' => 'showtime showed successfully', 'data' => $showTime], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -101,7 +113,7 @@ class ShowtimeController extends Controller
         ];
         $showTime = $this->showtimeService->updateShowtime( $array, $id );
         if ($showTime){
-            return response()->json(['message' => 'showtime updated successfully', 'data' => $showTime], 201);
+            return response()->json(['status' => 'success', 'message' => 'showtime updated successfully', 'data' => $showTime], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -119,7 +131,7 @@ class ShowtimeController extends Controller
         ];
         $showTime = $this->showtimeService->searchShowtime($array);
         if ($showTime){
-            return response()->json(['message' => 'showtime searched successfully', 'data' => $showTime], 201);
+            return response()->json(['status' => 'success', 'message' => 'showtime searched successfully', 'data' => $showTime], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -132,7 +144,7 @@ class ShowtimeController extends Controller
         ];
         $showTime = $this->showtimeService->updateShowtime( $array, $id );
         if ($showTime){
-            return response()->json(['message' => 'showtime hid successfully', 'data' => $showTime], 201);
+            return response()->json(['status' => 'success', 'message' => 'showtime hid successfully', 'data' => $showTime], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);

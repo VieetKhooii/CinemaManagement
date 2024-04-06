@@ -21,7 +21,7 @@ class CategoryController extends Controller
         //
         $category = $this->categoryService->getAllCategories();
         if ($category){
-            return response()->json(['message' => 'category got successfully', 'data' => $category], 201);
+            return response()->json(['status' => 'success', 'message' => 'category got successfully', 'data' => $category], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);

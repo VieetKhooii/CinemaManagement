@@ -38,7 +38,7 @@ class TransactionRepo implements TransactionRepositoryInterface{
             return Transactions::create($data);
         }
         catch (\Exception $exception){
-            echo("Error TransactonRepo (add): " . $exception->getMessage());
+            echo("Error TransactionRepo (add): " . $exception->getMessage());
             return null;    
         }
     }

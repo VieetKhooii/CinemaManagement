@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Movies extends Model
 {
-    protected $table = 'movie';
+    protected $table = 'movies';
     protected $primaryKey = 'movie_id';
 
     public $incrementing = false;
@@ -48,14 +48,14 @@ class Movies extends Model
 
             // Nếu không có ID trước đó, bắt đầu từ CA0000
             if (!$latestId) {
-                $newId = 'MO0000';
+                $newId = 'MV000';
             } else {
                 // Tách phần số từ ID cuối cùng
                 $numberPart = substr($latestId, 2);
                 // Tăng số lên 1 đơn vị
                 $nextNumber = intval($numberPart) + 1;
                 // Tạo ID mới
-                $newId = 'MO' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+                $newId = 'MV' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
             }
 
             // Gán ID mới cho model

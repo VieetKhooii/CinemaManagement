@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Http\Controllers\SeatTypeController;
 use App\Http\Controllers\SeatController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -17,6 +16,7 @@ use App\Http\Controllers\AreaController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VoucherController;
 use App\Http\Middleware\AttachJwtToken;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -43,11 +43,18 @@ use App\Models\Transactions;
     
 //     // Add more routes as needed
 // });
-
 Route::middleware(['jwt.attach', 'refresh.token'])->group(function () {
     // Your protected routes go here
+    Route::view('/admin', 'admin/admin');
+    Route::get('admin/add', function(Request $request){
+        $name = $request->query('name');
+        return view('admin/admin_add', ['name' => $name]);
+    });
+    Route::post('admin/query', function(){
+        return view('admin/admin_query');
+    });
+
     Route::resource('users', UserController::class);
-    
     //Seat Type Routes
     Route::get('seatTypes/customerget', [SeatTypeController::class,'getAllSeatTypesForCustomer']);
     Route::resource('seatTypes', SeatTypeController::class);
@@ -98,8 +105,10 @@ Route::middleware(['jwt.attach', 'refresh.token'])->group(function () {
     Route::resource('reservations',ReservationController::class);
     Route::post('reservations/search', [ReservationController::class,'search']);
     Route::put('reservations/hide/{id}', [ReservationController::class,'hide']);
+    // Voucher Routes
+    Route::resource('vouchers', VoucherController::class);
+    Route::post('vouchers/search',[VoucherController::class, 'searchByDate']);
     // Auth::routes();
-    Route::resource('consume', ConsumeController::class);
 });
 
 Route::controller(LoginController::class)->group(function () {
@@ -121,7 +130,7 @@ Auth::routes(['verify' => true]);
 
 // View
 Route::middleware(['jwt.attach'])->group(function () {
-    Route::view('/users', 'home');
+    // Route::view('/users', 'home');
 });
 Route::view('/sign-up', 'signup');
 Route::view('/login', 'signin')->middleware('pass.login');
