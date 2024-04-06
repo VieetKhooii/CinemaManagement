@@ -8,7 +8,7 @@ use App\Repositories\Interface\CategoryRepositoryInterface;
 class CategoryRepo implements CategoryRepositoryInterface{
     public function getAllCategories(){       
         try {
-            return Categories::paginate(10);   
+            return Categories::paginate(5);   
         }
         catch (\Exception $exception){
             echo("Error CategoryRepo (get): " . $exception->getMessage());

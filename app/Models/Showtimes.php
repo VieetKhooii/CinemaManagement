@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Showtimes extends Model
 {
-    protected $table = 'showtime';
+    protected $table = 'showtimes';
     protected $primaryKey = 'showtime_id';
 
     public $incrementing = false;
@@ -19,7 +19,6 @@ class Showtimes extends Model
         'movie_id',
         'date',
         'start_time',
-        'display',
     ];
 
     protected $casts = [
@@ -37,14 +36,14 @@ class Showtimes extends Model
 
             // Nếu không có ID trước đó, bắt đầu từ CA0000
             if (!$latestId) {
-                $newId = 'SH00000001';
+                $newId = 'ST001';
             } else {
                 // Tách phần số từ ID cuối cùng
                 $numberPart = substr($latestId, 2);
                 // Tăng số lên 1 đơn vị
                 $nextNumber = intval($numberPart) + 1;
                 // Tạo ID mới
-                $newId = 'SH' . str_pad($nextNumber, 8, '0', STR_PAD_LEFT);
+                $newId = 'ST' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
             }
 
             // Gán ID mới cho model

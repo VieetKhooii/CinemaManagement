@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Combos extends Model
 {
-    protected $table = 'combo';
+    protected $table = 'combos';
     protected $primaryKey = 'combo_id';
 
     public $incrementing = false;
@@ -32,14 +32,14 @@ class Combos extends Model
 
             // Nếu không có ID trước đó, bắt đầu từ CA0000
             if (!$latestId) {
-                $newId = 'CB0000';
+                $newId = 'BN0000';
             } else {
                 // Tách phần số từ ID cuối cùng
                 $numberPart = substr($latestId, 2);
                 // Tăng số lên 1 đơn vị
                 $nextNumber = intval($numberPart) + 1;
                 // Tạo ID mới
-                $newId = 'CB' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+                $newId = 'BN' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
             }
 
             // Gán ID mới cho model

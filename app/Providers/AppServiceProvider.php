@@ -24,7 +24,9 @@ use App\Repositories\Interface\RoomRepositoryInterface;
 use App\Repositories\Interface\ShowtimeRepositoryInterface;
 use App\Repositories\Interface\TransactionRepositoryInterface;
 use App\Repositories\Interface\ReservationRepositoryInterface;
+use App\Repositories\Interface\VoucherRepositoryInterface;
 use App\Repositories\UserRepo;
+use App\Repositories\VoucherRepo;
 use Illuminate\Support\ServiceProvider;
 use app\Service\UserService;
 
@@ -47,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
        $this->app->bind(ShowtimeRepositoryInterface::class, ShowtimeRepo::class);
        $this->app->bind(TransactionRepositoryInterface::class, TransactionRepo::class);
        $this->app->bind(ReservationRepositoryInterface::class, ReservationRepo::class);
-       $this->app->bind(UserService::class, UserRepo::class);
+       $this->app->bind(VoucherRepositoryInterface::class, VoucherRepo::class);
     }
 
     /**

@@ -26,7 +26,7 @@ $(document).ready(function() {
 
                     alert('Login successful!');
                     document.getElementById('password').value = '';
-                    window.location.href = '/users';
+                    window.location.href = '/admin';
                 } else if (data.status === 'error'){
                     const message = data.message;
                     alert(message);

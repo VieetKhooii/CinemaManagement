@@ -19,7 +19,7 @@ class SeatTypeController extends Controller
         //
         $seatType = $this->seatTypeService->getAllSeatTypes();
         if ($seatType){
-            return response()->json(['message' => 'seatType got successfully', 'data' => $seatType], 201);
+            return response()->json(['status' => 'success', 'message' => 'seatType got successfully', 'data' => $seatType], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -29,7 +29,7 @@ class SeatTypeController extends Controller
     public function getAllSeatTypesForCustomer(){
         $seatType = $this->seatTypeService->getAllSeatTypesForCustomer();
         if ($seatType){
-            return response()->json(['message' => 'seatType for cus got successfully', 'data' => $seatType], 201);
+            return response()->json(['status' => 'success', 'message' => 'seatType for cus got successfully', 'data' => $seatType], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -56,7 +56,7 @@ class SeatTypeController extends Controller
         ];
         $seatType = $this->seatTypeService->addSeatType($array);
         if ($seatType){
-            return response()->json(['message' => 'seatType created successfully', 'data' => $seatType], 201);
+            return response()->json(['status' => 'success', 'message' => 'seatType created successfully', 'data' => $seatType], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -71,7 +71,7 @@ class SeatTypeController extends Controller
         //
         $seatType = $this->seatTypeService->getASeatType( $id );
         if ($seatType){
-            return response()->json(['message' => 'seatType showed successfully', 'data' => $seatType], 201);
+            return response()->json(['status' => 'success', 'message' => 'seatType showed successfully', 'data' => $seatType], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -99,7 +99,7 @@ class SeatTypeController extends Controller
 
         $seatType = $this->seatTypeService->updateSeatType($array, $id);
         if ($seatType){
-            return response()->json(['message' => 'seatType updated successfully', 'data' => $seatType], 201);
+            return response()->json(['status' => 'success', 'message' => 'seatType updated successfully', 'data' => $seatType], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -114,7 +114,7 @@ class SeatTypeController extends Controller
         ];
         $seatType = $this->seatTypeService->searchSeatType($array);
         if ($seatType){
-            return response()->json(['message' => 'seatType searched successfully', 'data' => $seatType], 201);
+            return response()->json(['status' => 'success', 'message' => 'seatType searched successfully', 'data' => $seatType], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -127,7 +127,7 @@ class SeatTypeController extends Controller
         ];
         $seatType = $this->seatTypeService->updateSeatType($array, $id);
         if ($seatType){
-            return response()->json(['message' => 'seatType hid successfully', 'data' => $seatType], 201);
+            return response()->json(['status' => 'success', 'message' => 'seatType hid successfully', 'data' => $seatType], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);

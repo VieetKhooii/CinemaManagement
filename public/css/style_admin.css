@@ -103,7 +103,7 @@
 }
 .edit-btn:hover{
     background-color: green;
-    font-weight: bolder;
+    /* font-weight: bolder; */
 }
 
 .delete-btn {
@@ -112,7 +112,7 @@
 }
 .delete-btn:hover{
     background-color: red;
-    font-weight: bolder;
+    /* font-weight: bolder; */
 }
 
 #add-btn{
