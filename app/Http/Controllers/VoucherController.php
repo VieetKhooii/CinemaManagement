@@ -19,7 +19,8 @@ class VoucherController extends Controller
             return response()->json([
                 'message' => 'Get all vouchers successfully',
                 'status' => 'success',
-                'data' => $vouchers], 
+                'data' => $vouchers,
+                'last_page' => $vouchers->lastPage()], 
                 201);
         }
         else {

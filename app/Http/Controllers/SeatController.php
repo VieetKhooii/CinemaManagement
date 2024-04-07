@@ -23,7 +23,8 @@ class SeatController extends Controller
         //
         $seat = $this->seatService->getAllSeats();
         if ($seat){
-            return response()->json(['status' => 'success', 'message' => 'seats got successfully', 'data' => $seat], 201);
+            return response()->json(['status' => 'success', 'message' => 'seats got successfully', 'data' => $seat,
+            'last_page' => $seat->lastPage()], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);

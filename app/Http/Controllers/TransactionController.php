@@ -19,7 +19,7 @@ class TransactionController extends Controller
         //
         $transaction = $this->transactionService->getAllTransactions();
         if ($transaction){
-            return response()->json(['status' => 'success', 'message' => 'transaction got successfully', 'data' => $transaction], 201);
+            return response()->json(['last_page' => $transaction->lastPage(), 'status' => 'success', 'message' => 'transaction got successfully', 'data' => $transaction], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);

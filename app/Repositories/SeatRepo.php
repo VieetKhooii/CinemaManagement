@@ -13,7 +13,7 @@ class SeatRepo implements SeatRepositoryInterface
     public function getAllSeats()
     {      
         try {
-            return Seats::paginate(5);
+            return Seats::paginate(10);
         }
         catch (\Exception $exception){
             echo("Error SeatRepo (get): " . $exception->getMessage());

@@ -67,13 +67,15 @@ function showPage(name,page){
         success: function(data) {
             if (data.status === 'success'){
                 const message1 = data.data.data;
+                const total = data.last_page;
+                const current_page = data.data.current_page;
                 const message = Array.isArray(message1) && message1.length === 0 ? "" : message1;
-                console.log(message)
+                // console.log(message)
                 $.ajax({
                     type: 'POST', // Use POST method to send data to PHP
                     url: '/admin/query', // PHP script to handle the data
                     
-                    data: {message: message, name: name}, // Pass the message data to PHP
+                    data: {message: message, name: name, total: total, current_page: current_page}, // Pass the message data to PHP
                     success: function(response) {
                         $('#content').html(response);
                     },
@@ -94,7 +96,8 @@ function showPage(name,page){
         },
         error: function(xhr, status, error) {
             // console.error(xhr.responseText);
-            alert("Đã xảy ra lỗi khi chèn dữ liệu.");
+            alert("Session has expired! Please Provide credential");
+            location.reload(true);
         }
     });
 }
@@ -203,7 +206,7 @@ function insertDB(tableName, e) {
         type: 'POST',
         url: url,
         data: formData, // Truyền formData 
-        processData: false, // Không xử lý dữ liệu
+        // processData: false, // Không xử lý dữ liệu
         success: function(response) {
             $('#add_form')[0].reset(); // Đặt lại form sau khi gửi thành công
             alert("Dữ liệu đã được chèn thành công!");

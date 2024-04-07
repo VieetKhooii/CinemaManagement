@@ -27,7 +27,8 @@ class UserController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Get user successfully',
-                'data' => $users]);
+                'data' => $users,
+                'last_page' => $users->lastPage()]);
         }
         else {
             return response()->json([

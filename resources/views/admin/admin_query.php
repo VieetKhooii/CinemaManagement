@@ -2,6 +2,8 @@
 <?php
     $result = $_POST['message'];
     $name = $_POST['name'];
+    $total_pages = $_POST['total'];
+    $current_page = $_POST['current_page'];
     echo "<button id='add-btn' onclick=\"openPage('$name',0)\">Add</button>";
     echo "<table id='table_query' >";
     echo "<tr>";
@@ -28,6 +30,31 @@
                 echo "</tr>";
             }
             echo "</table>";
+
+            echo "<div class='pagination'>";
+            if ($current_page > 1) {
+                echo "<a href='javascript:void(0);' onclick='showPage(\"$name\", 1)'>First</a>";
+                echo "<a href='javascript:void(0);' onclick='showPage(\"$name\", " . ($current_page - 1) . ")'>Previous</a>";
+            }
+            
+            $range = 3; // Số lượng trang hiển thị xung quanh trang hiện tại
+            $start = ($current_page - $range > 0) ? $current_page - $range : 1;
+            $end = ($current_page + $range < $total_pages) ? $current_page + $range : $total_pages;
+            
+            for ($i = $start; $i <= $end; $i++) {
+                echo "<a href='javascript:void(0);' onclick='showPage(\"$name\", $i)'";
+                if ($i == $current_page) {
+                    echo " class='active'";
+                }
+                echo ">$i</a>";
+            }
+
+            if ($current_page < $total_pages) {
+                echo "<a href='javascript:void(0);' onclick='showPage(\"$name\", " . ($current_page + 1) . ")'>Next</a>";
+                echo "<a href='javascript:void(0);' onclick='showPage(\"$name\", $total_pages)'>Last</a>";
+            }
+            echo "</div>";
+
 
     }
     catch (\Exception $exception){

@@ -19,7 +19,7 @@ class SeatTypeController extends Controller
         //
         $seatType = $this->seatTypeService->getAllSeatTypes();
         if ($seatType){
-            return response()->json(['status' => 'success', 'message' => 'seatType got successfully', 'data' => $seatType], 201);
+            return response()->json(['last_page' => $seatType->lastPage(), 'status' => 'success', 'message' => 'seatType got successfully', 'data' => $seatType], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);

@@ -15,6 +15,7 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Middleware\AttachJwtToken;
@@ -85,6 +86,8 @@ Route::middleware(['jwt.attach', 'refresh.token'])->group(function () {
     Route::resource('movies',MovieController::class);
     Route::post('movies/search', [MovieController::class,'search']);
     Route::put('movies/hide/{id}', [MovieController::class,'hide']);
+    //Role Routes
+    Route::resource('roles',RoleController::class);
     //Room Routes
     Route::get('rooms/customerget', [RoomController::class,'getAllRoomsForCustomer']);
     Route::resource('rooms',RoomController::class);
@@ -128,9 +131,5 @@ Route::post('password/pass-reset', [ForgotPasswordController::class, 'updatePass
 Route::auth();
 Auth::routes(['verify' => true]);
 
-// View
-Route::middleware(['jwt.attach'])->group(function () {
-    // Route::view('/users', 'home');
-});
-Route::view('/sign-up', 'signup');
-Route::view('/login', 'signin')->middleware('pass.login');
+Route::view('/sign-up', 'auth/signup');
+Route::view('/login', 'auth/signin')->middleware('pass.login');

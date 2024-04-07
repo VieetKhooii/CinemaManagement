@@ -3,10 +3,9 @@
 namespace App\Service;
 
 use App\Repositories\Interface\VoucherRepositoryInterface;
-use App\Repositories\VoucherRepo;
 
 class VoucherService{
-    protected VoucherRepo $voucherRepository;
+    protected $voucherRepository;
     public function __construct(VoucherRepositoryInterface $voucherRepository) {
         $this->voucherRepository = $voucherRepository;
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Service\ReservationService;
+use Illuminate\Support\Facades\Validator;
 
 class ReservationController extends Controller
 {
@@ -22,7 +23,8 @@ class ReservationController extends Controller
             return response()->json([
                 'status' => 'success', 
                 'message' => 'reservation got successfully', 
-                'data' => $reserve], 201);
+                'data' => $reserve,
+                'last_page' => $reserve->lastPage()], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()', 'status' => 'error'], 422);
@@ -54,7 +56,15 @@ class ReservationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'price' => 'required|int|min:0.01',
+            'showtime_id' => 'required|string|between:1,10',
+            'seat_id' => 'required|string|between:1,4', 
+            'transaction_id' => 'required|string|between:1,10',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()->first()], 422);
+        }   
         $array = [
             'price'=> 0, // auto-calculate here or service class!      
             'showtime_id'=> $request->input('showtime_id'),

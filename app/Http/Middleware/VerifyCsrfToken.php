@@ -30,6 +30,7 @@ class VerifyCsrfToken extends Middleware
         '/sign-up',
         '/refresh',
         '/reset-password/*',
+        '/roles',
         '/rooms',
         '/showtimes',
         '/tokens/create',

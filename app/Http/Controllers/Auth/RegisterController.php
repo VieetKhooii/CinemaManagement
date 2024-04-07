@@ -87,7 +87,7 @@ class RegisterController extends Controller
         try {
             $user = Users::create([
                 // 'user_id' => $request->input('user_id'),
-                'user_id' => "123120",
+                // 'user_id' => "123120",
                 'full_name' => $request->input('full_name'),
                 'email' => $request->input('email'),
                 'password' => $request->input('password'),

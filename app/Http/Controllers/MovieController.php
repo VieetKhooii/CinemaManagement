@@ -23,7 +23,7 @@ class MovieController extends Controller
         //
         $movie = $this->movieService->getAllMovies();
         if ($movie){
-            return response()->json(['status' => 'success', 'message' => 'movie got successfully', 'data' => $movie], 201);
+            return response()->json(['last_page' => $movie->lastPage(), 'status' => 'success', 'message' => 'movie got successfully', 'data' => $movie], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -129,7 +129,7 @@ class MovieController extends Controller
             'movie_description' => 'required|string',
         ]);
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json(['errors' => $validator->errors()->first()], 422);
         }    
         $array = [           
             'movie_name'=> $request->input('movie_name'),
