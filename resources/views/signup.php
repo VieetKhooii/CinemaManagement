@@ -3,7 +3,7 @@
 
 <div id="form_signUp" onsubmit="validateSignUp(event)">
     <form onclick="validateForm()" >
-        <h2>Đăng ký</h2>
+        <h2>Đăng Ký</h2>
         <label for="fullname">Họ và tên:</label>
         <input type="text" id="fullname" name="fullname" required oninvalid="this.setCustomValidity('Vui lòng nhập Họ và tên.')" oninput="this.setCustomValidity('')">
 

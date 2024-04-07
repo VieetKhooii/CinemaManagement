@@ -9,13 +9,15 @@ body {
 }
 
 #form_signUp form {
+    max-width: 460px;
+    border: 8px solid white;
     width: 40%;
     padding: 20px;
-    border: 1px solid #ffee53;
     border-radius: 5px;
-    background-color: #FFFACD;
-    box-shadow: 5px 3px 10px rgb(243, 232, 110);
+    background-color: beige;
+    box-shadow: 0px 30px 30px -20px rgb(209, 209, 189);
     opacity: 0.9;
+    margin: 10px auto;
 }
 
 h2 {
@@ -28,7 +30,7 @@ input[type="date"],
 #gender {
     height: 30px;
     border: none;
-    box-shadow: 4px 4px 7px #ecdb3f inset;
+    box-shadow: 0px 10px 10px -5px rgb(219, 219, 196);
 }
 
 input[type="text"]:focus,
@@ -46,36 +48,43 @@ input[type="text"],
 input[type="email"],
 input[type="password"],
 input[type="tel"] {
+
     width: calc(100% - 12px);
     /* Trừ đi margin */
     padding: 10px;
     margin: 5px 0;
     border: 1px solid #ffee53;
-    border-radius: 3px;
+    border-radius: 10px;
     box-sizing: border-box;
     margin-bottom: 20px;
-    box-shadow: 4px 4px 7px #ecdb3f inset;
+    box-shadow: 0px 10px 10px -5px rgb(219, 219, 196);
 }
 
 
 
 /* Style cho nút gửi */
 input[type="submit"] {
-    width: 100%;
-    background-color: #ecdb3f;
+    display: flex;
+    justify-content: center;
+    margin: 10px auto;
+    width: 80%;
+    background-color: white;
     color: black;
     padding: 15px;
     border: none;
     cursor: pointer;
     border-radius: 15px;
-    margin-top: 20px;
     font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0px 10px 10px -5px rgb(219, 219, 196);
+    transition:all 0.3s linear;
 }
 
 /* Hover effect cho nút gửi */
 input[type="submit"]:hover {
     background-color: black;
     color: #fae845;
+    transform: scale(1.1);
 }
 
 .form-row {
@@ -108,20 +117,34 @@ input[type="submit"]:hover {
 }
 
 #captchaCode {
-    padding-top: 10px;
     text-align: center;
     margin-right: 7%;
     width: 35%;
     height: 40px;
     border: 1px solid #ffee53;
-    box-shadow: 4px 4px 7px #ecdb3f inset, -4px -4px 7px #ecdb3f inset;
+    box-shadow: 0px 10px 10px -5px rgb(219, 219, 196);
+    background-color: white;
+    border-radius: 10px;
+    padding-top: 10px;
 }
 
 #refreshButton {
     border: none;
     width: 30px;
     height: 30px;
-    background-color: #e1cc13;
+    background-color: black;
+    box-shadow: 0px 7px 10px -5px rgb(0, 0, 0);
+    transition: all 0.2s linear;
+}
+
+#refreshButton:hover {
+    border-radius: 50%;
+    transform: rotate(45deg);
+}
+
+
+#refreshButton i {
+    color: white;
 }
 
 #form_signUp form small {

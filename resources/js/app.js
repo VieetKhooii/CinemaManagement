@@ -80,7 +80,13 @@ document.getElementById("header_menu").addEventListener("click", function (event
     alert(target.textContent);
   }
 });
-
+function loadSign(file) {
+  fetch(file).then(response => response.text())
+  .then(data => {
+    document.getElementById('content_main').innerHTML = data;
+  })
+  .catch(error => console.error('error', error));
+}
 // load phần content của app, đang là đăng nhập và đăng kí
 function loadContent(file) {
   fetch(file).then(response => response.text())
@@ -104,14 +110,14 @@ document.getElementById('form_signUp').addEventListener("submit", function (even
 function validateSignUp() {
   // Kiểm tra captcha
   var isCaptchaValid = validateCaptcha();
-  
+
   // Kiểm tra các trường của form
   var isFormValid = validateForm();
-  
+
   // Nếu cả form và captcha đều hợp lệ, thì hiển thị thông báo đăng ký thành công và ẩn form
   if (isCaptchaValid && isFormValid) {
-      alert('Bạn đã đăng kí thành công!');
-      document.getElementById("form_signUp").style.display = "none";
+    alert('Bạn đã đăng kí thành công!');
+    document.getElementById("form_signUp").style.display = "none";
   }
 }
 
@@ -186,7 +192,6 @@ function validateCaptcha() {
 
 function showTab(tabName) {
   // Lấy danh sách tất cả các tab
-
   // Ẩn tất cả các nội dung tab
   var tabContent = document.querySelectorAll('.tab_hoTro2');
   tabContent.forEach(function (content) {
@@ -225,4 +230,40 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-// Đặt vé
+// Điểm thành viên
+// Tính phần trăm tiến độ dựa trên điểm
+function updateProgressBar(points) {
+  var vipThreshold = 5000000;
+  var percentage = (points / vipThreshold) * 100;
+  document.getElementById('progressBar').style.width = percentage + '%';
+  document.getElementById('progressBar').textContent = points.toLocaleString() + ' điểm';
+}
+
+// Cập nhật thanh điểm khi trang web được tải
+document.addEventListener('DOMContentLoaded', function () {
+  var currentPoints = 2500000; // Điểm hiện tại, thay đổi theo nhu cầu
+  updateProgressBar(currentPoints);
+});
+
+
+// Thẻ thành viên
+
+function showVip(tabName, idon) {
+  // Lấy danh sách tất cả các tab
+  var id = document.getElementById(idon)
+  var idof = document.querySelectorAll('.member_ul .member_li a')
+  idof.forEach(element => {
+    element.classList.remove('on')
+  });
+  id.classList.add('on')
+
+  // Ẩn tất cả các nội dung tab
+  var vipContent = document.querySelectorAll('.show_vip');
+  vipContent.forEach(function (content) {
+    content.style.display = 'none';
+  });
+
+  // Hiển thị nội dung của tab được click
+  document.getElementById(tabName).style.display = 'block';
+}
+
