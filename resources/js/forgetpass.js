@@ -104,6 +104,9 @@ function goBack() {
     } else if (currentUrl.includes("resetpass.php")) {
         window.location.href = "xacthuc.php";
     }
+    else if (currentUrl.includes("signin.php")){
+        window.location.href = "forgetpass.php"
+    }
 }
 
 // XAC THỰC
