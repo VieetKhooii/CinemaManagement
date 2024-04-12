@@ -18,10 +18,19 @@ class VoucherService{
     }
 
     public function updateVoucher(array $info, string $id){
+        if(array_key_exists('voucher_name', $info)){
+            if($this->voucherRepository->existByName($info['voucher_name'])){
+                throw new \Exception("Tên đã tồn tại trong cơ sở dữ liệu.");
+            }
+        }      
         return $this->voucherRepository->updateVoucher($info, $id);
     }
 
     public function searchByDate(string $date){
         return $this->voucherRepository->searchByDate($date);
+    }
+
+    public function searchVoucher(array $data){
+        return $this->voucherRepository->searchVoucher($data);
     }
 }

@@ -39,23 +39,23 @@ try{
         $string='';
     } 
     //gán mã của table và gán các cột, tên bảng
-    if ($tableName==='combo'){
+    if ($tableName==='combos'){
         $codeTable='BN';
     }
-    else if ($tableName==='movie'){
+    else if ($tableName==='movies'){
         $codeTable='MV';
         $nameTextCombobox='category_name';
-        $tableTextCombobox='category';
+        $tableTextCombobox='categories';
     }
-    else if ($tableName==='showtime'){
+    else if ($tableName==='showtimes'){
         $codeTable='ST';
         $nameTextCombobox='movie_name';
-        $tableTextCombobox='movie';
+        $tableTextCombobox='movies';
     }
     else if ($tableName==='transactions'){
         $codeTable='TRA';
     }
-    else if ($tableName==='reservation'){
+    else if ($tableName==='reservations'){
         $codeTable='RE';
     }
     elseif ($tableName == 'users') {
@@ -67,17 +67,22 @@ try{
         $id=$_GET['id'];
         $idtable=$_GET['idtable'];
         // $query="SELECT * FROM $tableName WHERE $idtable='$id'";
-        $result = $tableName;
-
+        $object = $_GET['tableInfo'];
+        $result = json_decode($object, true);
+        // foreach ($result as $item) {
+        //     foreach ($item as $key => $value)
+        //     // Access each element of the array
+        //     echo $key . ' ' . $value . "<br>";
+        // }
         if ($result) {
             echo "<button id='back-btn' onclick=\"showPage('$tableName',1)\">Back</button>";
             echo "<div id='admin_add'>";
             echo "<form id='edit_form' enctype='multipart/form-data'>"; // Đặt id form là 'edit_form'
             echo"<input type='hidden' name='tableName' value='<?php echo $tableName; ?>'> ";
             // Hiển thị các trường và giá trị đã lấy được từ cơ sở dữ liệu
-            $row = $result;
-            foreach ($row as $columnName => $value) {
-                echo "<div id='label_add'>";
+            foreach ($result as $item) {
+                foreach ($item as $columnName => $value){
+                    echo "<div id='label_add'>";
                 echo "<label for='$columnName'>$columnName:</label>";
                 echo "</div>";
                 echo "<div id='input_add'>";
@@ -90,14 +95,14 @@ try{
                     echo "<select id='$columnName' name='$columnName'>";
                     // Thực hiện truy vấn để lấy dữ liệu cho combobox
                     // Lấy dữ liệu từ các bảng khác nhau dựa vào tên cột
-                    if ($tableName == 'seat') {
+                    if ($tableName == 'seats') {
                         if($columnName=='seat_type_id'){
                             $nameTextCombobox='type';
-                            $tableTextCombobox='seat_type';
+                            $tableTextCombobox='seattypes';
                         }
                         elseif($columnName=='room_id'){
                             $nameTextCombobox='room_name';
-                            $tableTextCombobox='room';
+                            $tableTextCombobox='rooms';
                         }
                     }   
                     else if ($tableName=='transactions'){
@@ -107,17 +112,17 @@ try{
                         }
                         elseif($columnName=='voucher_id'){
                             $nameTextCombobox='voucher_discount';
-                            $tableTextCombobox='voucher';
+                            $tableTextCombobox='vouchers';
                         }
                     }
-                    else if ($tableName=='reservation'){
+                    else if ($tableName=='reservations'){
                         if($columnName=='showtime_id'){
                             $nameTextCombobox='movie_id';
-                            $tableTextCombobox='showtime';
+                            $tableTextCombobox='showtimes';
                         }
                         elseif($columnName=='seat_id'){
                             $nameTextCombobox='seat_type_id';
-                            $tableTextCombobox='seat';
+                            $tableTextCombobox='seats';
                         }
                         elseif($columnName=='transaction_id'){
                             $nameTextCombobox='user_id';
@@ -125,15 +130,29 @@ try{
                         }
                     }
                     // $queryData = "SELECT $columnName,$nameTextCombobox FROM $tableTextCombobox";
-                    $resultData = $_POST('columns');
-                    while ($rowData = $resultData) {          
-                        if($value==$rowData[key($rowData)]){
-                            echo "<option value='" . $rowData[$columnName] . "' selected>" .$rowData[key($rowData)] ." - " . $rowData[$nameTextCombobox] . "</option>";
+                    $resultData = Helper::getSpecificColumn($tableTextCombobox, $columnName, $nameTextCombobox);
+                    // $resultData = $_POST('columns');
+                    foreach ($resultData as $rowData){
+                        $temp1 = 0;
+                        $temp2 = 0;
+                        foreach ($rowData as $keyData => $valueData){
+                            if ($keyData === $columnName){
+                                $temp1 = $valueData;
+                            }
+                            if ($keyData === $nameTextCombobox){
+                                $temp2 = $valueData;
+                            }
                         }
-                        else{
-                            echo "<option value='" . $rowData[$columnName] . "'>" .$rowData[key($rowData)] ." - " . $rowData[$nameTextCombobox] . "</option>";
-                        }      
+                        echo "<option value='" . $temp1 . "'>" .$temp1 ." - " . $temp2 . "</option>";
                     }
+                    // while ($rowData = $resultData) {          
+                    //     if($value==$rowData[key($rowData)]){
+                    //         echo "<option value='" . $rowData[$columnName] . "' selected>" .$rowData[key($rowData)] ." - " . $rowData[$nameTextCombobox] . "</option>";
+                    //     }
+                    //     else{
+                    //         echo "<option value='" . $rowData[$columnName] . "'>" .$rowData[key($rowData)] ." - " . $rowData[$nameTextCombobox] . "</option>";
+                    //     }      
+                    // }
                     echo "</select>";      
                 }
                 elseif($columnName=='gender'){
@@ -183,6 +202,7 @@ try{
                 }
                 
                 echo "</div>";
+                }
             }
             // Hiển thị nút Submit và đóng form
             echo "<div id='btn-submit'>";
@@ -213,23 +233,23 @@ try{
                         echo "</div>";
                         echo "<div id='input_add'>";
                 
-                        if ($columnIndex == 0 && strpos($columnName, 'id') !== false && $value == 'PRI' ) {
+                        if ($columnIndex == 0 && strpos($columnName, 'id') !== false ) {
                             // Skip displaying this column if it contains 'id' and it is the primary key
                             // $columnIndex++;
                             // continue;
-                            if ($tableName==='combo'||$tableName==='movie'||$tableName==='showtime'||$tableName==='transactions'||$tableName==='reservation'){
+                            if ($tableName==='combos'||$tableName==='movies'||$tableName==='transactions'||$tableName==='reservations'){
                                 echo "<input type='text' id='$columnName' name='$columnName' value='$codeTable$string$totalRows' readonly>";
                             }
-                            
-                            else if ($tableName==='voucher'){
+                            else if ($tableName==='showtimes'||$tableName==='vouchers'){
                                 echo "<input type='text' id='$columnName' name='$columnName' value='$currentDate$string$totalRows' readonly>";
                             }
-                            elseif ($tableName==='seat' ||$tableName==='users'){
+                            elseif ($tableName==='seats' ||$tableName==='users'){
                                 echo "<input type='text' id='$columnName' name='$columnName' value='' readonly>";
                             }
                             else{
                                 echo "<input type='text' id='$columnName' name='$columnName' value='$totalRows' readonly>";
-                            }               
+                            }     
+      
                         }
 
                         // Kiểm tra nếu cột chứa "id" và không ở cột đầu (khóa ngoại)

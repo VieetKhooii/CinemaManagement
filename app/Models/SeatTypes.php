@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SeatTypes extends Model
 {
-    protected $table = 'seat_type';
+    protected $table = 'seattypes';
     protected $primaryKey = 'seat_type_id';
 
     public $incrementing = true;

@@ -57,6 +57,7 @@ class ReservationController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'reservation_id' => 'required|string|between:1,6',
             'price' => 'required|int|min:0.01',
             'showtime_id' => 'required|string|between:1,10',
             'seat_id' => 'required|string|between:1,4', 
@@ -66,6 +67,7 @@ class ReservationController extends Controller
             return response()->json(['errors' => $validator->errors()->first()], 422);
         }   
         $array = [
+            'reservation_id' => $request->input('reservation_id'),
             'price'=> 0, // auto-calculate here or service class!      
             'showtime_id'=> $request->input('showtime_id'),
             'seat_id'=> $request->input('seat_id'),
@@ -128,7 +130,8 @@ class ReservationController extends Controller
     {
         //
         $array = [    
-            'id'=> $request->input('id'),
+            'reservation_id'=> $request->input('reservation_id'),
+            'price'=> $request->input('price'),
             'showtime_id'=> $request->input('showtime_id'),
             'seat_id'=> $request->input('seat_id'),
             'transaction_id'=> $request->input('transaction_id'),
@@ -144,7 +147,7 @@ class ReservationController extends Controller
 
     public function hide(string $id){
         $array = [
-            'display'=> 0,
+            'display'=> false,
         ];
         $reservation = $this->reservationService->updateReservation($array, $id);
         if ($reservation){

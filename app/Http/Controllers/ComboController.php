@@ -128,7 +128,7 @@ class ComboController extends Controller
             
         ]);
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()->first()], 422);
+            return response()->json(['error' => $validator->errors()->first()], 422);
         }  
         $array = [
             'price'=> $request->input('price'),

@@ -116,10 +116,10 @@ class CategoryController extends Controller
         ];
         $category = $this->categoryService->updateCategory($array, $id);
         if ($category){
-            return response()->json(['message' => 'category updated successfully', 'data' => $category], 201);
+            return response()->json(['message' => 'category updated successfully', 'data' => $category, 'status' => 'success'], 201);
         }
         else {
-            return response()->json(['error' => 'Cannot update category'], 422);
+            return response()->json(['error' => 'Cannot update category','status' => 'error'], 422);
         }
     }
 
@@ -138,7 +138,7 @@ class CategoryController extends Controller
         ];
         $category = $this->categoryService->searchCategory($array);
         if ($category){
-            return response()->json(['message' => 'category searched successfully', 'data' => $category], 201);
+            return response()->json(['message' => 'category searched successfully', 'data' => $category, 'status' => 'success'], 201);
         }
         else {
             return response()->json(['error' => 'Cannot search category'], 422);
@@ -151,7 +151,7 @@ class CategoryController extends Controller
         ];
         $category = $this->categoryService->updateCategory($array, $id);
         if ($category){
-            return response()->json(['message' => 'category hid successfully', 'data' => $category], 201);
+            return response()->json(['status' => 'success', 'message' => 'category hid successfully', 'data' => $category], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);

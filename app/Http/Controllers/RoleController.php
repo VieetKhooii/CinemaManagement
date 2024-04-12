@@ -31,7 +31,8 @@ class RoleController extends Controller
         }
     }
 
-    public function update(Request $request){
+    public function update(Request $request, string $id){
+        
         $validator = Validator::make($request->all(), [
             'role_name' => 'required|string|between:1,50',
             'description' => 'string|between:1,50',
@@ -43,7 +44,7 @@ class RoleController extends Controller
                 'status' => 'error'], 
                 422);
         }
-        $id = $request->input('role_id');
+        
         $info = [
             'role_name' => $request->input('role_name'),
             'description' => $request->input('description'),
@@ -62,6 +63,34 @@ class RoleController extends Controller
                 'error' => 'cannot update role', 
                 'status' => 'error'], 
                 422);
+        }
+    }
+
+    public function search(Request $request){
+        $array = [
+            'role_id'=> $request->input('role_id'),
+            'role_name'=> $request->input('role_name'),
+            'description'=> $request->input('description'),
+        ];
+        $role = $this->roleService->searchRole($array);
+        if ($role){
+            return response()->json(['status' => 'success', 'message' => 'role searched successfully', 'data' => $role], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
+    }
+
+    public function hide (string $id){
+        $array = [
+            'display' => false,
+        ];
+        $role = $this->roleService->updateRole($array, $id);
+        if ($role){
+            return response()->json(['status' => 'success', 'message' => 'role hid successfully', 'data' => $role], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
         }
     }
 }

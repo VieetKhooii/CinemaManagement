@@ -21,3 +21,6 @@
     </div>
 </div>
 <script src="../js/forgetpass.js"></script>
+<script>
+    window.onload = startCountdown;
+</script>

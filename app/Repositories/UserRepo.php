@@ -54,4 +54,20 @@ class UserRepo implements UserRepositoryInterface
         }
     }
 
+    public function searchUser(array $info){
+        try {
+            return Users::search($info);
+        }
+        catch (\Exception $exception){
+            echo("Error UserRepo (search): " . $exception->getMessage());
+            return null;    
+        }
+    }
+
+    public function existByName($name){
+        $count = Users::where('full_name', $name)->count();
+
+        // Trả về true nếu tên đã tồn tại, ngược lại trả về false
+        return $count > 0;
+    }
 }

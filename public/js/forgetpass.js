@@ -10,7 +10,7 @@ function validateForm() {
     // Kiểm tra hợp lệ của mã captcha
     var captchaValidity = captchaInput.value.trim() !== "";
 
-        if (contactValidity && captchaValidity) {
+    if (contactValidity && captchaValidity) {
         return true;
     } else {
         // Nếu có lỗi, hiển thị thông báo cho người dùng và không chuyển hướng trang
@@ -86,13 +86,23 @@ function validateForgetPass(event) {
 
         // Kiểm tra hợp lệ của captcha
         var isCaptchaValid = validateCaptcha();
-
         // Nếu cả form và captcha đều hợp lệ, chuyển hướng sang trang resetpass.php
         if (isFormValid && isCaptchaValid) {
             alert('Gửi mã thành công! Vui lòng kiểm tra điện thoại hoặc email của bạn!');
             window.location.href = "xacthuc.php";
         }
     });
+}
+function show_hidden(check) {
+    var show_hidden_pass = document.querySelector('.show_hidden_pass');
+    var showpass = document.getElementById('password');
+    if (check === true) {
+        show_hidden_pass.innerHTML = `<i class="fa-solid fa-eye-slash" onclick="show_hidden(false)"></i>`;
+        showpass.setAttribute('type', 'password');
+    } else if(check === false){
+        show_hidden_pass.innerHTML = `<i class="fa-solid fa-eye" onclick="show_hidden(true)"></i>`;
+        showpass.setAttribute('type', 'text');
+    }
 }
 
 function goBack() {
@@ -103,6 +113,9 @@ function goBack() {
         window.location.href = "forgetpass.php";
     } else if (currentUrl.includes("resetpass.php")) {
         window.location.href = "xacthuc.php";
+    }
+    else if (currentUrl.includes("signin.php")) {
+        window.location.href = "forgetpass.php"
     }
 }
 
@@ -135,9 +148,3 @@ function restartCountdown() {
     clearInterval(interval); // Dừng interval cũ
     startCountdown(); // Bắt đầu đếm ngược mới
 }
-
-// Gọi hàm bắt đầu đếm ngược khi trang đã tải hoàn toàn
-window.onload = startCountdown;
-
-
-

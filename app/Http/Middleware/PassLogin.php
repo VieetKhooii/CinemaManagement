@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\RedirectResponse;
 
 class PassLogin
@@ -17,9 +16,9 @@ class PassLogin
     public function handle(Request $request, Closure $next)
     {
         $token = $request->cookie('jwt');
-        if ($token) {
-            return new RedirectResponse('/users');
+            if ($token) {
+                return new RedirectResponse('/users');
+            }
+            return $next($request);
         }
-        return $next($request);
-    }
 }

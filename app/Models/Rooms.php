@@ -18,7 +18,6 @@ class Rooms extends Model
         'room_id',
         'room_name',
         'name',
-        'status',
         'number_of_seat',
         'display',
     ];

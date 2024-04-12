@@ -25,7 +25,7 @@
                 }
                 echo "<td class='button-container'>";
                 echo "<button class='edit-btn' data-value='" . reset($row) . "' onclick=\"openPage('$name',1,this.dataset.value,'$firstColumnName')\">Edit</button>";
-                echo "<button class='delete-btn' data-value='" . reset($row) . "' onclick=\"deleteDB('$name',this.dataset.value,'$firstColumnName')\">Delete</button>";
+                echo "<button class='delete-btn' data-value='" . reset($row) . "' onclick=\"deleteDB('$name',this.dataset.value)\">Delete</button>";
                 echo "</td>";
                 echo "</tr>";
             }
