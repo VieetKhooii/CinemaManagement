@@ -33,7 +33,7 @@ class VoucherRepo implements VoucherRepositoryInterface{
 
     public function updateVoucher(array $info, string $id){
         try {
-            $result = Voucher::where('user_id', $id)->update($info);
+            $result = Voucher::where('voucher_id', $id)->update($info);
             return $result;
         }
         catch (\Exception $exception){
@@ -51,5 +51,22 @@ class VoucherRepo implements VoucherRepositoryInterface{
             echo("Error VoucherRepo (find vouchers): " . $exception->getMessage());
             return null;
         }
+    }
+
+    public function searchVoucher(array $info){
+        try {
+            return Voucher::search($info);
+        }
+        catch (\Exception $exception){
+            echo("Error VoucherRepo (search): " . $exception->getMessage());
+            return null;    
+        }
+    }
+
+    public function existByName($name){
+        $count = Voucher::where('voucher_name', $name)->count();
+
+        // Trả về true nếu tên đã tồn tại, ngược lại trả về false
+        return $count > 0;
     }
 }

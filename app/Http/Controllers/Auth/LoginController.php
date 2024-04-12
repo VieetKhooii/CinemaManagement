@@ -49,21 +49,16 @@ class LoginController extends Controller
             $responseJson = [
                 'status' => 'success',
                 'message' => 'Login Successfully',
-                'user' => $user,
+                'user_id' => $user->user_id,
+                'role_id' => $user->role_id,
                 'authorization' => [
                     'token' => $token,
                     'type' => 'bearer',
                 ]
             ];
-            // $cookie = cookie('jwt', $token, 1, null, null, false, false);
             $response = new Response($responseJson);
-            // Cookie::queue('jwt', $token, 1);
-            // $response->header('Set-Cookie', "jwt={$token}; Expires=" . gmdate('D, d M Y H:i:s T', time() + 1) . '; Path=/; Secure; ');
             $response->withCookie(cookie('jwt', $token, 1, null, null, false, false));
-
-            // $token = $request->user()->createToken($email, ['*'], now()->addMinutes(5));
             return $response;
-            //  return redirect()->intended('/');
         }
         else {
              $responseJson = [

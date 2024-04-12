@@ -38,4 +38,21 @@ class RoleRepo implements RoleRepositoryInterface{
             return null;
         }
     }
+
+    public function searchRole(array $data){
+        try {
+            return Roles::search($data);
+        }
+        catch (\Exception $exception){
+            echo("Error RoleRepo (search): " . $exception->getMessage());
+            return null;    
+        }
+    }
+
+    public function existByName($name){
+        $count = Roles::where('role_name', $name)->count();
+
+        // Trả về true nếu tên đã tồn tại, ngược lại trả về false
+        return $count > 0;
+    }
 }

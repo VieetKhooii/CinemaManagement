@@ -19,7 +19,7 @@ class RoomController extends Controller
         //
         $room = $this->roomService->getAllRooms();
         if ($room){
-            return response()->json(['status' => 'success', 'message' => 'room got successfully', 'data' => $room], 201);
+            return response()->json(['last_page' => $room->lastPage(), 'status' => 'success', 'message' => 'room got successfully', 'data' => $room], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -119,6 +119,7 @@ class RoomController extends Controller
         $array= [          
             'room_name'=> $request->input('room_name'),
             'status'=> $request->input('status'),
+            'display'=> $request->input('display'),
         ];
         $room = $this->roomService->updateRoom($array, $id);
         if ($room){

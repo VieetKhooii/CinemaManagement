@@ -70,9 +70,9 @@ class VoucherController extends Controller
         }
     }
 
-    public function update(Request $request){
+    public function update(Request $request, string $id){
         $validator = Validator::make($request->all(), [
-            'voucher_id' => 'required|string|between:1:9',
+            // 'voucher_id' => 'required|string|between:1:9',
             'voucher_discount' => 'required|int',
             'voucher_condition' => 'required|date',
             'description' => 'string|between:1,100',
@@ -85,24 +85,24 @@ class VoucherController extends Controller
                 422);
         }
 
-        $id = $request->input('voucher_id');
         $info = [
             'voucher_discount' => $request->input('voucher_discount'),
             'voucher_condition' => $request->input('voucher_condition'),
             'description' => $request->input('description'),
+            'display'=> $request->input('display'),
         ];
 
         $result = $this->voucherService->updateVoucher($info, $id);
         if ($result){
             return response()->json([
-                'message' => 'create voucher successfully',
+                'message' => 'update voucher successfully',
                 'status' => 'success',
                 'data' => $result
             ], 201);
         }
         else{
             return response()->json([
-                'error' => '$validator->errors()', 
+                'error' => 'update voucher failed',
                 'status' => 'error'], 
                 422);
         }
@@ -123,6 +123,35 @@ class VoucherController extends Controller
                 'error' => 'cannot get voucher by date', 
                 'status' => 'error'], 
                 422);
+        }
+    }
+
+    public function search(Request $request){
+        $array = [
+            'voucher_id' => $request->input('voucher_id'),
+            'voucher_discount' => $request->input('voucher_discount'),
+            'voucher_condition' => $request->input('voucher_condition'),
+            'description' => $request->input('description'),
+        ];
+        $role = $this->voucherService->searchVoucher($array);
+        if ($role){
+            return response()->json(['status' => 'success', 'message' => 'voucher searched successfully', 'data' => $role], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
+    }
+
+    public function hide (string $id){
+        $array = [
+            'display' => false,
+        ];
+        $voucher = $this->voucherService->updateVoucher($array, $id);
+        if ($voucher){
+            return response()->json(['status' => 'success', 'message' => 'voucher hid successfully', 'data' => $voucher], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
         }
     }
 }

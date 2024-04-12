@@ -17,7 +17,16 @@ class RoleService{
     //     return $this->roleRepository->addRole($info);
     // }
 
-    public function updateRole(array $info, string $id){
-        return $this->roleRepository->updateRole($info, $id);
+    public function updateRole(array $data, $id){
+        if(array_key_exists('role_name', $data)){
+            if($this->roleRepository->existByName($data['role_name'])){
+                throw new \Exception("Tên đã tồn tại trong cơ sở dữ liệu.");
+            }
+        }      
+        return $this->roleRepository->updateRole($data, $id);
+    }
+
+    public function searchRole(array $data){
+        return $this->roleRepository->searchRole($data);
     }
 }

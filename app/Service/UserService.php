@@ -30,6 +30,15 @@ class UserService{
     }
 
     public function updateUser(array $user, string $id){
+        if(array_key_exists('full_name', $user)){
+            if($this->userRepository->existByName($user['full_name'])){
+                throw new \Exception("Tên đã tồn tại trong cơ sở dữ liệu.");
+            }
+        }     
         return $this->userRepository->updateUser($user, $id);
+    }
+
+    public function searchUser(array $data){
+        return $this->userRepository->searchUser($data);
     }
 }

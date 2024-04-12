@@ -17,7 +17,6 @@ class Users extends Authenticatable implements JWTSubject
 {
     protected $table = 'users'; // The name must match the table name in database
     protected $primaryKey = 'user_id';
-    
     public $incrementing = false; // Assuming User_Id is not auto-incrementing
     protected $keyType = 'string'; // Assuming User_Id is a varchar
     public $timestamps = false;
@@ -37,6 +36,7 @@ class Users extends Authenticatable implements JWTSubject
         'gender',
         'address',
         'score',
+        'coin',
         'status',
         'role_id',
     ];
@@ -183,5 +183,18 @@ class Users extends Authenticatable implements JWTSubject
             // Gán ID mới cho model
             $user->user_id = $newId;
         });
+    }
+
+    public static function search(array $searchParams)
+    {
+        $query = static::query();
+
+        foreach ($searchParams as $key => $value) {
+            if ($value !== null) {
+                $query->where($key, 'like', '%' . $value . '%');
+            }
+        }
+
+        return $query->get();
     }
 }

@@ -52,7 +52,7 @@ class ShowtimeController extends Controller
         $validator = Validator::make($request->all(), [
             'movie_id' => 'required|string|between:1,6',
             'date' => 'required|date',
-            'start_time' => 'required|date_format:H:i:s', 
+            // 'start_time' => 'required|date_format:H:i:s', 
         ]);
 
         if ($validator->fails()) {
@@ -62,7 +62,7 @@ class ShowtimeController extends Controller
                 422);
         }
         $array = [
-            'showtime_id'=> $request->input('showtime_id'),
+            // 'showtime_id'=> $request->input('showtime_id'),
             'movie_id'=> $request->input('movie_id'),
             'date'=> $request->input('date'),
             'start_time'=> $request->input('start_time'),

@@ -7,4 +7,7 @@ interface RoleRepositoryInterface{
     // public function addRole(array $info);
     public function updateRole(array $info, string $id);
  
+    public function searchRole(array $info);
+
+    public function existByName($name);
 }
