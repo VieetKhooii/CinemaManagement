@@ -5,7 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 // use Illuminate\Auth\Passwords\CanResetPassword;
-// use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Auth\Notifications\ResetPassword;
 // use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

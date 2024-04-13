@@ -30,16 +30,16 @@ class ForgotPasswordController extends Controller
             ['email' => 'required|string|between:1,100|email|ends_with:@gmail.com']
         );
         if ($validator->fails()){
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json(['status' => 'error', 'error' => $validator->errors()->first()], 422);
         }
         $status = Password::sendResetLink(
             $request->only('email')
         );
         if ($status === Password::RESET_LINK_SENT){
-            return response()->json(['message' => 'Reset password link sent!'], 201);
+            return response()->json(['status' => 'success', 'message' => 'Reset password link sent!', 'content' => $status], 201);
         }
         else {
-            return response()->json(['error' => 'Reset password link already sent or email not existed!'], 403);
+            return response()->json(['status' => 'error', 'error' => 'Reset password link already sent or email not existed!'], 403);
             // return back()->withErrors(['email' => trans($status)]);
         }
         // return $status === Password::RESET_LINK_SENT 
@@ -48,7 +48,7 @@ class ForgotPasswordController extends Controller
     }
 
     public function resetRequest(string $token) {
-        return view('auth.verify', ['token' => $token]);
+        // return view('resetpass', ['token' => $token]);
     }
 
     public function updatePassword(Request $request){
@@ -59,7 +59,7 @@ class ForgotPasswordController extends Controller
         ]);
 
         if ($validator->fails()){
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json(['error' => $validator->errors()->first()], 422);
         }
         
         $status = Password::reset(
@@ -74,10 +74,10 @@ class ForgotPasswordController extends Controller
         );
 
         if ($status === Password::PASSWORD_RESET){
-            return response()->json(['message' => 'Password has been reset'], 201);
+            return response()->json(['status' => 'success', 'message' => 'Password has been reset'], 201);
         }
         else {
-            return response()->json(['error' => 'Error']);
+            return response()->json(['status' => 'error', 'error' => 'You cannot do this, please resent a new request to reset your password'], 400);
         }
     }
     use SendsPasswordResetEmails;

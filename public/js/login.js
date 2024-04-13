@@ -14,17 +14,6 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(data) {
                 if (data.status === 'success') {
-                    // const user = data.user;
-                    // const userId = user.user_id;
-                    // const userName = user.user_name;
-                    // const userEmail = user.email;
-                    // // Access other user properties as needed
-                    
-                    // // Optionally, you can also handle authorization token
-                    // const authorization = data.authorization;
-                    // const token = authorization.token;
-                    // console.log(data.role)
-                    // alert('Login successful!');
                     document.getElementById('password').value = '';
                     if (data.role_id === 1){
                         window.location.href = '/admin';

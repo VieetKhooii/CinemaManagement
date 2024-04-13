@@ -147,9 +147,16 @@ Route::controller(LoginController::class)->group(function () {
 Route::post('sign-up', [RegisterController::class, 'create']);
 
 // Forgot password
-Route::post('password/resent', [ForgotPasswordController::class, 'forgotPassword'])->name('password.email');
-Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'resetRequest'])->middleware('guest')->name('password.reset');
-Route::post('password/pass-reset', [ForgotPasswordController::class, 'updatePassword'])->name('password.update');
+Route::post('password/resent', [ForgotPasswordController::class, 'forgotPassword']);
+// Route::post('password/reset/{token}', [ForgotPasswordController::class, 'resetRequest']);
+Route::post('password/pass-reset', [ForgotPasswordController::class, 'updatePassword']);
+Route::view('/forget_pass','auth/passwords/forgetpass');
+Route::view('/xacthuc','auth/passwords/xacthuc');
+// Route::view('password/reset/{token}', 'resetpass');
+// Route::get('admin/add', function(Request $request){
+//     $name = $request->query('name');
+//     return view('admin/admin_add', ['name' => $name]);
+// });
 
 Route::auth();
 Auth::routes(['verify' => true]);
