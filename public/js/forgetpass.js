@@ -86,13 +86,61 @@ function validateForgetPass(event) {
 
         // Kiểm tra hợp lệ của captcha
         var isCaptchaValid = validateCaptcha();
+        
+        var isEmailSent = sentToMail();
         // Nếu cả form và captcha đều hợp lệ, chuyển hướng sang trang resetpass.php
-        if (isFormValid && isCaptchaValid) {
+        if (isFormValid && isCaptchaValid && isEmailSent) {
             alert('Gửi mã thành công! Vui lòng kiểm tra điện thoại hoặc email của bạn!');
-            window.location.href = "xacthuc.php";
+            window.location.href = "/xacthuc?email="+isEmailSent;
         }
     });
 }
+
+function sentToMail(){
+    const email = $('#contact').val();
+    flag = false;
+    $.ajax({
+        method: 'POST',
+        url: 'http://localhost:8000/password/resent',
+        data: {
+            'email': email
+        },
+        async: false,
+        dataType: 'json',
+        success: function(response){
+            console.log("Helooooo")
+            if (response.status === 'success'){
+                flag = email;
+            }
+            // else if (data.status === 'error'){
+            //     console.log("Fail")
+            //     const message = data.error
+            //     alert(message);
+            // }
+        },
+        error: function(xhr, status, error) {
+            if (xhr.status === 422) {
+              var responseJSON = xhr.responseJSON;
+              if (responseJSON  && responseJSON.error) {
+                alert(responseJSON.error);
+              } else {
+                alert('Validation error occurred.');
+              }
+            } 
+            else if (xhr.status === 403){
+                var responseJSON = xhr.responseJSON;
+              if (responseJSON  && responseJSON.error) {
+                alert(responseJSON.error);
+              } 
+            }
+            else {
+              console.error('AJAX request failed:', status, error);
+            }
+          }
+    });
+    return flag;
+}
+
 function show_hidden(check) {
     var show_hidden_pass = document.querySelector('.show_hidden_pass');
     var showpass = document.getElementById('password');
@@ -107,15 +155,16 @@ function show_hidden(check) {
 
 function goBack() {
     var currentUrl = window.location.href;
-    if (currentUrl.includes("forgetpass.php")) {
-        window.location.href = "signin.php";
-    } else if (currentUrl.includes("xacthuc.php")) {
-        window.location.href = "forgetpass.php";
-    } else if (currentUrl.includes("resetpass.php")) {
-        window.location.href = "xacthuc.php";
+    if (currentUrl.includes("forget_pass")) {
+        window.location.href = "login";
+    } else if (currentUrl.includes("xacthuc")) {
+        window.location.href = "forget_pass";
     }
-    else if (currentUrl.includes("signin.php")) {
-        window.location.href = "forgetpass.php"
+    //  else if (currentUrl.includes("reset")) {
+    //     window.location.href = "xacthuc";
+    // }
+    else if (currentUrl.includes("login")) {
+        window.location.href = "forget_pass"
     }
 }
 
@@ -147,4 +196,61 @@ function restartCountdown() {
     totalSeconds = 180; // Reset lại thời gian
     clearInterval(interval); // Dừng interval cũ
     startCountdown(); // Bắt đầu đếm ngược mới
+}
+
+document.getElementById('form_rePass').addEventListener("submit", function (event) {
+    // Ngăn chặn hành động mặc định của form
+    event.preventDefault();
+  
+    // Gọi hàm validateSignUp() khi submit form
+    validateForgetPass2();
+  });
+
+function validateForgetPass2(){
+    const urlString = window.location.href;
+    const url = new URL(urlString);
+
+    const token = url.pathname.split('/').pop(); // Extract the reset string from the pathname
+    const email = url.searchParams.get('email');
+
+    console.log("Reset String:", token);
+    console.log("Email:", email);
+
+    var password = document.getElementById("password").value;
+    var password2 = document.getElementById("password2").value;
+
+    if (password === password2) {
+        // Mật khẩu nhập lại trùng khớp, có thể thực hiện các hành động tiếp theo ở đây
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:8000/password/pass-reset',
+            data: {
+                'email': email,
+                'password': password,
+                'password_confirmation': password2,
+                'token': token
+            },
+            async: false,
+            success: function(response) {
+                alert(response.message)
+                // alert("Mật khẩu thay đổi thành công!");
+                window.location.replace("http://localhost:8000/login");
+                
+            },
+            error: function(xhr, status, error) {
+                
+                  var responseJSON = xhr.responseJSON;
+                  if (responseJSON  && responseJSON.error) {
+                    alert(responseJSON.error);
+                  } else {
+                    alert('Validation error occurred.');
+                  }
+                
+              }
+        });
+    } else {
+        // Mật khẩu nhập lại không khớp, hiển thị thông báo cho người dùng và ngăn form từ việc submit
+        alert("Mật khẩu nhập lại không khớp!");
+        // return false;
+    }
 }

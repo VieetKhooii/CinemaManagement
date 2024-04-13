@@ -14,7 +14,7 @@
         <input id="continue" type="submit" value="Đăng nhập">
 
         <div class="forget_Pass">
-            <a href="#" onclick="goBack()">Quên mật khẩu?</a>
+            <a href="/forget_pass" onclick="goBack()">Quên mật khẩu?</a>
         </div>
         <h5>hoặc đăng nhập bằng</h5>
 
