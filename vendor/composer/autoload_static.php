@@ -155,6 +155,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'F' => 
         array (
             'Fruitcake\\Cors\\' => 15,
+            'Firebase\\JWT\\' => 13,
             'Faker\\' => 6,
         ),
         'E' => 
@@ -507,6 +508,10 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         array (
             0 => __DIR__ . '/..' . '/fruitcake/php-cors/src',
         ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
+        ),
         'Faker\\' => 
         array (
             0 => __DIR__ . '/..' . '/fakerphp/faker/src/Faker',
@@ -587,6 +592,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\MovieController' => __DIR__ . '/../..' . '/app/Http/Controllers/MovieController.php',
         'App\\Http\\Controllers\\ReservationController' => __DIR__ . '/../..' . '/app/Http/Controllers/ReservationController.php',
+        'App\\Http\\Controllers\\RoleController' => __DIR__ . '/../..' . '/app/Http/Controllers/RoleController.php',
         'App\\Http\\Controllers\\RoomController' => __DIR__ . '/../..' . '/app/Http/Controllers/RoomController.php',
         'App\\Http\\Controllers\\SeatController' => __DIR__ . '/../..' . '/app/Http/Controllers/SeatController.php',
         'App\\Http\\Controllers\\SeatTypeController' => __DIR__ . '/../..' . '/app/Http/Controllers/SeatTypeController.php',
@@ -613,6 +619,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'App\\Models\\Consumes' => __DIR__ . '/../..' . '/app/Models/Consumes.php',
         'App\\Models\\Movies' => __DIR__ . '/../..' . '/app/Models/Movies.php',
         'App\\Models\\Reservation' => __DIR__ . '/../..' . '/app/Models/Reservation.php',
+        'App\\Models\\Roles' => __DIR__ . '/../..' . '/app/Models/Roles.php',
         'App\\Models\\Rooms' => __DIR__ . '/../..' . '/app/Models/Rooms.php',
         'App\\Models\\SeatTypes' => __DIR__ . '/../..' . '/app/Models/SeatTypes.php',
         'App\\Models\\Seats' => __DIR__ . '/../..' . '/app/Models/Seats.php',
@@ -636,6 +643,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'App\\Repositories\\Interface\\ConsumeRepositoryInterface' => __DIR__ . '/../..' . '/app/Repositories/Interface/ConsumeRepositoryInterface.php',
         'App\\Repositories\\Interface\\MovieRepositoryInterface' => __DIR__ . '/../..' . '/app/Repositories/Interface/MovieRepositoryInterface.php',
         'App\\Repositories\\Interface\\ReservationRepositoryInterface' => __DIR__ . '/../..' . '/app/Repositories/Interface/ReservationRepositoryInterface.php',
+        'App\\Repositories\\Interface\\RoleRepositoryInterface' => __DIR__ . '/../..' . '/app/Repositories/Interface/RoleRepositoryInterface.php',
         'App\\Repositories\\Interface\\RoomRepositoryInterface' => __DIR__ . '/../..' . '/app/Repositories/Interface/RoomRepositoryInterface.php',
         'App\\Repositories\\Interface\\SeatRepositoryInterface' => __DIR__ . '/../..' . '/app/Repositories/Interface/SeatRepositoryInterface.php',
         'App\\Repositories\\Interface\\SeatTypeRepositoryInterface' => __DIR__ . '/../..' . '/app/Repositories/Interface/SeatTypeRepositoryInterface.php',
@@ -645,6 +653,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'App\\Repositories\\Interface\\VoucherRepositoryInterface' => __DIR__ . '/../..' . '/app/Repositories/Interface/VoucherRepositoryInterface.php',
         'App\\Repositories\\MovieRepo' => __DIR__ . '/../..' . '/app/Repositories/MovieRepo.php',
         'App\\Repositories\\ReservationRepo' => __DIR__ . '/../..' . '/app/Repositories/ReservationRepo.php',
+        'App\\Repositories\\RoleRepo' => __DIR__ . '/../..' . '/app/Repositories/RoleRepo.php',
         'App\\Repositories\\RoomRepo' => __DIR__ . '/../..' . '/app/Repositories/RoomRepo.php',
         'App\\Repositories\\SeatRepo' => __DIR__ . '/../..' . '/app/Repositories/SeatRepo.php',
         'App\\Repositories\\SeatTypeRepo' => __DIR__ . '/../..' . '/app/Repositories/SeatTypeRepo.php',
@@ -658,6 +667,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'App\\Service\\ConsumeService' => __DIR__ . '/../..' . '/app/Service/ConsumeService.php',
         'App\\Service\\MovieService' => __DIR__ . '/../..' . '/app/Service/MovieService.php',
         'App\\Service\\ReservationService' => __DIR__ . '/../..' . '/app/Service/ReservationService.php',
+        'App\\Service\\RoleService' => __DIR__ . '/../..' . '/app/Service/RoleService.php',
         'App\\Service\\RoomService' => __DIR__ . '/../..' . '/app/Service/RoomService.php',
         'App\\Service\\SeatService' => __DIR__ . '/../..' . '/app/Service/SeatService.php',
         'App\\Service\\SeatTypeService' => __DIR__ . '/../..' . '/app/Service/SeatTypeService.php',
@@ -1494,6 +1504,14 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'Faker\\Provider\\zh_TW\\Text' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Provider/zh_TW/Text.php',
         'Faker\\UniqueGenerator' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/UniqueGenerator.php',
         'Faker\\ValidGenerator' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/ValidGenerator.php',
+        'Firebase\\JWT\\BeforeValidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/BeforeValidException.php',
+        'Firebase\\JWT\\CachedKeySet' => __DIR__ . '/..' . '/firebase/php-jwt/src/CachedKeySet.php',
+        'Firebase\\JWT\\ExpiredException' => __DIR__ . '/..' . '/firebase/php-jwt/src/ExpiredException.php',
+        'Firebase\\JWT\\JWK' => __DIR__ . '/..' . '/firebase/php-jwt/src/JWK.php',
+        'Firebase\\JWT\\JWT' => __DIR__ . '/..' . '/firebase/php-jwt/src/JWT.php',
+        'Firebase\\JWT\\JWTExceptionWithPayloadInterface' => __DIR__ . '/..' . '/firebase/php-jwt/src/JWTExceptionWithPayloadInterface.php',
+        'Firebase\\JWT\\Key' => __DIR__ . '/..' . '/firebase/php-jwt/src/Key.php',
+        'Firebase\\JWT\\SignatureInvalidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/SignatureInvalidException.php',
         'Fruitcake\\Cors\\CorsService' => __DIR__ . '/..' . '/fruitcake/php-cors/src/CorsService.php',
         'Fruitcake\\Cors\\Exceptions\\InvalidOptionException' => __DIR__ . '/..' . '/fruitcake/php-cors/src/Exceptions/InvalidOptionException.php',
         'GrahamCampbell\\ResultType\\Error' => __DIR__ . '/..' . '/graham-campbell/result-type/src/Error.php',

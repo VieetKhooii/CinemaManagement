@@ -67,13 +67,17 @@ function showPage(name,page){
         success: function(data) {
             if (data.status === 'success'){
                 const message1 = data.data.data;
+                const total = data.last_page;
+                const current_page = data.data.current_page;
                 const message = Array.isArray(message1) && message1.length === 0 ? "" : message1;
-                console.log(message)
+                console.log(total)
+                console.log(current_page)
+                
                 $.ajax({
-                    type: 'POST', // Use POST method to send data to PHP
-                    url: '/admin/query', // PHP script to handle the data
+                    type: 'POST',
+                    url: '/admin/query',
                     
-                    data: {message: message, name: name}, // Pass the message data to PHP
+                    data: {message: message, name: name, total: total, current_page: current_page}, // Pass the message data to PHP
                     success: function(response) {
                         $('#content').html(response);
                     },
@@ -94,7 +98,8 @@ function showPage(name,page){
         },
         error: function(xhr, status, error) {
             // console.error(xhr.responseText);
-            alert("Đã xảy ra lỗi khi chèn dữ liệu.");
+            alert("Session has expired! Please Provide credential");
+            location.reload(true);
         }
     });
 }
@@ -102,6 +107,7 @@ function showPage(name,page){
 // hiện trang add
 function openPage(name,value,id,idtable){
     var url="";
+    // Thêm
     if (value==0){
         if (name === 'rooms' || name === 'seatTypes' || name === 'roles' || name === 'categories' ||
             name ==='seats' || name === 'reservations' || name === 'transactions') {
@@ -111,13 +117,39 @@ function openPage(name,value,id,idtable){
         url='/admin/add?name='+name;
         window.history.pushState({}, "", `?add_form`);
     }
+
+    // chỉnh sửa
     else{
 
         window.history.pushState({}, "", `?edit_form`);
-        url = 'admin_add.php?name=' + encodeURIComponent(name) + 
+        tableInfo = '';
+        idName = '';
+        url = '/admin/edit?name=' + encodeURIComponent(name) + 
                '&id=' + encodeURIComponent(id) + '&idtable=' + encodeURIComponent(idtable);
+               url1 = 'http://localhost:8000/'+name+'/search';
+               console.log(url1)
+               $.ajax({
+                   type: 'POST',
+                   data: {
+                    [idtable]: id
+                   },
+                   url: url1,
+                   dataType: 'json',
+                   async: false,
+                   success: function(data) {
+                       if (data.status === 'success'){
+                           const message1 = data.data;
+                           const message = Array.isArray(message1) && message1.length === 0 ? "" : message1;
+                           tableInfo = message;
+                           url += '&tableInfo=' + JSON.stringify(tableInfo);
+                       }
+                   },
+                   error: function(xhr, status, error) {
+                       // console.error(xhr.responseText);
+                       alert("Error enter edit");
+                   }
+               });
     }
-    
     // Sử dụng AJAX để tải nội dung của admin_add.php
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -125,6 +157,7 @@ function openPage(name,value,id,idtable){
             document.getElementById('content').innerHTML = this.responseText;
         }
     };
+    console.log(url)
     xhttp.open('GET', url, true);
     xhttp.send();
     
@@ -203,7 +236,7 @@ function insertDB(tableName, e) {
         type: 'POST',
         url: url,
         data: formData, // Truyền formData 
-        processData: false, // Không xử lý dữ liệu
+        // processData: false, // Không xử lý dữ liệu
         success: function(response) {
             $('#add_form')[0].reset(); // Đặt lại form sau khi gửi thành công
             alert("Dữ liệu đã được chèn thành công!");
@@ -226,186 +259,77 @@ function insertDB(tableName, e) {
 //cập nhật, sửa 
 function updateDB(tableName,id,idtable, e){
     e.preventDefault();
-    var formData = new FormData($('#edit_form')[0]); // Sử dụng FormData để lấy dữ liệu từ form
-    formData.append('tableName', tableName); // Thêm tên bảng vào formData
-    formData.append('id',id);
-    formData.append('idtable',idtable);
+    url = 'http://localhost:8000/'+tableName+'/'+id;
+    console.log(url);
+    // var formData = new FormData($('#add_form')[0]); // Sử dụng FormData để lấy dữ liệu từ form
+    // formData.append('tableName', tableName); // Thêm tên bảng vào formData
+    var formData = $('#edit_form').serialize();
+    console.log(formData)
     $.ajax({
-        type: 'POST',
-        url: 'update_query.php',
+        type: 'PUT',
+        url: url,
         data: formData, // Truyền formData 
-        processData: false, // Không xử lý dữ liệu
-        contentType: false, // Không đặt loại nội dung
+        // processData: false, // Không xử lý dữ liệu
         success: function(response) {
-            console.log(response);
-            //$('#edit_form')[0].reset(); // Đặt lại form sau khi gửi thành công
-            alert("Dữ liệu đã được chèn thành công!");
+            // $('#add_form')[0].reset(); // Đặt lại form sau khi gửi thành công
+            alert("Dữ liệu đã được sửa thành công!");
         },
         error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-            alert("Đã xảy ra lỗi khi chèn dữ liệu.");
-        }
+            if (xhr.status === 422) {
+              var responseJSON = xhr.responseJSON;
+              if (responseJSON  && responseJSON.error) {
+                alert(responseJSON.error);
+              } else {
+                alert('Validation error occurred.');
+              }
+            } else {
+              console.error('AJAX request failed:', status, error);
+            }
+          }
     });
 }
 
 
 // xóa 
-function deleteDB(name, value,columnName){
+function deleteDB(tableName, value){
+    url = 'http://localhost:8000/'+tableName+'/hide/'+value;
+    console.log(url);
+    $.ajax({
+        type: 'PUT',
+        url: url,
+        // processData: false, // Không xử lý dữ liệu
+        success: function(response) {
+            // $('#add_form')[0].reset(); // Đặt lại form sau khi gửi thành công
+            alert("Xóa thành công!");
+        },
+        error: function(xhr, status, error) {
+            if (xhr.status === 422) {
+              var responseJSON = xhr.responseJSON;
+              if (responseJSON  && responseJSON.error) {
+                alert(responseJSON.error);
+              } else {
+                alert('Validation error occurred.');
+              }
+            } else {
+              console.error('AJAX request failed:', status, error);
+            }
+          }
+    });
     // alert(name + value);
     // alert(columnName);
-    if (confirm("Are you sure you want to delete this record?")) {
-        // Gửi yêu cầu AJAX đến máy chủ để xóa bản ghi
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "delete_query.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                // Xử lý phản hồi từ máy chủ nếu cần
-                alert(xhr.responseText); // Hiển thị thông báo từ máy chủ
-                // Sau khi xóa thành công, có thể thực hiện cập nhật giao diện người dùng
-            }
-        };
-        xhr.send("name=" + encodeURIComponent(name) + "&value=" + encodeURIComponent(value)+"&columnName="+ encodeURIComponent(columnName));
-    }
-    showContent(name,1);
-}
-
-function processing(name, action) {
-    var url = 'http://localhost:8000/admin/getRow'+ name;
-    var url2 = 'http://localhost:8000/admin/getDescription'+ name;
-    console.log("url getNumberOfRow: " + url);
-    console.log("url getNumberOfRow: " + url);
-    $.ajax({
-        type: 'GET',
-        url: url,
-        dataType: 'json',
-        async: false,
-        success: function(data) {
-            if (data.status === 'success') {
-                var message = data.data;
-                console.log("number of rows: " + message);
-                $.ajax({
-                    type: 'POST',
-                    url: 'admin_add.php',
-                    data: { result: message, name: name },
-                    success: function(response) {
-                        console.log(response);
-                        $('#content').html(response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                        alert("An error occurred while processing the data.");
-                    }
-                });
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-            alert("Error processing");
-        }
-    });
-}
-
-function getNumberOfRow(name) {
-    var url = 'http://localhost:8000/admin/getRow/' + name;
-    console.log("url getNumberOfRow: " + url);
-    $.ajax({
-        type: 'GET',
-        url: url,
-        dataType: 'json',
-        async: true,
-        success: function(data) {
-            if (data.status === 'success') {
-                var message = data.data;
-                console.log("number of rows: " + message);
-                $.ajax({
-                    type: 'POST',
-                    url: 'admin_add.php',
-                    data: { result: message, name: name },
-                    success: function(response) {
-                        console.log(response);
-                        $('#content').html(response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                        alert("An error occurred while processing the data.");
-                    }
-                });
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-            alert("Error getting rows");
-        }
-    });
-}
-
-function getDescription(name) {
-    var url = 'http://localhost:8000/admin/getDescription/' + name;
-    console.log("url getDescription: " + url);
-    $.ajax({
-        type: 'GET',
-        url: url,
-        dataType: 'json',
-        async: false,
-        success: function(data) {
-            if (data.status === 'success') {
-                var columnDetail = data.data;
-                console.log("columnDetail: " + columnDetail);
-                $.ajax({
-                    type: 'POST',
-                    url: 'admin_add.php',
-                    data: { columnDetail: columnDetail },
-                    success: function(response) {
-                        console.log("Response: " + response);
-                        // $('#content').html(response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                        alert("An error occurred while processing the data.");
-                    }
-                });
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-            alert("Error getting rows");
-        }
-    });
-}
-
-
-function getColumnsOfTable(name, columnName1, columnName2){
-    url = 'http://localhost:8000/admin/getColumn/'+name+'/'+columnName1+'/'+columnName2;
-    console.log("url"+url)
-    $.ajax({
-        type: 'GET',
-        url: url,
-        dataType: 'json',
-        async: 'false',
-        success: function(data) {
-            if (data.status === 'success'){
-                const message = data.data;
-                console.log("columns: "+message)
-                $.ajax({
-                    type: 'POST', // Use POST method to send data to PHP
-                    url: 'admin_add.php', // PHP script to handle the data
-                    
-                    data: {columns: message}, // Pass the message data to PHP
-                    success: function(response) {
-                        // console.log(response);
-                        // $('#content').html(response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);
-                        alert("An error occurred while processing the data.");
-                    }
-                });
-            }
-        },
-        error: function(xhr, status, error) {
-            // console.error(xhr.responseText);
-            alert("Error getting rows");
-        }
-    });
+    // if (confirm("Are you sure you want to delete this record?")) {
+    //     // Gửi yêu cầu AJAX đến máy chủ để xóa bản ghi
+    //     var xhr = new XMLHttpRequest();
+    //     xhr.open("POST", "delete_query.php", true);
+    //     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    //     xhr.onreadystatechange = function() {
+    //         if (xhr.readyState == 4 && xhr.status == 200) {
+    //             // Xử lý phản hồi từ máy chủ nếu cần
+    //             alert(xhr.responseText); // Hiển thị thông báo từ máy chủ
+    //             // Sau khi xóa thành công, có thể thực hiện cập nhật giao diện người dùng
+    //         }
+    //     };
+    //     xhr.send("name=" + encodeURIComponent(name) + "&value=" + encodeURIComponent(value)+"&columnName="+ encodeURIComponent(columnName));
+    // }
+    // showContent(tableName,1);
 }

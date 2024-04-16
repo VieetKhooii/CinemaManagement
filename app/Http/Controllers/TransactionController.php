@@ -19,7 +19,7 @@ class TransactionController extends Controller
         //
         $transaction = $this->transactionService->getAllTransactions();
         if ($transaction){
-            return response()->json(['status' => 'success', 'message' => 'transaction got successfully', 'data' => $transaction], 201);
+            return response()->json(['last_page' => $transaction->lastPage(), 'status' => 'success', 'message' => 'transaction got successfully', 'data' => $transaction], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -52,7 +52,7 @@ class TransactionController extends Controller
     {
         //
         $array = [
-            'transaction_id'=> $request->input('transaction_id'),
+            // 'transaction_id'=> $request->input('transaction_id'),
             'user_id'=> $request->input('user_id'),
             'total_cost'=> 0,
             'voucher_id'=> $request->input('voucher_id'),
@@ -115,11 +115,11 @@ class TransactionController extends Controller
     public function search(Request $request){// thiếu tìm kiếm trong khoảng ngày và giá tiền
         $array = [
             'transaction_id'=> $request->input('transaction_id'),
-            'user_id'=> $request->input('user_id'),
-            //'total_cost'=> 0,
-            'voucher_id'=> $request->input('voucher_id'),
-            'payment_method'=> $request->input('payment_method'),
-            //'purchase_date'=> date("Y-m-d H:i:s"),
+            // 'user_id'=> $request->input('user_id'),
+            // 'total_cost'=> $request->input('total_cost'),
+            // 'voucher_id'=> $request->input('voucher_id'),
+            // 'payment_method'=> $request->input('payment_method'),
+            // 'purchase_date'=> date("Y-m-d H:i:s"),
         ];
         $transaction = $this->transactionService->searchTransaction($array);
         if ($transaction){

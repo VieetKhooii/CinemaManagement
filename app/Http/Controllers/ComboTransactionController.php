@@ -18,7 +18,7 @@ class ComboTransactionController extends Controller
         //
         $comboTran = $this->comboTransactionService->getAllComboTransactions();
         if ($comboTran){
-            return response()->json(['status' => 'success', 'message' => 'combo_transaction got successfully', 'data' => $comboTran], 201);
+            return response()->json(['last_page' => $comboTran->lastPage(),'status' => 'success', 'message' => 'combo_transaction got successfully', 'data' => $comboTran], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);

@@ -23,7 +23,19 @@ class Voucher extends Model
         'voucher_condition' => 'date',
         'display'=> 'boolean'
     ];
+    
+    public static function search(array $searchParams)
+    {
+        $query = static::query();
 
+        foreach ($searchParams as $key => $value) {
+            if ($value !== null) {
+                $query->where($key, 'like', '%' . $value . '%');
+            }
+        }
+
+        return $query->get();
+    }
     protected static function boot()
     {
         parent::boot();

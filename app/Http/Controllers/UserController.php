@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Users;
 use App\Service\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,7 +28,8 @@ class UserController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Get user successfully',
-                'data' => $users]);
+                'data' => $users,
+                'last_page' => $users->lastPage()]);
         }
         else {
             return response()->json([
@@ -45,7 +47,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             // 'user_id' => 'required|string|size:6',
             'full_name' => 'required|string|between:1,50',
-            'email' => 'required|string|between:1,100|email|ends_with:@gmail.com',
+            'email' => 'required|string|between:1,100|email|ends_with:@gmail.com|unique:users,email',
             'password' => 'required|string|between:1,100|min:8|regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)/', 
             'phone' => 'required|string|size:10',
             'date_of_birth' => 'required|date',
@@ -61,6 +63,20 @@ class UserController extends Controller
                 422);
         }
 
+        $existingPhone = Users::where('phone', $request->input('phone'))->first();
+        if ($existingPhone){
+            return response()->json([
+                'error' => "Phone has already existed",
+                'status' => 'error'], 
+                422);
+        }
+        $existingAddress = Users::where('address', $request->input('address'))->first();
+        if ($existingAddress){
+            return response()->json([
+                'error' => "Address has already existed",
+                'status' => 'error'], 
+                422);
+        }
         $userArray = [
             // 'user_id' => $request->input('user_id'),
             'full_name' => $request->input('full_name'),
@@ -90,30 +106,32 @@ class UserController extends Controller
 
     public function update($id, Request $request){
         $validator = Validator::make($request->all(), [
-            'user_name' => 'required|string|between:1,50',
-            'email' => 'required|string|between:1,100|email|ends_with:@gmail.com',
+            'full_name' => 'required|string|between:1,50',
+            'email' => 'required|string|between:1,100|email|ends_with:@gmail.com|unique:users,email',
             'phone' => 'required|string|size:10',
             'date_of_birth' => 'required|date',
             'gender' => 'required|string|between:1,20',
             'address' => 'required|string|between:1,100',
             'score' => 'required|int',
+            'coin' => 'required|int',
             'role_id' => 'required|int',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                'error' => $validator->errors(),
+                'error' => $validator->errors()->first(),
                 'status' => 'error'], 
                 422);
         }
         $user = [
-            'user_name' => $request->input('user_name'),
+            'full_name' => $request->input('full_name'),
             'email' => $request->input('email'),
             'phone' => $request->input('phone'),
             'date_of_birth' => $request->input('date_of_birth'),
             'gender' => $request->input('gender'),
             'address' => $request->input('address'),
             'score' => $request->input('score'),
+            'coin' => $request->input('coin'),
             'status' => $request->input('status'),
             'role_id' => $request->input('role_id'),
         ];
@@ -124,17 +142,52 @@ class UserController extends Controller
                 'status' => 'success'],
                 200);
         }
-        else if ($result == 0){
-            return response()->json([
-                'message' => 'Data stays the same',
-                'status' => 'error'], 
-                200);
-        }
+        // else if ($result == 0){
+        //     return response()->json([
+        //         'message' => 'Data stays the same',
+        //         'status' => 'error'], 
+        //         200);
+        // }
         else {
             return response()->json([
                 'error' => 'update failed',
                 'status' => 'error'], 
                 422);
+        }
+    }
+
+    public function search(Request $request){
+        $array = [
+            'user_id' => $request->input('user_id'),
+            'user_name' => $request->input('user_name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+            'date_of_birth' => $request->input('date_of_birth'),
+            'gender' => $request->input('gender'),
+            'address' => $request->input('address'),
+            'score' => $request->input('score'),
+            'status' => $request->input('status'),
+            'role_id' => $request->input('role_id'),
+        ];
+        $user = $this->userService->searchUser($array);
+        if ($user){
+            return response()->json(['status' => 'success', 'message' => 'user searched successfully', 'data' => $user], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
+    }
+
+    public function hide (string $id){
+        $array = [
+            'status' => false,
+        ];
+        $user = $this->userService->updateUser($array, $id);
+        if ($user){
+            return response()->json(['status' => 'success', 'message' => 'user hid successfully', 'data' => $user], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
         }
     }
 } 

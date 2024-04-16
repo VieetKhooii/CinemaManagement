@@ -23,7 +23,7 @@ class ComboController extends Controller
         //
         $combo = $this->comboService->getAllCombos();
         if ($combo){
-            return response()->json(['status' => 'success', 'message' => 'combo got successfully', 'data' => $combo], 201);
+            return response()->json(['last_page' => $combo->lastPage(), 'status' => 'success', 'message' => 'combo got successfully', 'data' => $combo], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -128,7 +128,7 @@ class ComboController extends Controller
             
         ]);
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json(['error' => $validator->errors()->first()], 422);
         }  
         $array = [
             'price'=> $request->input('price'),

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Service\ReservationService;
+use Illuminate\Support\Facades\Validator;
 
 class ReservationController extends Controller
 {
@@ -22,7 +23,8 @@ class ReservationController extends Controller
             return response()->json([
                 'status' => 'success', 
                 'message' => 'reservation got successfully', 
-                'data' => $reserve], 201);
+                'data' => $reserve,
+                'last_page' => $reserve->lastPage()], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()', 'status' => 'error'], 422);
@@ -41,7 +43,16 @@ class ReservationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'reservation_id' => 'required|string|between:1,6',
+            'price' => 'required|int|min:0.01',
+            'showtime_id' => 'required|string|between:1,10',
+            'seat_id' => 'required|string|between:1,4', 
+            'transaction_id' => 'required|string|between:1,10',
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()->first()], 422);
+        }   
         $array = [
             'price'=> 0, 
             'showtime_id'=> $request->input('showtime_id'),
@@ -87,6 +98,38 @@ class ReservationController extends Controller
     public function update(Request $request, string $id)
     {
         //
+    }
+
+    public function search(Request $request)
+    {
+        //
+        $array = [    
+            'reservation_id'=> $request->input('reservation_id'),
+            'price'=> $request->input('price'),
+            'showtime_id'=> $request->input('showtime_id'),
+            'seat_id'=> $request->input('seat_id'),
+            'transaction_id'=> $request->input('transaction_id'),
+        ];
+        $reservation = $this->reservationService->searchReservation($array);
+        if ($reservation){
+            return response()->json(['status' => 'success', 'message' => 'reservation searched successfully', 'data' => $reservation], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
+    }
+
+    public function hide(string $id){
+        $array = [
+            'display'=> false,
+        ];
+        $reservation = $this->reservationService->updateReservation($array, $id);
+        if ($reservation){
+            return response()->json(['status' => 'success', 'message' => 'reservation hid successfully', 'data' => $reservation], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     /**

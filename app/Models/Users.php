@@ -5,7 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 // use Illuminate\Auth\Passwords\CanResetPassword;
-// use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Auth\Notifications\ResetPassword;
 // use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,7 +17,6 @@ class Users extends Authenticatable implements JWTSubject
 {
     protected $table = 'users'; // The name must match the table name in database
     protected $primaryKey = 'user_id';
-    
     public $incrementing = false; // Assuming User_Id is not auto-incrementing
     protected $keyType = 'string'; // Assuming User_Id is a varchar
     public $timestamps = false;
@@ -37,6 +36,7 @@ class Users extends Authenticatable implements JWTSubject
         'gender',
         'address',
         'score',
+        'coin',
         'status',
         'role_id',
     ];
@@ -149,28 +149,52 @@ class Users extends Authenticatable implements JWTSubject
         parent::boot();
 
         static::creating(function ($user) {
-            $rolePrefixes = [
-                'admin' => 'AD',
-                'moderator' => 'MD',
-                'user' => 'MV'
-                // Add more roles and their prefixes as needed
-            ];
-            $latestId = static::max('user_id');
-
+            $rolePrefix = '';
+            switch ($user->role_id) {
+                case '1':
+                    $rolePrefix = 'AD';
+                    break;
+                case '2':
+                    $rolePrefix = 'EMP';
+                    break;
+                case '4':
+                    $rolePrefix = 'VIP';
+                    break;
+                case '5':
+                    $rolePrefix = 'PLA';
+                    break;
+                // Add more cases for other roles if needed
+                default:
+                    $rolePrefix = 'CLI'; // Default to client
+            }
+            $latestId = static::where('role_id', $user->role_id)->max('user_id');
             // Nếu không có ID trước đó, bắt đầu từ CA0000
             if (!$latestId) {
-                $newId = 'MV000';
+                $newId = $rolePrefix . '000';
             } else {
                 // Tách phần số từ ID cuối cùng
-                $numberPart = substr($latestId, 2);
-                // Tăng số lên 1 đơn vị
+                $numberPart = substr($latestId, strlen($rolePrefix));
+                // Increment the number part by 1
                 $nextNumber = intval($numberPart) + 1;
-                // Tạo ID mới
-                $newId = 'MV' . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
+                // Generate the new ID
+                $newId = $rolePrefix . str_pad($nextNumber, 3, '0', STR_PAD_LEFT);
             }
 
             // Gán ID mới cho model
             $user->user_id = $newId;
         });
+    }
+
+    public static function search(array $searchParams)
+    {
+        $query = static::query();
+
+        foreach ($searchParams as $key => $value) {
+            if ($value !== null) {
+                $query->where($key, 'like', '%' . $value . '%');
+            }
+        }
+
+        return $query->get();
     }
 }

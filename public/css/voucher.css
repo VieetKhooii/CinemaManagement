@@ -1,0 +1,93 @@
+.container_voucher {
+    width: 100%;
+    height: 100%;
+    
+}
+
+.list_voucher {
+    width: 65%;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.list_voucher .voucher {
+    background-color: beige;
+    width: 250px;
+    height: 250px;
+    display: grid;
+    grid-template-rows: 5fr 0 1fr;
+    /* grid-template-rows: 0 1fr 0; */
+    place-items: center;
+    overflow: hidden;
+    transition: 0.5s ease;
+    box-shadow: 10px 1px 20px 10px rgba(160, 160, 160, 0.5);
+    margin-bottom:20px ;
+    border-radius: 20px;
+    padding: 5px;
+}
+.list_voucher .voucher .img,
+.list_voucher .voucher .description,
+.list_voucher .voucher .text_time{
+    width: 100%;
+    height: 100%;
+    background-size:cover;
+    background-position: center;
+    transform-origin: center;
+    transition: 0.75s ease;
+}
+.list_voucher .voucher .img {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 11;
+    overflow: hidden;
+}
+.list_voucher .voucher .description p{
+    height: 100%;
+    margin: 0;
+}
+.list_voucher .voucher .description{
+    background-color: white;
+    transition:all 1.5s ease;
+    width: 100%;
+    height: 90%;
+    display: flex;
+    align-items: center;
+    overflow: auto;
+    white-space: pre-line;
+    padding-left: 10px;
+}
+.list_voucher .voucher .description::-webkit-scrollbar {
+    width: 10px; 
+}
+
+.list_voucher .voucher .description::-webkit-scrollbar-track {
+    background-color: #ffffff;
+}
+
+.list_voucher .voucher .description::-webkit-scrollbar-thumb {
+    background-color: beige;
+}
+
+.list_voucher .voucher .description::-webkit-scrollbar-thumb:hover {
+    background-color:rgb(209, 209, 185) ;
+}
+
+.list_voucher .voucher .text_time{
+    border-bottom-left-radius:10px ;
+    border-bottom-right-radius:10px ;
+    background-color: white;
+    z-index: 11;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.list_voucher .voucher:hover{
+    grid-template-rows: 0fr 1fr 0fr;
+}

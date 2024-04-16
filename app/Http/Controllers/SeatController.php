@@ -23,7 +23,8 @@ class SeatController extends Controller
         //
         $seat = $this->seatService->getAllSeats();
         if ($seat){
-            return response()->json(['status' => 'success', 'message' => 'seats got successfully', 'data' => $seat], 201);
+            return response()->json(['status' => 'success', 'message' => 'seats got successfully', 'data' => $seat,
+            'last_page' => $seat->lastPage()], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -102,8 +103,9 @@ class SeatController extends Controller
         $array = [
             'seat_row' => $request->input('seat_row'),
             'seat_number' => $request->input('seat_number'),
-            'is_reserved' => false,
+            'is_reserved' => $request->input('is_reserved'),
             'seat_type_id' => $request->input('seat_type_id'),
+            'display'=> $request->input('display'),
             'room_id'=> $request->input('room_id'),
         ];
         $seat = $this->seatService->updateSeat($array, $id);

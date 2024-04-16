@@ -68,26 +68,42 @@ class RegisterController extends Controller
     {
         $validator = Validator::make($request->all(), [
             // 'user_id' => 'required|string|size:6',
-            'full_name' => 'required|string|between:1,75',
-            'email' => 'required|string|between:1,100|email|ends_with:@gmail.com',
+            'full_name' => 'required|string|between:1,50',
+            'email' => 'required|string|between:1,100|email|ends_with:@gmail.com|unique:users,email',
             'password' => 'required|string|between:1,100|min:8|regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)/', 
             'phone' => 'required|string|size:10',
             'date_of_birth' => 'required|date',
             'gender' => 'required|string|between:1,20',
             'address' => 'required|string|between:1,100',
+            'role_id' => 'required|int',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                'status' => 'error',
                 'error' => $validator->errors()->first(),
-            ]);
+                'status' => 'error'], 
+                422);
+        }
+
+        $existingPhone = Users::where('phone', $request->input('phone'))->first();
+        if ($existingPhone){
+            return response()->json([
+                'error' => "Phone has already existed",
+                'status' => 'error'], 
+                422);
+        }
+        $existingAddress = Users::where('address', $request->input('address'))->first();
+        if ($existingAddress){
+            return response()->json([
+                'error' => "Address has already existed",
+                'status' => 'error'], 
+                422);
         }
 
         try {
             $user = Users::create([
                 // 'user_id' => $request->input('user_id'),
-                'user_id' => "123120",
+                // 'user_id' => "123120",
                 'full_name' => $request->input('full_name'),
                 'email' => $request->input('email'),
                 'password' => $request->input('password'),

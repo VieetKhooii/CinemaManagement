@@ -20,7 +20,7 @@ class ShowtimeController extends Controller
         //
         $showTime = $this->showtimeService->getAllShowtimes();
         if ($showTime){
-            return response()->json(['status' => 'success', 'message' => 'showtime got successfully', 'data' => $showTime], 201);
+            return response()->json(['last_page' => $showTime->lastPage(), 'status' => 'success', 'message' => 'showtime got successfully', 'data' => $showTime], 201);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -52,7 +52,7 @@ class ShowtimeController extends Controller
         $validator = Validator::make($request->all(), [
             'movie_id' => 'required|string|between:1,6',
             'date' => 'required|date',
-            'start_time' => 'required|date_format:H:i:s', 
+            // 'start_time' => 'required|date_format:H:i:s', 
         ]);
 
         if ($validator->fails()) {
@@ -62,7 +62,7 @@ class ShowtimeController extends Controller
                 422);
         }
         $array = [
-            'showtime_id'=> $request->input('showtime_id'),
+            // 'showtime_id'=> $request->input('showtime_id'),
             'movie_id'=> $request->input('movie_id'),
             'date'=> $request->input('date'),
             'start_time'=> $request->input('start_time'),
@@ -105,7 +105,18 @@ class ShowtimeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'movie_id' => 'required|string|between:1,6',
+            'date' => 'required|date',
+            'start_time' => 'required|date_format:H:i:s', 
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors()->first(),
+                'status' => 'error'], 
+                422);
+        }
         $array = [
             'movie_id'=> $request->input('movie_id'),
             'date'=> $request->input('date'),
