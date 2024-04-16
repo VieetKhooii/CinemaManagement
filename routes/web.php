@@ -64,6 +64,8 @@ Route::middleware(['jwt.attach', 'refresh.token'])->group(function () {
     Route::post('admin/query', function(){
         return view('admin/admin_query');
     });
+    Route::view('/member', 'member');
+    Route::view('/dashboard', 'app');
 
     Route::resource('users', UserController::class);
     Route::post('users/search', [UserController::class, 'search']);
@@ -162,11 +164,6 @@ Route::post('password/resent', [ForgotPasswordController::class, 'forgotPassword
 Route::post('password/pass-reset', [ForgotPasswordController::class, 'updatePassword']);
 Route::view('/forget_pass','auth/passwords/forgetpass');
 Route::view('/xacthuc','auth/passwords/xacthuc');
-// Route::view('password/reset/{token}', 'resetpass');
-// Route::get('admin/add', function(Request $request){
-//     $name = $request->query('name');
-//     return view('admin/admin_add', ['name' => $name]);
-// });
 
 Route::auth();
 Auth::routes(['verify' => true]);

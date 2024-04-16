@@ -19,17 +19,26 @@
             <div class="vip_grade">
                 <div id="show_member_login" style="display: block;">
                     <div class="gradeinfo">
-                        "Xếp hạng"
-                        <strong class="name_members" id="member_name">Võ Lê Kim Tiễn </strong>
-                        "của bạn là"
+                        Xếp hạng của
+                        <?php 
+                        use \Illuminate\Support\Facades\Cookie;
+                            $cookie = Cookie::get('jwt_role');
+                            $cookie_data = json_decode($cookie, true);
+                            $username = isset($cookie_data['username']) ? $cookie_data['username'] : 'Unknown';
+                            
+                        ?>
+                        <strong class="name_members" id="member_name"> <?php echo $username?> </strong>
+                        là
                         <strong class="grade_members" id="member_grades">Normal</strong>
                     </div>
-
 
                     <div class="wrap_gradegraph">
                         <dl class="gradegraph_txt">
                             <dt>Số tiền chi tiêu nâng cấp lên VIP</dt>
                             <dd class="money_grade">
+                                <script>
+                                    // console.log(getUserInfo());
+                                </script>
                                 <span class="num" id="vip_points">0</span>
                                 <span class="txt_menhgia">VNĐ</span>
                             </dd>
@@ -48,7 +57,7 @@
                                         "2.000.000"
                                     </li>
                                     <li class="point_l3" id="plantinum_point">
-                                        <span>Plantinum</span>
+                                        <span>Bạch kim</span>
                                         "5.000.000"
                                     </li>
 

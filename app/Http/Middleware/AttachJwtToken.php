@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\RedirectResponse;
+use \Illuminate\Support\Facades\Cookie;
 
 class AttachJwtToken
 {
@@ -16,19 +17,13 @@ class AttachJwtToken
      */
     public function handle(Request $request, Closure $next)
     {
-        $token = $request->cookie('jwt');
-        // $response = $next($request);
-        // Check if the token exists
+        $token = Cookie::get('jwt');
         if ($token) {
-            // Attach the token to the Authorization header
             $request->headers->set('Authorization', 'Bearer ' . $token);
         }
         else {
-            // Handle the case where the token is missing or invalid
             return new RedirectResponse('/login');
         }
-        
-        // Pass the request to the next middleware or controller
         return $next($request);
     }
 }

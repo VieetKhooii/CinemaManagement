@@ -3,13 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Middleware\AttachJwtToken;
-use App\Models\Users;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use App\Service\UserService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 
@@ -44,7 +40,6 @@ class LoginController extends Controller
         
         $token = Auth::attempt($credentials);
         if ($token) {
-            // $request->session()->regenerate();
             $user = Auth::user();
             $responseJson = [
                 'status' => 'success',
@@ -56,8 +51,14 @@ class LoginController extends Controller
                     'type' => 'bearer',
                 ]
             ];
+            $role_id = json_encode([
+                'username' => $user->full_name,
+                'role_id' => $user->role_id,
+            ]);
+            // echo $user->role_id;
             $response = new Response($responseJson);
-            $response->withCookie(cookie('jwt', $token, 1, null, null, false, false));
+            $response->withCookie(cookie('jwt', $token, 5, null, null, false, false));
+            $response->withCookie(cookie('jwt_role', $role_id, 5, null, null, false, false));
             return $response;
         }
         else {

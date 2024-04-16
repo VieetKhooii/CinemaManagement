@@ -19,7 +19,7 @@ $(document).ready(function() {
                         window.location.href = '/admin';
                     }
                     else if (data.role_id === 3){
-                        window.location.href = '/users';
+                        window.location.href = '/dashboard';
                     }
                 } else if (data.status === 'error'){
 //                     let jwt = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvbG9naW4iLCJpYXQiOjE3MTI1NDc1NTMsImV4cCI6MTcxMjU0Nzg1MywibmJmIjoxNzEyNTQ3NTUzLCJqdGkiOiJDV0U4eHZiREYwOWtPRGtPIiwic3ViIjoiQUQwMDAiLCJwcnYiOiJmNjRkNDhhNmNlYzdiZGZhN2ZiZjg5OTQ1NGI0ODhiM2U0NjI1MjBhIn0.BBevDsNJDzLC3KM0YFm5MVB1mSGSoRneO1hR5o8qT4k'

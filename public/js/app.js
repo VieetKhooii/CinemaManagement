@@ -302,3 +302,19 @@ function showVip(tabName, idon) {
   document.getElementById(tabName).style.display = 'block';
 }
 
+function getUserInfo(){
+  $.ajax({
+    method: 'GET',
+    url: 'http://localhost:8000/users',
+    async: false,
+    dataType: 'json',
+    success: function(data) {
+        if (data.status === 'success') {
+            return data.data;
+        } else if (data.status === 'error'){
+            const message = data.error;
+            alert(message);
+        }
+      },
+  });
+}
