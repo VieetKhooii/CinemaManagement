@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="..//css/app.css">
+<link rel="stylesheet" href="/css/app.css">
 
 <div class="slideshow-container">
   <div class="slides">
@@ -23,4 +23,4 @@
   </div>
 </div>
 
-<script src="..//js/app.js"></script>
+<script src="/js/app.js"></script>

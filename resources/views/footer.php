@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="..//css/header_footer.css">
+<link rel="stylesheet" href="/css/header_footer.css">
 <footer>
     <div class="foot_container">
         <div id="footer_menu">
@@ -12,5 +12,5 @@
             COPYRIGHT © LOTTECINEMAVN.COM - ALL RIGHTS RESERVED.
         </p>
     </div>
-    <script src="../js/app.js"></script>
+    <script src="/js/app.js"></script>
 </footer>

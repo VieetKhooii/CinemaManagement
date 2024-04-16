@@ -1,35 +1,39 @@
-<link rel="stylesheet" href="../css/screen_cwrap.css">
+<link rel="stylesheet" href="/css/screen_cwrap.css">
 <?php
-include('database.php');
-$result = mysqli_query($con, "select * from movie, showtime,category where showtime.movie_id = movie.movie_id and movie.category_id=category.category_id and movie.display='1' and showtime.date <= now()");
-// $result = mysqli_query($con, "select * from movie");
-$result2 = mysqli_query($con, "select * from movie, showtime,category where showtime.movie_id = movie.movie_id and movie.category_id=category.category_id and movie.display='0' and showtime.date <= now()");
+// include('database.php');
+
+use App\Helpers\Helper;
+
+$result = Helper::getMoviesForCustomer1();
+$result2 = Helper::getMoviesForCustomer0();
 
 $moviesOnScreen = array();
 $moviesComingUp = array();
 
 // Duyệt qua từng dòng dữ liệu và thêm vào mảng
-while ($row = mysqli_fetch_assoc($result)) {
+foreach($result as $row){
     $movieInfo = array(
         'movie_id' => $row['movie_id'],
         'movie_name' => $row['movie_name'],
         'movie_description' => $row['movie_description'],
         'duration' => $row['duration'],
         'bonus_price' => $row['bonus_price'],
-        'date' =>   date('d-m-y', strtotime($row['date'])),
+        'image' => $row['image'],
+        // 'date' =>   date('d-m-y', strtotime($row['date'])),
         'start_time' =>  $row['start_time'],
         'category_name' =>  $row['category_name'],
     );
     $moviesOnScreen[] = $movieInfo;
 }
-while ($row = mysqli_fetch_assoc($result2)) {
+foreach ($result2 as $row) {
     $movieInfo2 = array(
         'movie_id' => $row['movie_id'],
         'movie_name' => $row['movie_name'],
         'movie_description' => $row['movie_description'],
         'duration' => $row['duration'],
         'bonus_price' => $row['bonus_price'],
-        'date' =>   date('d-m-y', strtotime($row['date'])),
+        'image' => $row['image'],
+        // 'date' =>   date('d-m-y', strtotime($row['date'])),
         'start_time' =>  $row['start_time'],
         'category_name' =>  $row['category_name'],
     );
@@ -57,10 +61,10 @@ while ($row = mysqli_fetch_assoc($result2)) {
     </div>
 </div>
 
-<script src="../js/foot_item.js"></script>
+<script src="/js/foot_item.js"></script>
 <script>
     window.addEventListener("DOMContentLoaded", function() {
-        var movies = <?php echo json_encode($movies); ?>;
+        var movies = <?php echo json_encode($moviesOnScreen); ?>;
         type_film(movies); // Gọi hàm type_film với tham số là biến movies
         showItem(movies.length);
     });

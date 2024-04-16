@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="..//css/app.css">
-<link rel="stylesheet" href="../css/header_footer.css">
+<link rel="stylesheet" href="/css/app.css">
+<link rel="stylesheet" href="/css/header_footer.css">
 
 <div class="menu-container">
     <ul id="nav">

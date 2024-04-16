@@ -10,9 +10,9 @@
 
         <div id="end_Header">
             <div id="end_submenu">
-                <h5 id="signIn" onclick="loadSign('signin')"> Đăng nhập</h5>
-                <h5 id="signUp" onclick="loadSign('signup')"> Đăng kí</h5>
-                <h5 id="theTV">Thẻ thành viên</h5>
+                <!-- <h5 id="signIn" onclick="loadSign('signin')"> Đăng nhập</h5>
+                <h5 id="signUp" onclick="loadSign('signup')"> Đăng kí</h5> -->
+                <h5 id="theTV" onclick="loadSign('member')">Thẻ thành viên</h5>
                 <h5 id="htKH">Hỗ trợ khách hàng</h5>
                 <button id="language">ENGLISH</button>
             </div>

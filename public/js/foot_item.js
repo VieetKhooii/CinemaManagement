@@ -26,7 +26,7 @@ function type_film(movies) {
         html += `
             <div class="item_film" id="${count}" value="${movie.movie_id}">
                 <div id="img_film">
-                    <img src="/khonkho.jpg">
+                    <img src="${movie.image}">
                     <span class="num">${count}</span>
                 </div>
                 <div class="hover_item">
@@ -36,8 +36,7 @@ function type_film(movies) {
                 <div id="text_film">
                     <dt id="name_film"><a href="#" title="${movie.movie_name}">${movie.movie_name}</a></dt>
                     <dd>
-                        <span id="time">${movie.duration} Phút</span>
-                        <span id="date">${movie.date}</span>
+                        <span id="time">${movie.duration} Giờ</span>
                     </dd>
                 </div>
             </div>`;
