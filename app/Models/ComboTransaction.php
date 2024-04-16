@@ -17,7 +17,8 @@ class ComboTransaction extends Model
     protected $fillable = [
         'combo_id',
         'transaction_id',
-        'price_on_amount',
+        'unit_quantity',
+        'unit_price',
         'display',
     ];
     

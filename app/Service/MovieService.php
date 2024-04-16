@@ -24,7 +24,7 @@ class MovieService{
     public function updateMovie(array $data, string $id){
         return $this->movieRepository->updateMovie($data, $id);
     }
-    public function searchMovie(array $data){
-        return $this->movieRepository->searchMovie($data);
+    public function searchMovie($name, $minPrice, $maxPrice, $category){
+        return $this->movieRepository->searchMovie($name, $minPrice, $maxPrice, $category);
     }
 }

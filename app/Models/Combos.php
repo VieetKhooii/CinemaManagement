@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Combos extends Model
 {
-    protected $table = 'combos';
+    protected $table = 'combo';
     protected $primaryKey = 'combo_id';
 
     public $incrementing = false;
@@ -47,17 +47,23 @@ class Combos extends Model
         });
     }
 
-    public static function search(array $searchParams)
+    public function scopeSearch($query, $name, $minPrice, $maxPrice)
     {
-        $query = static::query();
+        $query = $this->query();
 
-        foreach ($searchParams as $key => $value) {
-            if ($value !== null) {
-                $query->where($key, 'like', '%' . $value . '%');
-            }
+        if ($name) {
+            $query->where('name', 'LIKE', "%$name%");
         }
 
-        return $query->get();
+        if ($minPrice) {
+            $query->where('price', '>=', $minPrice);
+        }
+
+        if ($maxPrice) {
+            $query->where('price', '<=', $maxPrice);
+        }
+
+        return $query;
     }
     
     protected $casts = [

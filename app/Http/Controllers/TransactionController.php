@@ -58,7 +58,7 @@ class TransactionController extends Controller
             'voucher_id'=> $request->input('voucher_id'),
             'payment_method'=> $request->input('payment_method'),
             'purchase_date'=> date("Y-m-d H:i:s"),
-            'display'=> 0,
+            'display'=> 1,
         ];
         $transaction = $this->transactionService->addTransaction($array);
         if ($transaction){

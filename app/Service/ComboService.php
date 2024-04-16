@@ -28,8 +28,8 @@ class ComboService{
         return $this->comboRepository->updateCombo( $data, $id);
     }
 
-    public function searchCombo(array $data){
-        return $this->comboRepository->searchCombo($data);
+    public function searchCombo($name, $minPrice, $maxPrice){
+        return $this->comboRepository->searchCombo($name, $minPrice, $maxPrice);
     }
 }
 

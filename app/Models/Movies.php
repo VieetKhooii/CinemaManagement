@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Movies extends Model
 {
-    protected $table = 'movies';
+    protected $table = 'movie';
     protected $primaryKey = 'movie_id';
 
     public $incrementing = false;
@@ -26,17 +26,8 @@ class Movies extends Model
         'display',
     ];
 
-    public static function search(array $searchParams)
-    {
-        $query = static::query();
-
-        foreach ($searchParams as $key => $value) {
-            if ($value !== null) {
-                $query->where($key, 'like', '%' . $value . '%');
-            }
-        }
-
-        return $query->get();
+    public function category(){
+        return $this->belongsTo(Categories::class);
     }
     
     protected static function boot()
@@ -63,6 +54,30 @@ class Movies extends Model
         });
     }
 
+    public function scopeSearch($query, $name, $minPrice, $maxPrice, $category)
+    {
+        $query = $this->query();   
+
+        if ($name) {
+            $query->where('movie_name', 'LIKE', "%$name%");
+        }
+
+        if ($minPrice) {
+            $query->where('bonus_price', '>=', $minPrice);
+        }
+
+        if ($maxPrice) {
+            $query->where('bonus_price', '<=', $maxPrice);
+        }
+
+        if($category != "All"){
+            $categoryId = Categories::where('category_name', 'LIKE', "%$category%")->first()->category_id;
+            $query->where('category_id', $categoryId);
+        }
+
+
+        return $query;
+    }
 
     protected $casts = [
         'display' => 'boolean',

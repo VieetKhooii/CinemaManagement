@@ -9,5 +9,5 @@ interface SeatRepositoryInterface {
     public function getASeat(string $id);
     public function addSeat(array $data);
     public function updateSeat(array $data, string $id);
-    public function searchSeat(array $data);
+    public function searchSeat($row, $number, $reserve, $seatType, $room);
 }

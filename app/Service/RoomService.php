@@ -24,7 +24,7 @@ class RoomService{
     public function updateRoom(array $data, string $id){
         return $this->roomRepository->updateRoom($data, $id);
     }
-    public function searchRoom(array $data){
-        return $this->roomRepository->searchRoom($data);
+    public function searchRoom($name, $minSeat, $maxSeat){
+        return $this->roomRepository->searchRoom($name, $minSeat, $maxSeat);
     }
 }

@@ -13,15 +13,6 @@ class ReservationRepo implements ReservationRepositoryInterface{
             return null;    
         }
     }
-    public function getAllReservationsForCustomer(){
-        try {
-           return Reservation::where('display', 1)->get();
-        }
-        catch (\Exception $exception){
-            echo("Error ReservationRepo (get for cus): " . $exception->getMessage());
-            return null;    
-        }
-    }
     public function getAReservation(string $id){
         try {
            return Reservation::findOrFail($id);
@@ -40,22 +31,13 @@ class ReservationRepo implements ReservationRepositoryInterface{
             return null;    
         }
     }
-    public function updateReservation(array $data, string $id){
+    public function deleteReservation(string $id){
         try {
-           return Reservation::findOrFail($id)->update($data);
-        }
-        catch (\Exception $exception){
-            echo("Error ReservationRepo (update): " . $exception->getMessage());
-            return null;    
-        }
-    }
-    public function searchReservation(array $data){
-        try {
-           return Reservation::search($data);
-        }
-        catch (\Exception $exception){
-            echo("Error ReservationRepo (searcg): " . $exception->getMessage());
-            return null;    
-        }
+            return Reservation::destroy($id);
+         }
+         catch (\Exception $exception){
+             echo("Error ReservationRepo (delete): " . $exception->getMessage());
+             return null;    
+         }
     }
 }

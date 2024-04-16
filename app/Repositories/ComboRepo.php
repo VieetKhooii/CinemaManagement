@@ -52,9 +52,9 @@ class ComboRepo implements ComboRepositoryInterface{
             return null;    
         }
     }
-    public function searchCombo(array $combo){    
+    public function searchCombo($name, $minPrice, $maxPrice){    
         try {
-            return Combos::search($combo);
+            return Combos::search($name, $minPrice, $maxPrice)->paginate(6);
         }
         catch (\Exception $exception){
             echo("Error BranchRepo (search): " . $exception->getMessage());

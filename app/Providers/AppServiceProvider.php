@@ -12,6 +12,8 @@ use App\Repositories\RoomRepo;
 use App\Repositories\ShowtimeRepo;
 use App\Repositories\TransactionRepo;
 use App\Repositories\ReservationRepo;
+use App\Repositories\ComboTransactionRepo;
+use App\Repositories\ShowtimeRoomRepo;
 
 use App\Repositories\Interface\SeatTypeRepositoryInterface;
 use App\Repositories\Interface\SeatRepositoryInterface;
@@ -25,6 +27,8 @@ use App\Repositories\Interface\ShowtimeRepositoryInterface;
 use App\Repositories\Interface\TransactionRepositoryInterface;
 use App\Repositories\Interface\ReservationRepositoryInterface;
 use App\Repositories\Interface\VoucherRepositoryInterface;
+use App\Repositories\Interface\ComboTransactionRepositoryInterface;
+use App\Repositories\Interface\ShowtimeRoomRepositoryInterface;
 use App\Repositories\UserRepo;
 use App\Repositories\VoucherRepo;
 use Illuminate\Support\ServiceProvider;
@@ -49,7 +53,9 @@ class AppServiceProvider extends ServiceProvider
        $this->app->bind(ShowtimeRepositoryInterface::class, ShowtimeRepo::class);
        $this->app->bind(TransactionRepositoryInterface::class, TransactionRepo::class);
        $this->app->bind(ReservationRepositoryInterface::class, ReservationRepo::class);
+       $this->app->bind(ComboTransactionRepositoryInterface::class, ComboTransactionRepo::class);
        $this->app->bind(VoucherRepositoryInterface::class, VoucherRepo::class);
+       $this->app->bind(ShowtimeRoomRepositoryInterface::class, ShowtimeRoomRepo::class);
     }
 
     /**

@@ -15,6 +15,8 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ComboTransactionController;
+use App\Http\Controllers\ShowtimeRoomController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Middleware\AttachJwtToken;
@@ -55,6 +57,7 @@ Route::middleware(['jwt.attach', 'refresh.token'])->group(function () {
     });
 
     Route::resource('users', UserController::class);
+    
     //Seat Type Routes
     Route::get('seatTypes/customerget', [SeatTypeController::class,'getAllSeatTypesForCustomer']);
     Route::resource('seatTypes', SeatTypeController::class);
@@ -101,15 +104,23 @@ Route::middleware(['jwt.attach', 'refresh.token'])->group(function () {
     Route::post('transactions/search', [TransactionController::class,'search']);
     Route::put('transactions/hide/{id}', [TransactionController::class,'hide']);
     //Reservation Routes
-    Route::get('reservations/customerget', [ReservationController::class,'getAllReservationsForCustomer']);
     Route::resource('reservations',ReservationController::class);
-    Route::post('reservations/search', [ReservationController::class,'search']);
-    Route::put('reservations/hide/{id}', [ReservationController::class,'hide']);
+    //ComboTransaction Routes
+    Route::delete('comboTransactions/{id1}/{id2}', [ComboTransactionController::class,'destroy']);
+    Route::put('comboTransactions/{id1}/{id2}', [ComboTransactionController::class,'update']);
+    Route::resource('comboTransactions',ComboTransactionController::class);
+    //ShowtimeRoom Routes
+    Route::delete('showtimeRooms/{id1}/{id2}', [ShowtimeRoomController::class, 'destroy']);
+    Route::resource('showtimeRooms',ShowtimeRoomController::class);
+
     // Voucher Routes
     Route::resource('vouchers', VoucherController::class);
     Route::post('vouchers/search',[VoucherController::class, 'searchByDate']);
     // Auth::routes();
 });
+
+
+
 
 Route::controller(LoginController::class)->group(function () {
     Route::post('login', 'login')->middleware('pass.login');

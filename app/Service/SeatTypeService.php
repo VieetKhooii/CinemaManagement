@@ -32,8 +32,8 @@ class SeatTypeService{
         return $this->seatTypeRepository->updateSeatType( $data, $id );
     }
 
-    public function searchSeatType(array $data)
+    public function searchSeatType($type, $minPrice, $maxPrice)
     {
-        return $this->seatTypeRepository->searchSeatType( $data );
+        return $this->seatTypeRepository->searchSeatType($type, $minPrice, $maxPrice);
     }
 }

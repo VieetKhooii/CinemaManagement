@@ -20,17 +20,23 @@ class SeatTypes extends Model
         'display',
     ];
 
-    public static function search(array $searchParams)
+    public function scopeSearch($query, $type, $minPrice, $maxPrice)
     {
-        $query = static::query();
+        $query = $this->query();
 
-        foreach ($searchParams as $key => $value) {
-            if ($value !== null) {
-                $query->where($key, 'like', '%' . $value . '%');
-            }
+        if ($type) {
+            $query->where('type', 'LIKE', "%$type%");
         }
 
-        return $query->get();
+        if ($minPrice) {
+            $query->where('bonus_price', '>=', $minPrice);
+        }
+
+        if ($maxPrice) {
+            $query->where('bonus_price', '<=', $maxPrice);
+        }
+
+        return $query;
     }
     
     protected $casts = [

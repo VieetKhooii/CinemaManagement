@@ -32,9 +32,11 @@ class CategoryService{
     }
 
     public function updateCategory(array $data, $id){
-        if($this->categoryRepository->existByName($data['category_name'])){
-            throw new \Exception("Tên đã tồn tại trong cơ sở dữ liệu.");
-        }
+        if(array_key_exists('category_name', $data)){
+            if($this->categoryRepository->existByName($data['category_name'])){
+                throw new \Exception("Tên đã tồn tại trong cơ sở dữ liệu.");
+            }
+        }      
         return $this->categoryRepository->updateCategory($data, $id);
     }
 

@@ -9,5 +9,5 @@ interface MovieRepositoryInterface {
     public function getAMovie(string $id);
     public function addMovie(array $data);
     public function updateMovie(array $data, string $id);
-    public function searchMovie(array $data);
+    public function searchMovie($name, $minPrice, $maxPrice, $category);
 }

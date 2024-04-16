@@ -42,7 +42,8 @@ class ComboTransactionController extends Controller
         $array = [
             'combo_id'=> $request->input('combo_id'),
             'transaction_id'=> $request->input('transaction_id'),
-            'price_on_amount'=> $request->input('price_on_amount'),
+            'unit_quantity'=> $request->input('unit_quantity'),
+            'unit_price'=> 0,
             'display'=> true,
         ];
         $comboTran = $this->comboTransactionService->addComboTransaction($array);
@@ -73,9 +74,20 @@ class ComboTransactionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id1, string $id2)
     {
         //
+        $array = [
+            'unit_quantity'=> $request->input('unit_quantity'),
+            'unit_price'=> 0,
+        ];
+        $comboTran = $this->comboTransactionService->updateComboTransaction($array, $id1, $id2);
+        if ($comboTran){
+            return response()->json(['status' => 'success', 'message' => 'combo_transaction add successfully', 'data' => $comboTran], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
     }
 
     /**

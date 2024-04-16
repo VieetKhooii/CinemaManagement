@@ -171,18 +171,16 @@ class ComboController extends Controller
 
     public function search(Request $request) //thiếu tìm kiếm trong khoảng giá
     {
-        $array = [
-            'combo_id' => $request->input('combo_id'),
-            //'price'=> $request->input('price'),
-            'name'=> $request->input('name'),
-            'description'=> $request->input('description'),      
-        ];
-        $combo = $this->comboService->searchCombo($array);
+        $name = $request->input('name');
+        $minPrice = $request->input('min_price');
+        $maxPrice = $request->input('max_price');
+
+        $combo = $this->comboService->searchCombo($name, $minPrice, $maxPrice);
         if ($combo){
             return response()->json(['status' => 'success', 'message' => 'combo searched successfully', 'data' => $combo], 201);
         }
         else {
-            return response()->json(['error' => '$validator->errors()'], 422);
+            return response()->json(['error' => 'combo searched fail'], 422);
         }
     }
 
