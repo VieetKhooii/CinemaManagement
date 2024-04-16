@@ -8,7 +8,7 @@ use Ramsey\Uuid\Uuid;
 
 class Categories extends Model
 {
-    protected $table = 'categories';
+    protected $table = 'category';
     protected $primaryKey = 'category_id';
 
     public $incrementing = false;
@@ -56,6 +56,10 @@ class Categories extends Model
             // Gán ID mới cho model
             $category->category_id = $newId;
         });
+    }
+
+    public function movies(){
+        return $this->hasMany(Movies::class);
     }
 
     protected $casts = [

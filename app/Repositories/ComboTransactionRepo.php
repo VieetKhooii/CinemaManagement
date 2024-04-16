@@ -13,12 +13,32 @@ class ComboTransactionRepo implements ComboTransactionRepositoryInterface{
             return null;    
         } 
     }
+    public function getAComboTransaction(string $idCombo, string $idTran){
+        try {
+            return ComboTransaction::where('combo_id', $idCombo)
+            ->where('transaction_id', $idTran)->first();
+         }
+         catch (\Exception $exception){
+             echo("Error ComboTranRepo (get a): " . $exception->getMessage());
+             return null;    
+         } 
+    }
     public function addComboTransaction(array $data){
         try {
            return ComboTransaction::create($data);
         }
         catch (\Exception $exception){
             echo("Error ComboTranRepo (add): " . $exception->getMessage());
+            return null;    
+        } 
+    }
+    public function updateComboTransaction(array $data, string $idCombo, string $idTran){
+        try {
+           return ComboTransaction::where('combo_id', $idCombo)
+           ->where('transaction_id', $idTran)->update($data);
+        }
+        catch (\Exception $exception){
+            echo("Error ComboTranRepo (update): " . $exception->getMessage());
             return null;    
         } 
     }

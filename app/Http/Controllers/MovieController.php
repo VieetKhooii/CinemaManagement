@@ -162,16 +162,13 @@ class MovieController extends Controller
         }
     }
 
-    public function search(Request $request){
-        $array = [
-            'movie_id'=> $request->input('movie_id'),
-            'movie_name'=> $request->input('movie_name'),
-            'movie_description'=> $request->input('movie_description'),
-            'duration'=> $request->input('duration'),
-            'bonus_price'=> $request->input('bonus_price'),
-            'category_id'=> $request->input('category_id'),
-        ];
-        $movie = $this->movieService->searchMovie($array);
+    public function search(Request $request){       
+        $name = $request->input('movie_name');
+        $minPrice = $request->input('min_price');
+        $maxPrice = $request->input('max_price');
+        $category = $request->input('category_name');
+
+        $movie = $this->movieService->searchMovie($name, $minPrice, $maxPrice, $category);
         if ($movie){
             return response()->json(['status' => 'success', 'message' => 'movie searched successfully', 'data' => $movie], 201);
         }

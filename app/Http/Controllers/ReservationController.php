@@ -30,19 +30,6 @@ class ReservationController extends Controller
             return response()->json(['error' => '$validator->errors()', 'status' => 'error'], 422);
         }
     }
-
-    public function getAllReservationsForCustomer(){
-        $reservation = $this->reservationService->getAllReservationsForCustomer();
-        if ($reservation){
-            return response()->json([
-                'status' => 'success', 
-                'message' => 'reservation 4 cus got successfully', 
-                'data' => $reservation], 201);
-        }
-        else {
-            return response()->json(['error' => '$validator->errors()', 'status' => 'error'], 422);
-        }
-    }
     /**
      * Show the form for creating a new resource.
      */
@@ -67,8 +54,7 @@ class ReservationController extends Controller
             return response()->json(['errors' => $validator->errors()->first()], 422);
         }   
         $array = [
-            'reservation_id' => $request->input('reservation_id'),
-            'price'=> 0, // auto-calculate here or service class!      
+            'price'=> 0, 
             'showtime_id'=> $request->input('showtime_id'),
             'seat_id'=> $request->input('seat_id'),
             'transaction_id'=> $request->input('transaction_id'),
@@ -112,18 +98,6 @@ class ReservationController extends Controller
     public function update(Request $request, string $id)
     {
         //
-        $array = [    
-            'showtime_id'=> $request->input('showtime_id'),
-            'seat_id'=> $request->input('seat_id'),
-            'transaction_id'=> $request->input('transaction_id'),
-        ];
-        $reservation = $this->reservationService->updateReservation( $array, $id );
-        if ($reservation){
-            return response()->json(['status' => 'success', 'message' => 'reservation updated successfully', 'data' => $reservation], 201);
-        }
-        else {
-            return response()->json(['error' => '$validator->errors()'], 422);
-        }
     }
 
     public function search(Request $request)
@@ -157,11 +131,19 @@ class ReservationController extends Controller
             return response()->json(['error' => '$validator->errors()'], 422);
         }
     }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
         //
+        $reservation = $this->reservationService->deleteReservation( $id );
+        if ($reservation){
+            return response()->json(['status' => 'success', 'message' => 'reservation deleted successfully'], 201);
+        }
+        else {
+            return response()->json(['error' => 'deleted fail'], 422);
+        }
     }
 }

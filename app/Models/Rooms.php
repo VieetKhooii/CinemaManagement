@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rooms extends Model
 {
-    protected $table = 'rooms';
+    protected $table = 'room';
     protected $primaryKey = 'room_id';
 
     public $incrementing = false;
@@ -17,7 +17,6 @@ class Rooms extends Model
     protected $fillable = [
         'room_id',
         'room_name',
-        'name',
         'number_of_seat',
         'display',
     ];
@@ -26,6 +25,14 @@ class Rooms extends Model
         'status'=> 'boolean',
         'display'=> 'boolean',
     ];
+
+    public function showtimes(){
+        return $this->hasMany(Showtimes::class);
+    }
+
+    public function showtimeRoom(){
+        return $this->hasMany(ShowtimeRoom::class, 'room_id', 'room_id');
+    }
 
     protected static function boot()
     {
@@ -51,17 +58,23 @@ class Rooms extends Model
         });
     }
 
-    public static function search(array $searchParams)
+    public function scopeSearch($query, $name, $minSeat, $maxSeat)
     {
-        $query = static::query();
+        $query = $this->query();
 
-        foreach ($searchParams as $key => $value) {
-            if ($value !== null) {
-                $query->where($key, 'like', '%' . $value . '%');
-            }
+        if ($name) {
+            $query->where('room_name', 'LIKE', "%$name%");
         }
 
-        return $query->get();
+        if ($minSeat) {
+            $query->where('number_of_seat', '>=', $minSeat);
+        }
+
+        if ($maxSeat) {
+            $query->where('number_of_seat', '<=', $maxSeat);
+        }
+
+        return $query;
     }
 
 

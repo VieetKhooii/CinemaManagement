@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Seats extends Model
 {
-    protected $table = 'seats';
+    protected $table = 'seat';
     protected $primaryKey = 'seat_id';
 
     public $incrementing = false;
@@ -54,18 +54,35 @@ class Seats extends Model
         });
     }
 
-    public static function search(array $searchParams)
+    public function scopeSearch($query, $row, $number, $reserve, $seatType, $room)
     {
-        $query = static::query();
+        $query = $this->query();
 
-        foreach ($searchParams as $key => $value) {
-            if ($value !== null) {
-                $query->where($key, 'like', '%' . $value . '%');
-            }
+        if ($row) {
+            $query->where('seat_row', 'LIKE', "%$row%");
         }
 
-        return $query->get();
+        if ($number) {
+            $query->where('seat_number', $number);
+        }
+
+        if ($reserve) {
+            $query->where('is_reserved', $reserve);
+        }
+
+        if($seatType != "All"){
+            $typeId = SeatTypes::where('type', 'LIKE', "%$seatType%")->first()->seat_type_id;
+            $query->where('seat_type_id', $typeId);
+        }
+
+        if($room != "All"){
+            $roomId = Rooms::where('room_name', 'LIKE', "%$room%")->first()->room_id;
+            $query->where('room_id', $roomId);
+        }
+
+        return $query;
     }
+
 
     use HasFactory;
 }

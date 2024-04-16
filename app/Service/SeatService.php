@@ -75,8 +75,8 @@ class SeatService{
         return $this->seatRepository->updateSeat($data, $id);
     }
 
-    public function searchSeat(array $data)
+    public function searchSeat($row, $number, $reserve, $seatType, $room)
     {
-        return $this->seatRepository->searchSeat($data);
+        return $this->seatRepository->searchSeat($row, $number, $reserve, $seatType, $room);
     }
 }

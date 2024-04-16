@@ -9,7 +9,6 @@ class Reservation extends Model
 {
     protected $table = 'reservations';
     protected $primaryKey = 'reservation_id';
-
     public $incrementing = false;
     public $timestamps = false;
     protected $keyType = 'string';
@@ -27,17 +26,28 @@ class Reservation extends Model
         'display'=> 'boolean',
     ];
 
-    public static function search(array $searchParams)
+    protected static function boot()
     {
-        $query = static::query();
+        parent::boot();
 
-        foreach ($searchParams as $key => $value) {
-            if ($value !== null) {
-                $query->where($key, 'like', '%' . $value . '%');
+        static::creating(function ($reservation) {
+            $latestId = static::max('id');
+
+            // Nếu không có ID trước đó, bắt đầu từ CA0000
+            if (!$latestId) {
+                $newId = 'RE00000000';
+            } else {
+                // Tách phần số từ ID cuối cùng
+                $numberPart = substr($latestId, 2);
+                // Tăng số lên 1 đơn vị
+                $nextNumber = intval($numberPart) + 1;
+                // Tạo ID mới
+                $newId = 'RE' . str_pad($nextNumber, 8, '0', STR_PAD_LEFT);
             }
-        }
 
-        return $query->get();
+            // Gán ID mới cho model
+            $reservation->id = $newId;
+        });
     }
 
     use HasFactory;

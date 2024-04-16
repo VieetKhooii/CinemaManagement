@@ -61,9 +61,9 @@ class SeatRepo implements SeatRepositoryInterface
         }
     }
 
-    public function searchSeat(array $data){
+    public function searchSeat($row, $number, $reserve, $seatType, $room){
         try {
-            return Seats::search($data);
+            return Seats::search($row, $number, $reserve, $seatType, $room)->paginate(10);
         }
         catch (\Exception $exception){
             echo("Error SeatRepo (search): " . $exception->getMessage());
