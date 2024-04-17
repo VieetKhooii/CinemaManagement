@@ -1,17 +1,20 @@
 <link rel="stylesheet" href="/css/screen_cwrap.css">
+
 <?php
-// include('database.php');
+    if($_POST['curMovies'] && $_POST['upMovies']){
+        $currentMovies = $_POST['curMovies'];
+        $upComingMovies = $_POST['upMovies'];
+    } 
+    else {
+        echo "no movies";
+    }
 
-use App\Helpers\Helper;
-
-$result = Helper::getMoviesForCustomer1();
-$result2 = Helper::getMoviesForCustomer0();
 
 $moviesOnScreen = array();
 $moviesComingUp = array();
 
 // Duyệt qua từng dòng dữ liệu và thêm vào mảng
-foreach($result as $row){
+foreach($currentMovies as $row){
     $movieInfo = array(
         'movie_id' => $row['movie_id'],
         'movie_name' => $row['movie_name'],
@@ -25,7 +28,7 @@ foreach($result as $row){
     );
     $moviesOnScreen[] = $movieInfo;
 }
-foreach ($result2 as $row) {
+foreach ($upComingMovies as $row) {
     $movieInfo2 = array(
         'movie_id' => $row['movie_id'],
         'movie_name' => $row['movie_name'],
@@ -52,7 +55,6 @@ foreach ($result2 as $row) {
         <div class="plottingQC" id="plottingQC">
             <img src="../img/film_hot_pick.jpg" alt="">
         </div>
-        <?php ?>
         <div class="tab_list" id="tab_list">
             <div class="list_item_film" id="list_item_film">
 

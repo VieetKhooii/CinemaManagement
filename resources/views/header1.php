@@ -27,7 +27,7 @@
         <h3 id="muave">MUA VÉ</h3>
         <h3 id="phim">PHIM</h3>
         <h3 id="rapchieuphim">RẠP CHIẾU PHIM</h3>
-        <h3 id="khuyenmai">KHUYẾN MÃI</h3>
+        <h3 id="khuyenmai" onclick="loadSign('vouchers')">KHUYẾN MÃI</h3>
         <h3 id="lienhe">LIÊN HỆ</h3>
     </div>
     <?php include ("menu-container.php");?>

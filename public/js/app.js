@@ -81,11 +81,38 @@ document.getElementById("header_menu").addEventListener("click", function (event
   }
 });
 function loadSign(file) {
-  fetch(file).then(response => response.text())
-  .then(data => {
-    document.getElementById('content_main').innerHTML = data;
-  })
-  .catch(error => console.error('error', error));
+  $.ajax({
+    method: 'GET',
+    url: 'http://localhost:8000/'+file,
+    async: false,
+    dataType: 'json',
+    success: function(data) {
+        if (data.status === 'success') {
+          const message1 = data.data.data;
+          const message = Array.isArray(message1) && message1.length === 0 ? "" : message1;
+          console.log(message)
+          $.ajax({
+            method: 'POST',
+            url: '/'+file+'_get',
+            async: false,
+            data: {
+              result: message
+            },
+            success: function(data) {
+              // fetch(file).then(response => response.text())
+              // .then(data => {
+                document.getElementById('content_main').innerHTML = data;
+              // })
+              // .catch(error => console.error('error', error));
+              },
+          });
+        } else if (data.status === 'error'){
+            const message = data.error;
+            alert(message);
+        }
+      },
+  });
+  
 }
 // load phần content của app, đang là đăng nhập và đăng kí
 function loadContent(file) {
@@ -302,19 +329,7 @@ function showVip(tabName, idon) {
   document.getElementById(tabName).style.display = 'block';
 }
 
-function getUserInfo(){
-  $.ajax({
-    method: 'GET',
-    url: 'http://localhost:8000/users',
-    async: false,
-    dataType: 'json',
-    success: function(data) {
-        if (data.status === 'success') {
-            return data.data;
-        } else if (data.status === 'error'){
-            const message = data.error;
-            alert(message);
-        }
-      },
-  });
+function getVoucher(){
+  // alert("hello")
+  
 }

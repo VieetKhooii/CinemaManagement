@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Movies;
 use Illuminate\Http\Request;
 use App\Service\MovieService;
 use Illuminate\Support\Facades\Validator;
@@ -31,12 +32,18 @@ class MovieController extends Controller
     }
 
     public function getAllMoviesForCustomer(){
-        $movie = $this->movieService->getAllMoviesForCustomer();
-        if ($movie){
-            return response()->json(['status' => 'success', 'message' => 'movie 4 cus got successfully', 'data' => $movie], 201);
+        $movie = Movies::getMoviesForCustomer1();
+        $movie2 = Movies::getMoviesForCustomer0();
+        if ($movie && $movie2){
+            return response()->json([
+                'status' => 'success',
+                'message' => 'movie 4 cus got successfully',
+                'cur' => $movie,
+                'up' => $movie2
+            ], 201);
         }
         else {
-            return response()->json(['error' => '$validator->errors()'], 422);
+            return response()->json(['status' => 'error', 'error' => '$validator->errors()'], 422);
         }
     }
     /**

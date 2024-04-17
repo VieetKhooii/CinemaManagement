@@ -1,125 +1,29 @@
 <link rel="stylesheet" href="../css/voucher.css">
-
-<div class="container_voucher">
-    <div class="list_voucher">
-        <div class="voucher">
-            <div class="img" style="background: url('../img/background_dang_ki.jpg') no-repeat center ; background-size: 100% 100%;"></div>
-            <div class="description">
-                <p>
-                    phim hay combat đã tay. nên xem nha mấy ní
-                    phim hay combat đã tay. nên xem nha mấy ní
-
-                    phim hay combat đã tay. nên xem nha mấy ní
-
-                    phim hay combat đã tay. nên xem nha mấy ní
-
-                    phim hay combat đã tay. nên xem nha mấy ní
-
-                    phim hay combat đã tay. nên xem nha mấy ní
-
-                    phim hay combat đã tay. nên xem nha mấy ní
-                </p>
-            </div>
-            <div class="text_time">
-                ~29/3/2024
-            </div>
-        </div>
-        
-        <div class="voucher">
-            <div class="img" style="background: url('../img/book_tickets.png') no-repeat center ; background-size: 100% 100%;"></div>
-            <div class="description">
-                <p>
-                    phim hay combat đã tay. nên xem nha mấy ní
-
-                </p>
-            </div>
-            <div class="text_time">
-                ~29/3/2024
-            </div>
-        </div>
-        <div class="voucher">
-            <div class="img" style="background: url('../img/book_tickets.png') no-repeat center ; background-size: 100% 100%;"></div>
-            <div class="description">
-                <p>
-                    phim hay combat đã tay. nên xem nha mấy ní
-
-                </p>
-            </div>
-            <div class="text_time">
-                ~29/3/2024
-            </div>
-        </div>
-        <div class="voucher">
-            <div class="img" style="background: url('../img/book_tickets.png') no-repeat center ; background-size: 100% 100%;"></div>
-            <div class="description">
-                <p>
-                    phim hay combat đã tay. nên xem nha mấy ní
-
-                </p>
-            </div>
-            <div class="text_time">
-                ~29/3/2024
-            </div>
-        </div>
-        <div class="voucher">
-            <div class="img" style="background: url('../img/book_tickets.png') no-repeat center ; background-size: 100% 100%;"></div>
-            <div class="description">
-                <p>
-                    phim hay combat đã tay. nên xem nha mấy ní
-
-                </p>
-            </div>
-            <div class="text_time">
-                ~29/3/2024
-            </div>
-        </div>
-        <div class="voucher">
-            <div class="img" style="background: url('../img/book_tickets.png') no-repeat center ; background-size: 100% 100%;"></div>
-            <div class="description">
-                <p>
-                    phim hay combat đã tay. nên xem nha mấy ní
-
-                </p>
-            </div>
-            <div class="text_time">
-                ~29/3/2024
-            </div>
-        </div>
-        <div class="voucher">
-            <div class="img" style="background: url('../img/book_tickets.png') no-repeat center ; background-size: 100% 100%;"></div>
-            <div class="description">
-                <p>
-                    phim hay combat đã tay. nên xem nha mấy ní
-
-                </p>
-            </div>
-            <div class="text_time">
-                ~29/3/2024
-            </div>
-        </div>
-        <div class="voucher">
-            <div class="img" style="background: url('../img/book_tickets.png') no-repeat center ; background-size: 100% 100%;"></div>
-            <div class="description">
-                <p>
-                    phim hay combat đã tay. nên xem nha mấy ní
-
-                </p>
-            </div>
-            <div class="text_time">
-                ~29/3/2024
-            </div>
-        </div>
-        <div class="voucher">
-            <div class="img" style="background: url('../img/book_tickets.png') no-repeat center ; background-size: 100% 100%;"></div>
-            <div class="description">
-                <p>
-                    phim hay combat đã tay. nên xem nha mấy ní
-
-                </p>
-            </div>
-            <div class="text_time">
-                ~29/3/2024
-            </div>
-        </div>
-    </div>
-</div>
+<?php 
+    if($_POST['result']){
+        $array = $_POST['result'];
+        echo '<div class="container_voucher">
+        <div class="list_voucher">';
+        foreach ($array as $row){
+            echo '
+                    <div class="voucher">
+                        <div class="img" style="background: url('.'img/background_dang_ki.jpg'.') no-repeat center; background-size: 100% 100%;"></div>
+                        <div class="description">
+                            <p>';
+                            echo "Giảm giá: ".$row['voucher_discount']."%<br>";
+                            echo $row['description'];
+                            echo '</p>
+                        </div>
+                        <div class="text_time">';
+                            $date = new DateTime($row['voucher_condition']);
+                            $formatted_date = $date->format('Y-m-d');
+                            echo $formatted_date;
+                        echo '</div>
+                    </div>';
+        }
+        echo '</div>
+            </div>';
+    } else {
+        echo "No data received";  // Debug message
+    }
+?>

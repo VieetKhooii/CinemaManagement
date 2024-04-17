@@ -51,14 +51,21 @@ class LoginController extends Controller
                     'type' => 'bearer',
                 ]
             ];
-            $role_id = json_encode([
+            $info = json_encode([
                 'username' => $user->full_name,
                 'role_id' => $user->role_id,
+                'email' => $user->email ,
+                'phone' => $user->phone,
+                'date_of_birth' => $user->date_of_birth,
+                'gender' => $user->gender,
+                'address' => $user->address,
+                'score' => $user->score,
+                'coin' => $user->coin,
             ]);
             // echo $user->role_id;
             $response = new Response($responseJson);
             $response->withCookie(cookie('jwt', $token, 5, null, null, false, false));
-            $response->withCookie(cookie('jwt_role', $role_id, 5, null, null, false, false));
+            $response->withCookie(cookie('jwt_role', $info, 5, null, null, false, false));
             return $response;
         }
         else {

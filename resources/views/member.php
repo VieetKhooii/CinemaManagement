@@ -25,21 +25,26 @@
                             $cookie = Cookie::get('jwt_role');
                             $cookie_data = json_decode($cookie, true);
                             $username = isset($cookie_data['username']) ? $cookie_data['username'] : 'Unknown';
-                            
+                            $coin = isset($cookie_data['coin']) ? $cookie_data['coin'] : '0';
+                            $rank = "Normal";
+                            if ($coin >= 2000000 && $coin < 5000000){
+                                $rank = "VIP";
+                            }
+                            else if ($coin >= 5000000){
+                                $rank = "Bạch Kim";
+                            }
                         ?>
                         <strong class="name_members" id="member_name"> <?php echo $username?> </strong>
                         là
-                        <strong class="grade_members" id="member_grades">Normal</strong>
+                        <strong class="grade_members" id="member_grades"><?php echo $rank?></strong>
                     </div>
 
                     <div class="wrap_gradegraph">
                         <dl class="gradegraph_txt">
                             <dt>Số tiền chi tiêu nâng cấp lên VIP</dt>
                             <dd class="money_grade">
-                                <script>
-                                    // console.log(getUserInfo());
-                                </script>
-                                <span class="num" id="vip_points">0</span>
+                            
+                                <span class="num" id="vip_points"><?php echo $coin?></span>
                                 <span class="txt_menhgia">VNĐ</span>
                             </dd>
                         </dl>

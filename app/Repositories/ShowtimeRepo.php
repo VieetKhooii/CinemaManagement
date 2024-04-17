@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Movies;
 use App\Models\Showtimes;
 use App\Repositories\Interface\ShowtimeRepositoryInterface;
 
@@ -35,6 +36,10 @@ class ShowtimeRepo implements ShowtimeRepositoryInterface{
     }
     public function addShowtime(array $data){
         try {
+            $display = [
+                'display' => 1
+            ];
+            Movies::findOrFail($data['movie_id'])->update($display);
             return Showtimes::create($data);
         }
         catch (\Exception $exception){
