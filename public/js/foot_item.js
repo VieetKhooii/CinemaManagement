@@ -165,5 +165,77 @@ function loadContent(file) {
         .catch(error => console.error('error', error));
 }
 
+function getMovies(){
+    $.ajax({
+      method: 'GET',
+      url: 'http://localhost:8000/movies/customer',
+      async: false,
+      dataType: 'json',
+      success: function(data) {
+          if (data.status === 'success') {
+            const current = data.cur;
+            const currentFinal = Array.isArray(current) && current.length === 0 ? "" : current;
+            const upComing = data.up;
+            const upComingFinal = Array.isArray(upComing) && upComing.length === 0 ? "" : upComing;
+        //   console.log(currentFinal)
+            //   alert('succees')
+            //  sendDataToPHP(data.data);
+            $.ajax({
+                method: 'POST',
+                url: '/list_item_get',
+                async: false,
+                data: { 
+                    curMovies: currentFinal,
+                    upMovies: upComingFinal
+                },
+                success: function(response) {
+                    // console.log(response)
+                    document.getElementById('list_item_container').innerHTML = response;
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+          } else if (data.status === 'error'){
+              const message = data.error;
+              alert(message);
+          }
+        },
+    });
+  }
 
-
+//   function getUpComingMovies(){
+//     $.ajax({
+//       method: 'GET',
+//       url: 'http://localhost:8000/movies/customergetupcoming',
+//       async: false,
+//       dataType: 'json',
+//       success: function(data) {
+//           if (data.status === 'success') {
+//             const message1 = data.data;
+//           const message = Array.isArray(message1) && message1.length === 0 ? "" : message1;
+//           console.log(message)
+//             //   alert('succees')
+//             //  sendDataToPHP(data.data);
+//             $.ajax({
+//                 method: 'POST',
+//                 url: '/list_item_get1',
+//                 async: false,
+//                 data: { 
+//                     movies2: message
+//                 },
+//                 success: function(response) {
+//                     // console.log(response)
+//                     document.getElementById('list_item_container').innerHTML = response;
+//                 },
+//                 error: function(xhr, status, error) {
+//                     console.error(error);
+//                 }
+//             });
+//           } else if (data.status === 'error'){
+//               const message = data.error;
+//               alert(message);
+//           }
+//         },
+//     });
+//   }

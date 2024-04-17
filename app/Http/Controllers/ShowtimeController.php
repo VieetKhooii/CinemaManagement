@@ -66,7 +66,7 @@ class ShowtimeController extends Controller
             'movie_id'=> $request->input('movie_id'),
             'date'=> $request->input('date'),
             'start_time'=> $request->input('start_time'),
-            'display'=> 1,
+            // 'display'=> 1,
         ];
         $showTime = $this->showtimeService->addShowtime($array);
         if ($showTime){

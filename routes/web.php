@@ -66,7 +66,14 @@ Route::middleware(['jwt.attach', 'refresh.token'])->group(function () {
     });
     Route::view('/member', 'member');
     Route::view('/dashboard', 'app');
-
+    Route::view('/vouchers', 'voucher');
+    Route::post('vouchers_get', function(){
+        return view('/voucher');
+    });
+    Route::post('/list_item_get', function(){
+        return view('/list_item');
+    });
+    
     Route::resource('users', UserController::class);
     Route::post('users/search', [UserController::class, 'search']);
     Route::put('users/{id}', [UserController::class,'update']);
@@ -97,7 +104,8 @@ Route::middleware(['jwt.attach', 'refresh.token'])->group(function () {
     Route::put('combos/hide/{id}', [ComboController::class,'hide']);
     
     //Movie Routes
-    Route::get('movies/customerget', [MovieController::class,'getAllMoviesForCustomer']);
+    Route::get('movies/customer', [MovieController::class,'getAllMoviesForCustomer']);
+    // Route::get('movies/customergetupcoming', [MovieController::class,'getAllUpComingMoviesForCustomer']);
     Route::resource('movies',MovieController::class);
     Route::put('movies/{id}', [MovieController::class,'update']);
     Route::post('movies/search', [MovieController::class,'search']);

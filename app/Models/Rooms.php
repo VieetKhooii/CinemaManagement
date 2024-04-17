@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rooms extends Model
 {
-    protected $table = 'room';
+    protected $table = 'rooms';
     protected $primaryKey = 'room_id';
 
     public $incrementing = false;

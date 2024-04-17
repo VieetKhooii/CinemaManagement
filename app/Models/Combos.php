@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Combos extends Model
 {
-    protected $table = 'combo';
+    protected $table = 'combos';
     protected $primaryKey = 'combo_id';
 
     public $incrementing = false;

@@ -1,8 +1,14 @@
 <link rel="stylesheet" href="../css/screen_cwrap.css">
 
-<?php
-include("list_item.php");
-?>
+<script src="/js/foot_item.js"></script>
+<script>
+    $(document).ready(function() {
+        getMovies();
+    });
+</script>
+<div id="list_item_container">
+
+</div>
 <script>
     const header = document.querySelector('.screenwrap')
     const headerRect = header.getBoundingClientRect();
