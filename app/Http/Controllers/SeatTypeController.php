@@ -107,11 +107,12 @@ class SeatTypeController extends Controller
     }
 
     public function search(Request $request){
-        $type = $request->input('type');
-        $minPrice = $request->input('min_price');
-        $maxPrice = $request->input('max_price');
-
-        $seatType = $this->seatTypeService->searchSeatType($type, $minPrice, $maxPrice);
+        $array = [
+            'seat_type_id'=> $request->input('seat_type_id'),
+            'type'=>$request->input('type'),
+            'bonus_price'=>$request->input('bonus_price'),
+        ];
+        $seatType = $this->seatTypeService->searchSeatType($array);
         if ($seatType){
             return response()->json(['status' => 'success', 'message' => 'seatType searched successfully', 'data' => $seatType], 201);
         }

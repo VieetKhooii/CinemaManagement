@@ -9,5 +9,5 @@ interface ComboRepositoryInterface
     public function getACombo(string $id);
     public function addCombo(array $combo);
     public function updateCombo(array $combo, string $id);
-    public function searchCombo($name, $minPrice, $maxPrice);
+    public function searchCombo(array $datae);
 }

@@ -130,11 +130,12 @@ class RoomController extends Controller
     }
 
     public function search(Request $request){
-        $name = $request->input('room_name');
-        $minSeat = $request->input('min_seat');
-        $maxSeat = $request->input('max_seat');
-
-        $room = $this->roomService->searchRoom($name, $minSeat, $maxSeat);
+        $array = [
+            'room_id'=> $request->input('room_id'),
+            'room_name'=> $request->input('room_name'),
+            'status'=> $request->input('status'),
+        ];
+        $room = $this->roomService->searchRoom($array);
         if ($room){
             return response()->json(['status' => 'success', 'message' => 'room searched successfully', 'data' => $room], 201);
         }

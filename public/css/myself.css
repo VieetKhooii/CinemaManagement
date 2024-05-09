@@ -1,0 +1,294 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#myself {
+    width: 100%;
+    background: linear-gradient(to left, beige, white 35%, white 65%, beige);
+    margin: 0 auto;
+}
+
+h2 {
+    margin-bottom: 25px;
+    font-size: 30px;
+    color: #231f20;
+    font-weight: bold;
+    display: flex;
+}
+
+.my_info {
+    position: relative;
+    width: 80%;
+    margin: 0 auto;
+    box-shadow: 0 0 40px 0.6px rgb(214, 214, 184);
+
+}
+
+.my_info span {
+    color: #cdc197;
+    font-size: 24px;
+}
+
+
+.my_info_tit {
+    font-size: 24px;
+    overflow: hidden;
+    padding: 17px 30px 17px;
+    background: #282e34;
+}
+
+.my_info_tit em {
+    float: left;
+    font-size: 24px;
+    color: #fff;
+    font-style: normal;
+}
+
+.my_info_tit dl {
+    float: right;
+    margin: 0;
+}
+
+.my_info_tit dt {
+    float: left;
+    margin-right: 15px;
+    padding-right: 15px;
+    background: url(../img/bar.jpg) no-repeat 100% 60%;
+    background-size: contain;
+    /* hoặc contain nếu bạn muốn background không bị cắt */
+    color: #c5c5c5;
+    line-height: 20px;
+}
+
+.my_info_tit dd {
+    margin-right: 23px;
+    font-size: 24px;
+    font-weight: bold;
+    float: left;
+    color: #cdc197;
+    font-family: 'linlivertine';
+}
+
+.my_info_choose {
+    position: relative;
+    width: 80%;
+    margin: 40px auto 0;
+    box-shadow: 0 0 40px 0.6px rgb(214, 214, 184);
+    overflow: auto;
+}
+
+.my_info_choose::-webkit-scrollbar {
+    width: 3px;
+}
+
+.my_info_choose::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.my_info_choose::-webkit-scrollbar-thumb {
+    background: rgb(180, 180, 25);
+    border-radius: 5px;
+}
+
+.my_info_choose::-webkit-scrollbar-thumb:hover {
+    background: rgb(223, 223, 178);
+}
+
+.my_info_choose .member_ul {
+    padding: 0;
+    width: auto;
+    height: 60px;
+    list-style: none;
+    margin-bottom: 30px;
+    display: flex;
+}
+
+
+.my_info_choose .member_li {
+    height: 100%;
+    float: left;
+}
+
+.my_info_choose li a {
+    height: 100%;
+    display: block;
+    border: 1px solid #dedede;
+    text-align: center;
+    font-size: 14px;
+    color: #35383d;
+    line-height: 50px;
+    text-decoration: none;
+    padding: 5px 30px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+.my_info_choose li a.on {
+    position: relative;
+    z-index: 1;
+    background: black;
+    border-bottom: none;
+    font-weight: bold;
+    color: #eee2d3;
+    transition: all 0.3s ease-in;
+    position: relative;
+}
+
+.show_me {
+    width: 100%;
+    max-height: 1000px;
+    overflow-y: auto;
+    display: flex;
+}
+
+/* Thiết lập các thuộc tính của scrollbar */
+.show_me::-webkit-scrollbar {
+    width: 5px;
+    /* Độ rộng của scrollbar */
+}
+
+/* Thiết lập giao diện của thanh scrollbar */
+.show_me::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    /* Màu nền của thanh scrollbar */
+}
+
+/* Thiết lập giao diện của thanh cuộn (thumb) */
+.show_me::-webkit-scrollbar-thumb {
+    background-color: black;
+    /* Màu nền của thanh cuộn */
+    border-radius: 5px;
+    /* Bo tròn các góc của thanh cuộn */
+}
+
+.show_me .cancel_send_tdtt,
+.show_me .cancel_send_tdmk,
+.show_me .cancel_send_xtk {
+    padding: 25px 0 0;
+    text-align: center;
+}
+
+.show_me .cancel_send_tdtt a,
+.show_me .cancel_send_tdmk a,
+.show_me .cancel_send_xtk a {
+    text-decoration: none;
+}
+
+.show_me .cancel_send_tdtt .cancel_tdtt,
+.show_me .cancel_send_tdmk .cancel_tdmk,
+.show_me .cancel_send_xtk .cancel_xtk {
+    min-width: 100px;
+    border: 1px solid #999;
+    background: #fff;
+    color: #231f20;
+    display: inline-block;
+    height: 40px;
+    padding: 0 10px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 40px;
+}
+
+.show_me .cancel_send_tdtt .send_tdtt,
+.show_me .cancel_send_tdmk .send_tdmk,
+.show_me .cancel_send_xtk .send_xtk {
+    min-width: 100px;
+    color: #cdc197;
+    background-color: black;
+    display: inline-block;
+    height: 40px;
+    padding: 0 10px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 40px;
+}
+
+.tbl_thongTinVip {
+    width: 100%;
+    border-top: 1px solid #c0c0c0;
+    font-size: 13px;
+}
+
+.tbl_thongTinVip th,
+.tbl_thongTinVip td {
+    border-bottom: 1px solid #dedede;
+    padding: 10px 0 10px 20px;
+    height: 30px;
+    line-height: 40px;
+    vertical-align: top;
+    text-align: left;
+    color: #231f20;
+    font-weight: bold;
+}
+
+.tbl_thongTinVip td {
+    padding: 10px 0 10px 20px;
+    color: #777;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.tbl_thongTinVip .dotted {
+    width: 50%;
+}
+
+.tbl_thongTinVip li {
+    margin-top: 15px;
+}
+
+.tbl_thongTinVip input[type="text"],
+.tbl_thongTinVip input[type="tel"],
+.tbl_thongTinVip input[type="email"],
+.tbl_thongTinVip input[type="password"] {
+    width: 60%;
+    /* Để ô nhập liệu mở rộng hết phần khung chứa */
+    padding: 10px;
+    /* Khoảng cách từ nội dung đến viền của ô nhập liệu */
+    background-color: f5f5f5;
+    /* Màu nền của ô nhập liệu */
+    border: none;
+    /* Loại bỏ đường viền */
+    border-radius: 5px;
+    /* Đường viền cong */
+    box-sizing: border-box;
+    /* Đảm bảo kích thước của ô nhập liệu không thay đổi khi thêm padding hoặc border */
+}
+
+.list_comment {
+    width: calc(100% - 40px);
+    border-top: 1px solid #c0c0c0;
+    font-size: 16px;
+    padding: 20px;
+}
+
+.list_comment p {
+    margin: 5px;
+    font-weight: bold;
+}
+
+.item_history {
+    width: 100%;
+    display: flex;
+}
+
+.item_history .ticket {
+    padding: 20px;
+    width: 70%;
+    border-top: 1px solid #c0c0c0;
+}
+
+.item_history p {
+    margin: 5px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.item_history .combo {
+    padding: 20px;
+    width: 30%;
+    border-top: 1px solid #c0c0c0;
+    border-left: 1px solid #c0c0c0;
+}

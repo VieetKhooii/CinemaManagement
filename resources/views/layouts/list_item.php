@@ -8,13 +8,14 @@
     else {
         echo "no movies";
     }
-
-
 $moviesOnScreen = array();
 $moviesComingUp = array();
-
 // Duyệt qua từng dòng dữ liệu và thêm vào mảng
 foreach($currentMovies as $row){
+    if ($row['movie_id'] === ""){
+        
+        break;
+    }
     $movieInfo = array(
         'movie_id' => $row['movie_id'],
         'movie_name' => $row['movie_name'],
@@ -28,7 +29,12 @@ foreach($currentMovies as $row){
     );
     $moviesOnScreen[] = $movieInfo;
 }
+
 foreach ($upComingMovies as $row) {
+    if ($row['movie_id'] === ""){
+
+        break;
+    }
     $movieInfo2 = array(
         'movie_id' => $row['movie_id'],
         'movie_name' => $row['movie_name'],
@@ -63,11 +69,12 @@ foreach ($upComingMovies as $row) {
     </div>
 </div>
 
-<script src="/js/foot_item.js"></script>
+<!-- <script src="/js/foot_item.js"></script> -->
 <script>
-    window.addEventListener("DOMContentLoaded", function() {
+    $(document).ready(function() {
         var movies = <?php echo json_encode($moviesOnScreen); ?>;
-        type_film(movies); // Gọi hàm type_film với tham số là biến movies
+        type_film(movies);
         showItem(movies.length);
-    });
+});
 </script>
+

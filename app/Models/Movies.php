@@ -55,29 +55,17 @@ class Movies extends Model
         });
     }
 
-    public function scopeSearch($query, $name, $minPrice, $maxPrice, $category)
+    public static function search(array $searchParams)
     {
-        $query = $this->query();   
+        $query = static::query();
 
-        if ($name) {
-            $query->where('movie_name', 'LIKE', "%$name%");
+        foreach ($searchParams as $key => $value) {
+            if ($value !== null) {
+                $query->where($key, 'like', '%' . $value . '%');
+            }
         }
 
-        if ($minPrice) {
-            $query->where('bonus_price', '>=', $minPrice);
-        }
-
-        if ($maxPrice) {
-            $query->where('bonus_price', '<=', $maxPrice);
-        }
-
-        if($category != "All"){
-            $categoryId = Categories::where('category_name', 'LIKE', "%$category%")->first()->category_id;
-            $query->where('category_id', $categoryId);
-        }
-
-
-        return $query;
+        return $query->get();
     }
 
     protected $casts = [
@@ -85,8 +73,8 @@ class Movies extends Model
     ];
 
     public static function getMoviesForCustomer1(){
-        
-        return Movies::select('movies.*', 'categories.category_name', DB::raw('MIN(showtimes.date) as start_time'))
+        try {
+            return Movies::select('movies.*', 'categories.category_name', DB::raw('MIN(showtimes.date) as start_time'))
         ->join('showtimes', 'movies.movie_id', '=', 'showtimes.movie_id')
         ->join('categories', 'categories.category_id', '=', 'movies.category_id')
         ->whereIn('movies.movie_id', function($query) {
@@ -102,11 +90,16 @@ class Movies extends Model
         ->where('movies.display', '1')
         ->groupBy('movies.movie_id')
         ->get()->toArray();
+        }
+        catch(\Exception $exception){
+            echo("Error get movies 1: " . $exception->getMessage());
+            return null;
+        }
     }
     
     public static function getMoviesForCustomer0(){
-
-        return Movies::select('movies.*', 'categories.category_name', DB::raw('MIN(showtimes.date) as start_time'))
+        try{
+            $result = Movies::select('movies.*', 'categories.category_name', DB::raw('MIN(showtimes.date) as start_time'))
         ->join('showtimes', 'movies.movie_id', '=', 'showtimes.movie_id')
         ->join('categories', 'categories.category_id', '=', 'movies.category_id')
         ->whereNotIn('movies.movie_id', function($query) {
@@ -117,6 +110,12 @@ class Movies extends Model
         ->where('movies.display', '1')
         ->groupBy('movies.movie_id')
         ->get()->toArray();
+        return $result;
+        }
+        catch(\Exception $exception){
+            echo("Error get movies 1: " . $exception->getMessage());
+            return null;
+        }
     }
 
     use HasFactory;

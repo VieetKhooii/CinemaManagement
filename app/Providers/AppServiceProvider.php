@@ -35,6 +35,8 @@ use App\Repositories\UserRepo;
 use App\Repositories\VoucherRepo;
 use Illuminate\Support\ServiceProvider;
 use app\Service\UserService;
+use detail_controller;
+use DetailController;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -59,6 +61,7 @@ class AppServiceProvider extends ServiceProvider
        $this->app->bind(ComboTransactionRepositoryInterface::class, ComboTransactionRepo::class);
        $this->app->bind(VoucherRepositoryInterface::class, VoucherRepo::class);
        $this->app->bind(ShowtimeRoomRepositoryInterface::class, ShowtimeRoomRepo::class);
+       $this->app->bind(DetailController::class);
     }
 
     /**

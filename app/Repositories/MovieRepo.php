@@ -51,13 +51,15 @@ class MovieRepo implements MovieRepositoryInterface{
             return null;    
         }
     }
-    public function searchMovie($name, $minPrice, $maxPrice, $category){
+
+    public function searchMovie(array $data){
         try {
-            return Movies::search($name, $minPrice, $maxPrice, $category)->paginate(10);
+            return Movies::search($data);
         }
         catch (\Exception $exception){
             echo("Error MovieRepo (search): " . $exception->getMessage());
             return null;    
         }
     }
+    
 }

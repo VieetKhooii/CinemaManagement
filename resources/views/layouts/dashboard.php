@@ -9,9 +9,6 @@
     if(isset($_COOKIE['jwt'])) {
         include("header1.php");
     }
-    else {
-        include("header.php");
-    }
     ?>
 </div>
 <div class="content_main" id="content_main">
@@ -25,4 +22,5 @@
     include("footer.php");
     ?>
 </div>
+<script src="/js/seatwrap.js"></script>
 <script src="/js/app.js"></script>

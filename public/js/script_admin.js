@@ -1,5 +1,5 @@
 //đánh dấu bảng đang hiện
-function showContent(page,file) {
+function showContent(page, file) {
     var buttons = document.querySelectorAll('button');
     buttons.forEach(button => {
         button.classList.remove('active');
@@ -9,14 +9,14 @@ function showContent(page,file) {
     var currentButton = document.getElementById(page).querySelector('button');
     currentButton.classList.add('active');
 
-    if(page !=="static"){
-        showPage(page,file);
+    if (page !== "static") {
+        showPage(page, file);
     }
-    else{
+    else {
         loadContent(file);
-        
+
     }
-   
+
 }
 function getUrlParameter(name) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -31,72 +31,73 @@ function handleUrlParams() {
     var page = getUrlParameter('page');
 
     if (name !== '') {
-        if(name==='static'){
-            loadContent('admin_static.php');
+        if (name === 'static') {
+            loadContent('admin_static');
         }
-        else{
-            showContent(name,page);
+        else {
+            showContent(name, page);
         }
     }
 }
 
 // Gọi hàm xử lý chuyển hướng khi trang được tải
-window.onload = function() {
+window.onload = function () {
     handleUrlParams();
 };
 
 // Hiện trang thống kê
-function loadContent(file){ 
+function loadContent(file) {
     window.history.pushState({}, "", `?name=static`);
     fetch(file).then(response => response.text())
-                .then(data => {
-                    document.getElementById('content').innerHTML=data;
-                })
-                .catch(error => console.error('error',error));
+        .then(data => {
+            document.getElementById('content').innerHTML = data;
+            var script = document.createElement('script')
+            script.src = 'js/script_statistic.js';
+            document.body.appendChild(script)
+        })
+        .catch(error => console.error('error', error));
 }
 
 //Hiện các trang khác
-function showPage(name,page){
+function showPage(name, page) {
     window.history.pushState({}, "", `?${name}&page=${page}`);
-    url = 'http://localhost:8000/'+name+'?page='+page;
+    url = 'http://localhost:8000/' + name + '?page=' + page;
     console.log(url)
     $.ajax({
         type: 'GET',
         url: url,
         dataType: 'json',
-        success: function(data) {
-            if (data.status === 'success'){
+        success: function (data) {
+            if (data.status === 'success') {
                 const message1 = data.data.data;
                 const total = data.last_page;
                 const current_page = data.data.current_page;
                 const message = Array.isArray(message1) && message1.length === 0 ? "" : message1;
-                console.log(total)
-                console.log(current_page)
-                
+
                 $.ajax({
                     type: 'POST',
                     url: '/admin/query',
-                    
-                    data: {message: message, name: name, total: total, current_page: current_page}, // Pass the message data to PHP
-                    success: function(response) {
+
+                    data: { message: message, name: name, total: total, current_page: current_page }, // Pass the message data to PHP
+                    success: function (response) {
                         $('#content').html(response);
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         if (xhr.status === 422) {
-                          var responseJSON = xhr.responseJSON;
-                          if (responseJSON  && responseJSON.error) {
-                            alert(responseJSON.error);
-                          } else {
-                            alert('Validation error occurred.');
-                          }
+                            var responseJSON = xhr.responseJSON;
+                            if (responseJSON && responseJSON.error) {
+                                alert(responseJSON.error);
+                            } else {
+                                alert('Validation error occurred.');
+                            }
                         } else {
-                          console.error('AJAX request failed:', status, error);
+                            console.error('AJAX request failed:', status, error);
                         }
-                      }
+                    }
                 });
             }
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             // console.error(xhr.responseText);
             alert("Session has expired! Please Provide credential");
             location.reload(true);
@@ -105,54 +106,57 @@ function showPage(name,page){
 }
 
 // hiện trang add
-function openPage(name,value,id,idtable){
-    var url="";
+function openPage(name, value, id, idtable) {
+    var url = "";
     // Thêm
-    if (value==0){
+    if (value == 0) {
         if (name === 'rooms' || name === 'seatTypes' || name === 'roles' || name === 'categories' ||
-            name ==='seats' || name === 'reservations' || name === 'transactions') {
+            name === 'seats' || name === 'reservations' || name === 'transactions') {
             alert("Không thể thêm.");
             return;
         }
-        url='/admin/add?name='+name;
+        url = '/admin/add?name=' + name;
         window.history.pushState({}, "", `?add_form`);
     }
 
     // chỉnh sửa
-    else{
-
+    else {
+        if (name === 'reservations' || name === 'transactions') {
+            alert("Không thể chỉnh sửa.");
+            return;
+        }
         window.history.pushState({}, "", `?edit_form`);
         tableInfo = '';
         idName = '';
-        url = '/admin/edit?name=' + encodeURIComponent(name) + 
-               '&id=' + encodeURIComponent(id) + '&idtable=' + encodeURIComponent(idtable);
-               url1 = 'http://localhost:8000/'+name+'/search';
-               console.log(url1)
-               $.ajax({
-                   type: 'POST',
-                   data: {
-                    [idtable]: id
-                   },
-                   url: url1,
-                   dataType: 'json',
-                   async: false,
-                   success: function(data) {
-                       if (data.status === 'success'){
-                           const message1 = data.data;
-                           const message = Array.isArray(message1) && message1.length === 0 ? "" : message1;
-                           tableInfo = message;
-                           url += '&tableInfo=' + JSON.stringify(tableInfo);
-                       }
-                   },
-                   error: function(xhr, status, error) {
-                       // console.error(xhr.responseText);
-                       alert("Error enter edit");
-                   }
-               });
+        url = '/admin/edit?name=' + encodeURIComponent(name) +
+            '&id=' + encodeURIComponent(id) + '&idtable=' + encodeURIComponent(idtable);
+        url1 = 'http://localhost:8000/' + name + '/search';
+        console.log(url1)
+        $.ajax({
+            type: 'POST',
+            data: {
+                [idtable]: id
+            },
+            url: url1,
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                if (data.status === 'success') {
+                    const message1 = data.data;
+                    const message = Array.isArray(message1) && message1.length === 0 ? "" : message1;
+                    tableInfo = message;
+                    url += '&tableInfo=' + JSON.stringify(tableInfo);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+                alert("Error enter edit");
+            }
+        });
     }
     // Sử dụng AJAX để tải nội dung của admin_add.php
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
+    xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             document.getElementById('content').innerHTML = this.responseText;
         }
@@ -160,7 +164,7 @@ function openPage(name,value,id,idtable){
     console.log(url)
     xhttp.open('GET', url, true);
     xhttp.send();
-    
+
 }
 
 
@@ -183,11 +187,11 @@ function checkImage() {
 }
 
 // kiểm tra số từ input của trang add
-function checkNumber(columnName){
+function checkNumber(columnName) {
     var input = document.getElementById(columnName);
-        if (input.value < 0) {
-            input.value = 0;
-        }
+    if (input.value < 0) {
+        input.value = 0;
+    }
 }
 
 // kiểm tra sdt từ input của trang add
@@ -195,13 +199,13 @@ function checkPhone(columnName) {
     var input = document.getElementById(columnName);
     var phoneNumber = input.value;
     var vnf_regex = /((09|03|07|08|05)+([0-9]{8})\b)/g;
-    
+
     if (phoneNumber !== '') {
         if (vnf_regex.test(phoneNumber) == false) {
             alert('Số điện thoại của bạn không đúng định dạng!');
             input.value = ''; // Xóa nội dung của ô input
             return;
-        } 
+        }
     } else {
         alert('Bạn chưa điền số điện thoại!');
         return;
@@ -226,40 +230,40 @@ function checkEmail(columnName) {
 // thêm dữ liệu vào database
 function insertDB(tableName, e) {
     e.preventDefault();
-    url = 'http://localhost:8000/'+tableName;
+    url = 'http://localhost:8000/' + tableName;
     console.log(url);
-    // var formData = new FormData($('#add_form')[0]); // Sử dụng FormData để lấy dữ liệu từ form
-    // formData.append('tableName', tableName); // Thêm tên bảng vào formData
-    var formData = $('#add_form').serialize();
+    var formData = new FormData($('#add_form')[0]); // Sử dụng FormData để lấy dữ liệu từ form
+    // formData.append('image', $('#add_form input[type="file"]')[0].files[0]); // Thêm tên bảng vào formData
     console.log(formData)
     $.ajax({
         type: 'POST',
         url: url,
         data: formData, // Truyền formData 
-        // processData: false, // Không xử lý dữ liệu
-        success: function(response) {
+        processData: false,
+        contentType: false,
+        success: function (response) {
             $('#add_form')[0].reset(); // Đặt lại form sau khi gửi thành công
             alert("Dữ liệu đã được chèn thành công!");
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             if (xhr.status === 422) {
-              var responseJSON = xhr.responseJSON;
-              if (responseJSON  && responseJSON.error) {
-                alert(responseJSON.error);
-              } else {
-                alert('Validation error occurred.');
-              }
+                var responseJSON = xhr.responseJSON;
+                if (responseJSON && responseJSON.error) {
+                    alert(responseJSON.error);
+                } else {
+                    alert('Validation error occurred.');
+                }
             } else {
-              console.error('AJAX request failed:', status, error);
+                console.error('AJAX request failed:', status, error, xhr.responseJSON);
             }
-          }
+        }
     });
 }
 
 //cập nhật, sửa 
-function updateDB(tableName,id,idtable, e){
+function updateDB(tableName, id, idtable, e) {
     e.preventDefault();
-    url = 'http://localhost:8000/'+tableName+'/'+id;
+    url = 'http://localhost:8000/' + tableName + '/' + id;
     console.log(url);
     // var formData = new FormData($('#add_form')[0]); // Sử dụng FormData để lấy dữ liệu từ form
     // formData.append('tableName', tableName); // Thêm tên bảng vào formData
@@ -270,50 +274,50 @@ function updateDB(tableName,id,idtable, e){
         url: url,
         data: formData, // Truyền formData 
         // processData: false, // Không xử lý dữ liệu
-        success: function(response) {
+        success: function (response) {
             // $('#add_form')[0].reset(); // Đặt lại form sau khi gửi thành công
             alert("Dữ liệu đã được sửa thành công!");
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             if (xhr.status === 422) {
-              var responseJSON = xhr.responseJSON;
-              if (responseJSON  && responseJSON.error) {
-                alert(responseJSON.error);
-              } else {
-                alert('Validation error occurred.');
-              }
+                var responseJSON = xhr.responseJSON;
+                if (responseJSON && responseJSON.error) {
+                    alert(responseJSON.error);
+                } else {
+                    alert('Validation error occurred.');
+                }
             } else {
-              console.error('AJAX request failed:', status, error);
+                console.error('AJAX request failed:', status, error);
             }
-          }
+        }
     });
 }
 
 
 // xóa 
-function deleteDB(tableName, value){
-    url = 'http://localhost:8000/'+tableName+'/hide/'+value;
+function deleteDB(tableName, value) {
+    url = 'http://localhost:8000/' + tableName + '/hide/' + value;
     console.log(url);
     $.ajax({
         type: 'PUT',
         url: url,
         // processData: false, // Không xử lý dữ liệu
-        success: function(response) {
+        success: function (response) {
             // $('#add_form')[0].reset(); // Đặt lại form sau khi gửi thành công
             alert("Xóa thành công!");
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             if (xhr.status === 422) {
-              var responseJSON = xhr.responseJSON;
-              if (responseJSON  && responseJSON.error) {
-                alert(responseJSON.error);
-              } else {
-                alert('Validation error occurred.');
-              }
+                var responseJSON = xhr.responseJSON;
+                if (responseJSON && responseJSON.error) {
+                    alert(responseJSON.error);
+                } else {
+                    alert('Validation error occurred.');
+                }
             } else {
-              console.error('AJAX request failed:', status, error);
+                console.error('AJAX request failed:', status, error);
             }
-          }
+        }
     });
     // alert(name + value);
     // alert(columnName);

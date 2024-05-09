@@ -47,23 +47,17 @@ class Combos extends Model
         });
     }
 
-    public function scopeSearch($query, $name, $minPrice, $maxPrice)
+    public static function search(array $searchParams)
     {
-        $query = $this->query();
+        $query = static::query();
 
-        if ($name) {
-            $query->where('name', 'LIKE', "%$name%");
+        foreach ($searchParams as $key => $value) {
+            if ($value !== null) {
+                $query->where($key, 'like', '%' . $value . '%');
+            }
         }
 
-        if ($minPrice) {
-            $query->where('price', '>=', $minPrice);
-        }
-
-        if ($maxPrice) {
-            $query->where('price', '<=', $maxPrice);
-        }
-
-        return $query;
+        return $query->get();
     }
     
     protected $casts = [

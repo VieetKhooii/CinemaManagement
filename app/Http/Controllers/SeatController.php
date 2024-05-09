@@ -76,13 +76,12 @@ class SeatController extends Controller
      */
     public function show(string $id)
     {
-        //
         $seat = $this->seatService->getASeat($id);
         if ($seat){
             return response()->json(['status' => 'success', 'message' => 'seat showed successfully', 'data' => $seat], 201);
         }
         else {
-            return response()->json(['error' => '$validator->errors()'], 422);
+            return response()->json(['status' => 'error', 'error' => '$validator->errors()'], 422);
         }
     }
 
@@ -127,13 +126,15 @@ class SeatController extends Controller
 
     public function search(Request $request)
     {
-        $row = $request->input('seat_row');
-        $number = $request->input('seat_number');
-        $reserve = $request->input('is_reserved');
-        $seatType = $request->input('seat_type_name');
-        $room = $request->input('room_name');
-
-        $seat = $this->seatService->searchSeat($row, $number, $reserve, $seatType, $room);
+        $array = [
+            'seat_id' => $request->input('seat_id'),
+            'seat_row' => $request->input('seat_row'),
+            'seat_number' => $request->input('seat_number'),
+            'is_reserved' => $request->input('is_reserved'),
+            'seat_type_id' => $request->input('seat_type_id'),
+            'room_id'=> $request->input('room_id'),
+        ];
+        $seat = $this->seatService->searchSeat($array);
         if ($seat){
             return response()->json(['status' => 'success', 'message' => 'seat searched successfully', 'data' => $seat], 201);
         }

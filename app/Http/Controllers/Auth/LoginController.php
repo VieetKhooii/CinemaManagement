@@ -52,6 +52,7 @@ class LoginController extends Controller
                 ]
             ];
             $info = json_encode([
+                'user_id' => $user->user_id,
                 'username' => $user->full_name,
                 'role_id' => $user->role_id,
                 'email' => $user->email ,
@@ -62,10 +63,10 @@ class LoginController extends Controller
                 'score' => $user->score,
                 'coin' => $user->coin,
             ]);
-            // echo $user->role_id;
+
             $response = new Response($responseJson);
-            $response->withCookie(cookie('jwt', $token, 5, null, null, false, false));
-            $response->withCookie(cookie('jwt_role', $info, 5, null, null, false, false));
+            $response->withCookie(cookie('jwt', $token, 2, null, null, false, true));
+            $response->withCookie(cookie('jwt_role', $info, 2, null, null, false, true));
             return $response;
         }
         else {
@@ -91,8 +92,14 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        // Auth::logout();
-        return response()->json(['message' => 'Successfully logged out']);
+        try {
+            Cookie::queue(Cookie::forget('jwt'));
+            Cookie::queue(Cookie::forget('jwt_role'));
+            return response()->json(['status' => 'success', 'message' => 'Successfully logged out']);
+        }
+        catch (\Exception $exception){
+            return response()->json(['status' => 'error', 'message' => $exception->getMessage()]);
+        }
     }
     
     public function refresh()

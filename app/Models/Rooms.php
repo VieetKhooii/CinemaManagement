@@ -58,23 +58,17 @@ class Rooms extends Model
         });
     }
 
-    public function scopeSearch($query, $name, $minSeat, $maxSeat)
+    public static function search(array $searchParams)
     {
-        $query = $this->query();
+        $query = static::query();
 
-        if ($name) {
-            $query->where('room_name', 'LIKE', "%$name%");
+        foreach ($searchParams as $key => $value) {
+            if ($value !== null) {
+                $query->where($key, 'like', '%' . $value . '%');
+            }
         }
 
-        if ($minSeat) {
-            $query->where('number_of_seat', '>=', $minSeat);
-        }
-
-        if ($maxSeat) {
-            $query->where('number_of_seat', '<=', $maxSeat);
-        }
-
-        return $query;
+        return $query->get();
     }
 
 

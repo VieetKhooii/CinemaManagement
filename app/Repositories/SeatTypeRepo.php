@@ -61,9 +61,9 @@ class SeatTypeRepo implements SeatTypeRepositoryInterface
         }
     }
 
-    public function searchSeatType($type, $minPrice, $maxPrice){
+    public function searchSeatType($array){
         try {
-            return SeatTypes::search($type, $minPrice, $maxPrice)->paginate(6);
+            return SeatTypes::search($array);
         }
         catch (\Exception $exception){
             echo("Error SeatTypeRepo (search): " . $exception->getMessage());

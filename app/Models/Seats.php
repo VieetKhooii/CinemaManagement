@@ -54,33 +54,17 @@ class Seats extends Model
         });
     }
 
-    public function scopeSearch($query, $row, $number, $reserve, $seatType, $room)
+    public static function search(array $searchParams)
     {
-        $query = $this->query();
+        $query = static::query();
 
-        if ($row) {
-            $query->where('seat_row', 'LIKE', "%$row%");
+        foreach ($searchParams as $key => $value) {
+            if ($value !== null) {
+                $query->where($key, 'like', '%' . $value . '%');
+            }
         }
 
-        if ($number) {
-            $query->where('seat_number', $number);
-        }
-
-        if ($reserve) {
-            $query->where('is_reserved', $reserve);
-        }
-
-        if($seatType != "All"){
-            $typeId = SeatTypes::where('type', 'LIKE', "%$seatType%")->first()->seat_type_id;
-            $query->where('seat_type_id', $typeId);
-        }
-
-        if($room != "All"){
-            $roomId = Rooms::where('room_name', 'LIKE', "%$room%")->first()->room_id;
-            $query->where('room_id', $roomId);
-        }
-
-        return $query;
+        return $query->get();
     }
 
 

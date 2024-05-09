@@ -18,7 +18,8 @@ class AttachJwtToken
     public function handle(Request $request, Closure $next)
     {
         $token = Cookie::get('jwt');
-        if ($token) {
+        $token_role = Cookie::get('jwt_role');
+        if ($token && $token_role) {
             $request->headers->set('Authorization', 'Bearer ' . $token);
         }
         else {

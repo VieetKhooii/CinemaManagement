@@ -1,0 +1,53 @@
+/* style_statistic.css */
+
+.header {
+    display: flex;
+    flex-direction: row;
+}
+
+.date_selector,
+#radBtn_Time {
+    display: block;
+}
+
+#pickTime, #pickStatistic{
+    flex: 1; 
+    margin-bottom: 2%;
+}
+
+#statistic_Select{
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: none;
+}
+
+.body {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.value,.key{
+    display: flex;
+}
+label{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: bolder;
+}
+#radBtn_Time{
+    margin-top: 1%;
+}
+
+#TextMax,#TextMin,#TextTotal{
+    border: 3px solid rgba(238, 213, 120, 0.944); 
+    padding:1% 1%;
+    margin-top:1% ;
+    margin-bottom: 1%;
+    border-radius: 10px;
+    
+}
+
+#value1,#value2,#value3,#key1,#key2{
+    padding-left: 1%;
+}
