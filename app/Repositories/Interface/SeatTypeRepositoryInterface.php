@@ -9,5 +9,5 @@ interface SeatTypeRepositoryInterface
     public function getASeatType(string $id);
     public function addSeatType(array $data);
     public function updateSeatType(array $data, string $id);
-    public function searchSeatType($type, $minPrice, $maxPrice);
+    public function searchSeatType($array);
 }

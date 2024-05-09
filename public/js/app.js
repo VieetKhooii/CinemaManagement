@@ -1,4 +1,4 @@
-let slideIndex = 0;
+var slideIndex = 0;
 showSlides(slideIndex);
 
 function plusSlides(n) {
@@ -49,9 +49,9 @@ document.getElementById("header_contain").addEventListener("click", function (ev
   else if (target.id === 'logIn') {
     alert(target.textContent);
   }
-  else if (target.id === 'theTV') {
-    alert(target.textContent);
-  }
+  // else if (target.id === 'theTV') {
+  //   alert(target.textContent);
+  // }
   else if (target.id === 'htKH') {
     alert(target.textContent);
   }
@@ -74,46 +74,105 @@ document.getElementById("header_menu").addEventListener("click", function (event
     alert(target.textContent);
   }
   else if (target.id === 'khuyenmai') {
-    alert(target.textContent);
+     (target.textContent);
   }
   else if (target.id === 'lienhe') {
     alert(target.textContent);
   }
 });
-function loadSign(file) {
+
+function logout(){
   $.ajax({
     method: 'GET',
-    url: 'http://localhost:8000/'+file,
+    url: 'http://localhost:8000/logout',
     async: false,
-    dataType: 'json',
-    success: function(data) {
-        if (data.status === 'success') {
-          const message1 = data.data.data;
-          const message = Array.isArray(message1) && message1.length === 0 ? "" : message1;
-          console.log(message)
-          $.ajax({
-            method: 'POST',
-            url: '/'+file+'_get',
-            async: false,
-            data: {
-              result: message
-            },
-            success: function(data) {
-              // fetch(file).then(response => response.text())
-              // .then(data => {
-                document.getElementById('content_main').innerHTML = data;
-              // })
-              // .catch(error => console.error('error', error));
-              },
-          });
-        } else if (data.status === 'error'){
-            const message = data.error;
-            alert(message);
-        }
-      },
+    success: function(data){
+      if (data.status == 'success'){
+        window.location.replace('/login');
+      }
+      else {
+        alert(data.message)
+      }
+    }
   });
-  
 }
+
+function getCookie(cookieName) {
+  const cookies = document.cookie.split(';');
+  for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.startsWith(cookieName + '=')) {
+          return cookie.substring(cookieName.length + 1);
+      }
+  }
+  return null;
+}
+
+function pleaseLogIn(){
+  alert("Hãy đăng nhập!")
+}
+
+function loadViewOnly(file) {
+    fetch(file).then(response => response.text())
+    .then(data => {
+      document.getElementById('content_main').innerHTML = data;
+    })
+    .catch(error => console.error('error', error));
+}
+
+function loadSign(file) {
+  history.pushState(newState, null, "/" + file);
+  // history.replaceState({ page: 'replaced-content' }, 'New Page Title', '/'+file);
+  if (file == 'login'){
+    window.location.href = "/login"
+  }
+  else if ( file == 'sign-up'){
+    window.location.href = "/sign-up"
+  }
+  else if ( file == 'dashboard'){
+    window.location.href = "/dashboard"
+  }
+  else {
+    $.ajax({
+      method: 'GET',
+      url: 'http://localhost:8000/'+file,
+      async: false,
+      dataType: 'json',
+      success: function(data) {
+          if (data.status === 'success') {
+            const message1 = data.data.data;
+            const message = Array.isArray(message1) && message1.length === 0 ? "" : message1;
+            console.log(message)
+            $.ajax({
+              method: 'POST',
+              url: '/'+file+'_get',
+              async: false,
+              data: {
+                result: message
+              },
+              success: function(data) {
+                // fetch(file).then(response => response.text())
+                // .then(data => {
+                  document.getElementById('content_main').innerHTML = data;
+                  // history.pushState({ page: 'voucher' }, 'Voucher Page', '/voucher');
+                // })
+                // .catch(error => console.error('error', error));
+                },
+            });
+          } else if (data.status === 'error'){
+              const message = data.error;
+              alert(message);
+          }
+        },
+        error: function(xhr, status, error) {
+          // console.error(xhr.responseText);
+          alert("Hãy đăng nhập lại!");
+          location.reload(true);
+      }
+    });
+  }
+}
+
 // load phần content của app, đang là đăng nhập và đăng kí
 function loadContent(file) {
   fetch(file).then(response => response.text())
@@ -329,7 +388,8 @@ function showVip(tabName, idon) {
   document.getElementById(tabName).style.display = 'block';
 }
 
-function getVoucher(){
-  // alert("hello")
-  
+function hidden_detail_ticket() {
+  var show_detail_ticket = document.querySelector('.show_detail_ticket');
+  show_detail_ticket.innerHTML = ``
+  show_detail_ticket.style.display = 'none'
 }

@@ -33,7 +33,7 @@ class SeatRepo implements SeatRepositoryInterface
 
     public function getASeat(string $id){
         try {
-            return Seats::findOrFail($id);
+            return Seats::select('seats.*')->where('seat_id', 'like', '%' . $id . '%')->get();
         }
         catch (\Exception $exception){
             echo("Error SeatRepo (get a Seat): " . $exception->getMessage());
@@ -61,9 +61,9 @@ class SeatRepo implements SeatRepositoryInterface
         }
     }
 
-    public function searchSeat($row, $number, $reserve, $seatType, $room){
+    public function searchSeat($array){
         try {
-            return Seats::search($row, $number, $reserve, $seatType, $room)->paginate(10);
+            return Seats::search($array);
         }
         catch (\Exception $exception){
             echo("Error SeatRepo (search): " . $exception->getMessage());

@@ -1,5 +1,7 @@
 <?php
-include("connect.php");
+ 
+use App\Models\Database;
+$conn =  Database::connection();
 
 // Kiểm tra xem yêu cầu POST có tồn tại không
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

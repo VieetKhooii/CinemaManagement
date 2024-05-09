@@ -22,6 +22,7 @@ class VoucherController extends Controller
                 'data' => $vouchers,
                 'last_page' => $vouchers->lastPage()], 
                 201);
+            // return view("/voucher",['data' => $vouchers]);
         }
         else {
             return response()->json([

@@ -34,7 +34,7 @@ class MovieController extends Controller
     public function getAllMoviesForCustomer(){
         $movie = Movies::getMoviesForCustomer1();
         $movie2 = Movies::getMoviesForCustomer0();
-        if ($movie && $movie2){
+        if ($movie || $movie2){
             return response()->json([
                 'status' => 'success',
                 'message' => 'movie 4 cus got successfully',
@@ -43,7 +43,7 @@ class MovieController extends Controller
             ], 201);
         }
         else {
-            return response()->json(['status' => 'error', 'error' => '$validator->errors()'], 422);
+            return response()->json(['status' => 'error', 'error' => '$validator->errors()'], 400);
         }
     }
     /**
@@ -63,14 +63,15 @@ class MovieController extends Controller
             'movie_name' => 'required|string|between:1,50',
             'bonus_price' => 'required|numeric|min:0.01',
             'duration' => 'required|numeric', 
+            // 'image_upload' => 'required',
             'movie_description' => 'required|string',
         ]);
         if ($validator->fails()) {
             return response()->json(['status' => 'error', 'error' => $validator->errors()->first()], 422);
-        }    
-        if ($request->hasFile('image')) {
+        }
+        if ($request->hasFile('image_upload')) {
             // Lưu file vào thư mục trên server
-            $file = $request->file('image');
+            $file = $request->file('image_upload');
             $newName = Str::uuid() . '.' . $file->getClientOriginalExtension();
             $directory = public_path('uploads/movie');
             // Tạo thư mục nếu chưa tồn tại
@@ -80,7 +81,7 @@ class MovieController extends Controller
             $file->move($directory, $newName);
             $filePath = '/uploads/movie/' . $newName;            
         } else {
-            return response()->json(['status' => 'success', 'message' => 'No file uploaded'], 400);
+            return response()->json(['status' => 'error', 'message' => 'No file uploaded'], 400);
         }
         $array = [
             'movie_name'=> $request->input('movie_name'),
@@ -108,7 +109,7 @@ class MovieController extends Controller
         //
         $movie = $this->movieService->getAMovie($id);
         if ($movie){
-            return response()->json(['status' => 'success', 'message' => 'movie showed successfully', 'data' => $movie], 201);
+            return view("layouts/detail_film", ['detail_movie' => $movie]);
         }
         else {
             return response()->json(['error' => '$validator->errors()'], 422);
@@ -170,12 +171,15 @@ class MovieController extends Controller
     }
 
     public function search(Request $request){       
-        $name = $request->input('movie_name');
-        $minPrice = $request->input('min_price');
-        $maxPrice = $request->input('max_price');
-        $category = $request->input('category_name');
-
-        $movie = $this->movieService->searchMovie($name, $minPrice, $maxPrice, $category);
+        $array = [
+            'movie_id'=> $request->input('movie_id'),
+            'movie_name'=> $request->input('movie_name'),
+            'movie_description'=> $request->input('movie_description'),
+            'duration'=> $request->input('duration'),
+            'bonus_price'=> $request->input('bonus_price'),
+            'category_id'=> $request->input('category_id'),
+        ];
+        $movie = $this->movieService->searchMovie($array);
         if ($movie){
             return response()->json(['status' => 'success', 'message' => 'movie searched successfully', 'data' => $movie], 201);
         }

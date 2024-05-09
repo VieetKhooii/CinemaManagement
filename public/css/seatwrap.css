@@ -1,0 +1,585 @@
+body {
+    margin: 0;
+}
+
+.container_seat {
+    width: 100%;
+    height: auto;
+    /* background-color: beige; */
+    background-image: linear-gradient(to left, beige, white 35%, white 65%, beige);
+}
+
+.container_seat .content_combo_info {
+    margin-top: 40px;
+    width: 100%;
+    background-image: linear-gradient(to left, beige, white 35%, white 65%, beige);
+
+}
+
+.container_seat .seatwrap {
+    width: 80%;
+    height: 200px;
+    max-width: 1000px;
+    box-shadow: 0 0 40px 0.6px rgb(214, 214, 184);
+    margin: 0 auto;
+    padding: 20px;
+    background-image: linear-gradient(to left, white, beige 50%, beige 50%, white);
+}
+
+.container_seat .seatwrap .seatarea {
+    width: 100%;
+    height: 100%;
+}
+
+.seatwrap .seatarea .seatheader {
+    width: 100%;
+    height: 40%;
+    position: relative;
+}
+
+.seatheader h2 {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: 0;
+}
+
+.seatheader .seat_right {
+    width: auto;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+}
+
+.seatheader .seat_right .price,
+.seatheader .seat_right .reset {
+    display: flex;
+    /* padding: 10px; */
+    border: 1px solid black;
+    margin: 0 20px;
+    width: auto;
+    height: 50px;
+    border-radius: 10px;
+}
+
+.seatheader .seat_right .price a:hover,
+.seatheader .seat_right .reset a:hover {
+    background-color: black;
+    color: beige;
+    box-shadow: 0 0 15px 9px rgb(215, 215, 147);
+}
+
+.seatheader .seat_right .price a,
+.seatheader .seat_right .reset a {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    /* width: calc(100% - 20px);
+    height:calc(100% - 20px); */
+    transition: all 0.5s ease-in-out;
+}
+
+.seatheader .seat_right .price a i,
+.seatheader .seat_right .reset a i {
+    margin-right: 5px;
+}
+
+.seatbox {
+    width: 100%;
+    height: 50%;
+    position: relative;
+}
+
+.seatbox .personselect {
+    width: 100%;
+    height: 25%;
+    list-style-type: none;
+    display: inline-flex;
+    position: relative;
+    padding: 0;
+    justify-content: space-around;
+    margin-bottom: 0;
+}
+
+.seatbox .personselect::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 1.5px;
+    background-color: rgb(197, 196, 196);
+}
+
+.seatbox .personselect li {
+    display: flex;
+    width: 30%;
+}
+
+.seatbox .personselect li label {
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.seatbox .personselect li .select_box {
+    /* border: 1px solid black; */
+    width: 70px;
+    height: 100%;
+    justify-content: center;
+}
+
+.seatbox .personselect li>.select_box>a {
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: black;
+    width: 100%;
+    height: 100%;
+    justify-content: space-around;
+}
+
+.seatbox .personselect li .select_box ul {
+    /* display: none; */
+    padding: 0;
+    width: 100%;
+    height: auto;
+}
+
+.seatbox .personselect li .select_box ul li {
+    z-index: 11;
+    background-color: white;
+    margin: 0;
+    width: 100%;
+    height: auto;
+    opacity: 0;
+    border: 1px solid black;
+    border-top: none;
+    position: relative;
+}
+
+.seatbox .personselect li .select_box ul li:hover a {
+    color: rgb(251, 225, 111);
+    transition-delay: 0.1s;
+}
+
+.seatbox .personselect li .select_box ul li::before {
+    position: absolute;
+    content: '';
+    width: 0;
+    height: 100%;
+    background-color: black;
+    top: 0;
+    left: 0;
+    transition: all 0.3s linear;
+}
+
+.seatbox .personselect li .select_box ul li:hover:before {
+    width: 100%;
+    background-position: 100% 0;
+}
+
+.seatbox>.personselect>li>.select_box>ul>li>a {
+    text-align: center;
+    display: block;
+    width: 100%;
+    height: auto;
+    text-decoration: none;
+    padding: 3px 0;
+    background-color: transparent;
+    z-index: 4;
+}
+
+.seat_bottom {
+    width: 100%;
+    height: 40%;
+    display: flex;
+    position: absolute;
+    bottom: 0;
+}
+
+.seat_bottom .seatset {
+    width: 80%;
+    height: 100%;
+    display: flex;
+}
+
+.seat_bottom .seatset .seat_setup {
+    min-width: 180px;
+    width: auto;
+    height: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.seat_bottom .seatset .seat_setup a {
+    background-color: black;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 7px;
+}
+
+.seat_bottom .seatset .seat_setup a:hover+.layer_seat {
+    display: block;
+}
+
+.seat_bottom .seatset .seat_setup a i {
+    color: white;
+}
+
+.seat_bottom .seatset .seat_setup .layer_seat {
+    display: none;
+    background: url('/img/dialogmassenger.png') no-repeat center;
+    width: 150px;
+    height: auto;
+    position: absolute;
+    padding: 12px;
+    padding-top: 0;
+    left: 0;
+    top: 100%;
+    background-size: cover;
+}
+
+.seat_bottom .seatset .seat_setup .layer_seat .seat_in {
+    font-size: 13px;
+    width: 90%;
+    height: 100%;
+    margin-left: 10px;
+}
+
+.seatset .seat_setting {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
+.seat_bottom .seatset dd {
+    margin: 0;
+    width: 60%;
+    height: 100%;
+}
+
+.seatset .seat_setting li label em {
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-indent: -3000px;
+}
+
+.seatset .seat_setting li {
+    height: 50%;
+    display: flex;
+}
+
+.seatset .seat_setting .per1 {
+    width: 62px;
+    background: url('/img/img_seat01.gif') no-repeat 22px 4px;
+}
+
+.seatset .seat_setting .per2 {
+    width: 62px;
+    background: url('/img/img_seat02.gif') no-repeat 22px 4px;
+}
+
+.seatset .seat_setting .per3 {
+    width: 80px;
+    background: url('/img/img_seat03.gif') no-repeat 22px 4px;
+
+}
+
+.seatset .seat_setting .per4 {
+    width: 100px;
+    background: url('/img/img_seat04.gif') no-repeat 22px 4px;
+}
+
+.seat_bottom .advice {
+    width: 20%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    float: right;
+}
+
+.seat_bottom .advice span {
+    font-size: 14px;
+    color: rgb(156, 155, 155);
+}
+
+/* **********************************************screenbox*******************************************88*/
+.seat_screenbox {
+    width: 80%;
+    height: 650px;
+    max-width: 1000px;
+    /* max-height: 1000px; */
+    margin: 0 auto;
+    margin-top: 20px;
+    background-image: linear-gradient(to left, white, beige 50%, beige 50%, white);
+    padding: 20px;
+    box-shadow: 0 0 40px 0.6px rgb(214, 214, 184);
+}
+
+.seat_screenbox .footer_screenbox {
+    width: 100%;
+    height: 15%;
+    /* background-color: black; */
+}
+
+.seat_screenbox .footer_screenbox .type_seat_info {
+    width: 100%;
+    height: 100%;
+}
+
+.seat_screenbox .footer_screenbox .type_seat_info p {
+    font-size: 20px;
+    color: black;
+    opacity: 0.4;
+}
+
+.seat_screenbox .footer_screenbox .type_seat_info ul {
+    list-style-type: none;
+    display: flex;
+    width: 100%;
+    height: 50px;
+    justify-content: space-around;
+    margin: 10px 0;
+    padding: 0;
+}
+
+.seat_screenbox .footer_screenbox .type_seat_info ul li {
+    display: flex;
+    align-items: center;
+}
+
+.seat_screenbox .footer_screenbox .type_seat_info ul li.nor_seat_type span {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    background-color: rgb(151, 150, 150);
+}
+
+.seat_screenbox .footer_screenbox .type_seat_info ul li.vip_seat_type span {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    background: url('/img/type_seat/vip_seat.gif') no-repeat center;
+    background-size: 100%;
+}
+
+.seat_screenbox .footer_screenbox .type_seat_info ul li.dis_seat_type span {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    background: url('/img/type_seat/bg_disabled.gif') no-repeat center;
+    background-size: 100%;
+}
+
+.seat_screenbox .footer_screenbox .type_seat_info ul li.coup_seat_type span {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    background: url('/img/type_seat/couple_seat.gif') no-repeat center;
+    background-size: 100%;
+}
+
+.seat_screenbox .footer_screenbox .type_seat_info ul li.chose_seat_type span {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    background: url('/img/type_seat/bg_choosen.gif') no-repeat center;
+    background-size: 100%;
+}
+
+.seat_screenbox .seat_screenbox_header {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to left, rgb(230, 229, 229), rgb(205, 203, 203) 50%, rgb(205, 203, 203) 50%, rgb(230, 229, 229));
+}
+
+.seat_screenbox .seat_screenbox_header span {
+    width: 50%;
+    height: 100%;
+    font-size: 33px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.seat_screenbox .screenbox_scroll {
+    width: 100%;
+    margin-top: 10px;
+    height: calc(70% - 40px);
+    background-color: beige;
+    position: relative;
+}
+
+#refreshButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    right: 0;
+    position: absolute;
+    border: none;
+    width: 50px;
+    height: 50px;
+    background-color: beige;
+    box-shadow: 0px 0px 20px 6px rgb(210, 210, 180);
+    transition: all 0.2s linear;
+}
+
+#refreshButton a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+}
+
+#refreshButton:hover {
+    border-radius: 50%;
+    transform: rotate(90deg);
+}
+#refreshButton:hover a i{
+    color: black;
+}
+#refreshButton a i {
+    transition: all 0.5s linear;
+    font-size: 22px;
+    color: rgb(199, 199, 37);
+}
+
+.seat_screenbox .screenbox_scroll .seat_Barea {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to left, white, rgb(232, 232, 202) 70%, rgb(232, 232, 202) 30%, white);
+}
+
+.seat_screenbox .screenbox_scroll .seat_Barea .seat {
+    width: 60%;
+    height: 80%;
+    display: block;
+}
+
+.screenbox_scroll .seat_Barea .seat ul {
+    padding: 0;
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px auto;
+    width: 100%;
+    position: relative;
+}
+
+.screenbox_scroll .seat_Barea .seat ul li {
+    margin-right: 5px;
+    width: 30px;
+    height: 30px;
+    /* border: 1px solid black; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.screenbox_scroll .seat_Barea .seat ul li.header_row {
+    position: absolute;
+    left: 0;
+}
+
+.screenbox_scroll .seat_Barea .seat ul li.selected {
+    background: url('/img/type_seat/bg_choosen.gif') no-repeat center;
+    background-size: 100%;
+}
+
+.screenbox_scroll .seat_Barea .seat ul li.selected a {
+    color: white;
+}
+
+.screenbox_scroll .seat_Barea .seat ul li.choosen {
+    background: url('/img/type_seat/bg_choosen.gif') no-repeat center;
+    background-size: 100%;
+}
+
+.screenbox_scroll .seat_Barea .seat ul li.choosen a {
+    color: white;
+}
+
+#column_seat_left {
+    margin-right: 50px;
+}
+
+#column_seat_coup {
+    margin-right: 25px;
+}
+
+#column_seat_right {
+    margin-left: 50px;
+}
+
+.screenbox_scroll .seat_Barea .seat ul li a {
+    text-decoration: none;
+    /* color: black; */
+}
+
+.screenbox_scroll .seat_Barea .seat ul .header_row {
+    border: none;
+}
+
+.normal_seat {
+    background-color: rgb(151, 150, 150);
+    color: white;
+}
+
+.vip_seat {
+    background: url('../img/type_seat/vip_seat.gif') no-repeat center;
+    background-size: 30px;
+}
+
+.couple_seat {
+    background: url('../img/type_seat/couple_seat.gif') no-repeat center;
+    background-size: 30px;
+
+}
+
+.enough_seats{
+    background: url('../img/type_seat/bg_disabled.gif') no-repeat center;
+    background-size: 30px;
+}
+.enough_seats a{
+    color: white;
+}
+.show_detail_ticket {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: transparent;
+    display: none;
+    z-index: 11;
+}

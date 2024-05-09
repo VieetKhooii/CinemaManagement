@@ -1,5 +1,7 @@
 <?php
-include("connect.php");
+
+use App\Models\Database;
+$conn =  Database::connection();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Kiểm tra xem dữ liệu được gửi lên có đúng định dạng FormData hay không
@@ -97,7 +99,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 // // Kết nối cơ sở dữ liệu
-// include("connect.php");
+//  
+
 
 // // Đọc dữ liệu được gửi từ JavaScript
 // $data = json_decode(file_get_contents("php://input"), true);

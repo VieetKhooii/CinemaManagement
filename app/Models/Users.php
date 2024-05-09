@@ -155,7 +155,7 @@ class Users extends Authenticatable implements JWTSubject
                     $rolePrefix = 'AD';
                     break;
                 case '2':
-                    $rolePrefix = 'EMP';
+                    $rolePrefix = 'CLI';
                     break;
                 case '4':
                     $rolePrefix = 'VIP';

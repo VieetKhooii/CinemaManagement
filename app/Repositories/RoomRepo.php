@@ -62,9 +62,9 @@ class RoomRepo implements RoomRepositoryInterface
         }
     }
 
-    public function searchRoom($name, $minSeat, $maxSeat){
+    public function searchRoom(array $data){
         try {
-            return Rooms::search($name, $minSeat, $maxSeat)->paginate(6);
+            return Rooms::search($data);
         }
         catch (\Exception $exception){
             echo("Error RoomRepo (searchRoom): " . $exception->getMessage());

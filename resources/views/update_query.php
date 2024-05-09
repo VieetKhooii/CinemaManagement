@@ -1,5 +1,7 @@
 <?php
-include("connect.php");
+
+use App\Models\Database;
+$conn =  Database::connection();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['tableName']) && isset($_POST['id']) && isset($_POST['idtable'])) {

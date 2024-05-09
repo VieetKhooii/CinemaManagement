@@ -221,7 +221,7 @@ try{
             echo "<button id='back-btn' onclick=\"showPage('$tableName',1)\">Back</button>";
             // Hiển thị form nhập liệu
             echo "<div id='admin_add'>";
-            echo "<form  id='add_form' enctype='multipart/form-data'>"; // Chú ý thêm tham số 'name' vào action
+            echo "<form id='add_form' enctype='multipart/form-data'>"; // Chú ý thêm tham số 'name' vào action
             echo"<input type='hidden' name='tableName' value='<?php echo $tableName; ?>'> ";
             $columnIndex = 0;
             foreach ($result as $row){

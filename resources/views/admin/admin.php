@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="css/style_admin.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <div class="container">
     <div id="menu">
@@ -44,7 +45,7 @@
         </div>
         
         <div id="static" >
-            <button onclick="showContent('static','admin_static.php')" >Thống kê</button>
+            <button onclick="showContent('static','admin_static')" >Thống kê</button>
         </div>
     </div>
     <div id="content">
@@ -56,5 +57,3 @@
     </div>
 </div>
 <script src="js/script_admin.js"></script>
-
-
