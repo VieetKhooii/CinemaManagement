@@ -8,26 +8,26 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT
-            SUM(total_bonus) AS all_total_bonus
-        FROM
-            (SELECT
-                movie_id,
-                movie_name,
-                SUM(total_bonus) AS total_bonus
+    $sql = "SELECT
+                SUM(total_bonus) AS all_total_bonus
             FROM
                 (SELECT
-                    m.movie_id,
-                    m.movie_name,
-                    -- s.showtime_id,
-                    COUNT(r.reservation_id) AS reservation_count,
-                    m.bonus_price * COUNT(r.reservation_id) + r.price * COUNT(r.reservation_id) AS total_bonus
+                    movie_id,
+                    movie_name,
+                    SUM(total_bonus) AS total_bonus
                 FROM
-                    movies m
-                JOIN
-                    showtimes s ON m.movie_id = s.movie_id
-                LEFT JOIN
-                    reservations r ON s.showtime_id = r.showtime_id";
+                    (SELECT
+                        m.movie_id,
+                        m.movie_name,
+                        -- s.showtime_id,
+                        COUNT(r.reservation_id) AS reservation_count,
+                        r.price * COUNT(r.reservation_id) AS total_bonus
+                    FROM
+                        movies m
+                    JOIN
+                        showtimes s ON m.movie_id = s.movie_id
+                    LEFT JOIN
+                        reservations r ON s.showtime_id = r.showtime_id";
 
 // Kiểm tra xem có ngày được chọn không
 if (isset($_GET['date']) && !empty($_GET['date'])) {

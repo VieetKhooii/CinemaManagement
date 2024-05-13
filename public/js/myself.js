@@ -1,7 +1,39 @@
 // Chuyển tab
-function showMe(tabName, idon) {
+function showMe(tabName, idon, event) {
+  event.preventDefault();
   // Lấy danh sách tất cả các tab
   var id = document.getElementById(idon)
+  // if (idon == "tdtt"){
+  //   $.ajax ({
+  //     method: 'GET',
+  //     url: 'users/'+$('#user_id').val(),
+  //     async: false,
+  //     success: function(personalInfo){
+  //       $.ajax ({
+  //         method: 'GET',
+  //         url: 'myself',
+  //         data: {
+  //           personalInfo: personalInfo
+  //         },
+  //         async: false,
+  //         success: function(data){
+  //           // document.getElementById('content_main').innerHTML += data;
+  //         },
+  //         error: function(xhr, status, error){
+  //           console.log("error")
+  //         }
+  //       })
+  //     },
+  //     error: function(xhr, status, error){
+  //       if (xhr.responseJSON && xhr.responseJSON.message) {
+  //         var errorMessage = xhr.responseJSON.message;
+  //         alert(errorMessage);
+  //     } else {
+  //         alert('An error occurred while processing your request.');
+  //     }
+  //     }
+  //   })
+  // }
   var idof = document.querySelectorAll('.member_ul .member_li a')
   idof.forEach(element => {
     element.classList.remove('on')
@@ -35,8 +67,30 @@ sendButtonTT.addEventListener("click", function (event) {
 
   // Kiểm tra từng trường input
   if (checkField(fullnameInput) && checkField(phoneInput) && checkField(emailInput) && checkField(birthInput) && checkField(diachiInput)) {
-    // Nếu tất cả các trường input đều hợp lệ, hiển thị thông báo thành công
-    alert("Thay đổi thông tin thành công!");
+    $.ajax({
+      method: 'PUT',
+      url: 'users/'+$('#user_id').val(),
+      data: {
+        'full_name': $('#fullname').val(),
+        'phone': $('#phone').val(),
+        'email': $('#email').val(),
+        'gender': $('#gender').val(),
+        'date_of_birth': $('#birth').val(),
+        'address': $('#diachi').val(),
+      },
+      async: false,
+      success: function(data){
+        alert(data.message);
+      },
+      error: function(xhr, status, error){
+        if (xhr.responseJSON && xhr.responseJSON.message) {
+          var errorMessage = xhr.responseJSON.message;
+          alert(errorMessage);
+      } else {
+          alert('An error occurred while processing your request.');
+      }
+      }
+    })
   }
 });
 
@@ -125,8 +179,27 @@ sendButtonMK.addEventListener("click", function (event) {
       document.getElementById("password_check").setCustomValidity("Mật khẩu nhập lại không trùng khớp.");
       document.getElementById("password_check").reportValidity();
     } else {
-      // Nếu mật khẩu mới và mật khẩu nhập lại trùng khớp, hiển thị thông báo thành công
-      alert("Thay đổi mật khẩu thành công!");
+      $.ajax({
+        method: 'POST',
+        url: 'password/update',
+        data: {
+          'password_now': $('#password_now').val(),
+          'password_new': $('#password_new').val(),
+          'email': document.getElementById('EmailForChangingPassword').value,
+        },
+        async: false,
+        success: function(data){
+          alert(data.message);
+        },
+        error: function(xhr, status, error){
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            var errorMessage = xhr.responseJSON.message;
+            alert(errorMessage);
+        } else {
+            alert('An error occurred while processing your request.');
+        }
+        }
+      })
     }
   }
 
@@ -158,8 +231,27 @@ sendButtonTK.addEventListener("click", function (event) {
       document.getElementById("password_check_del").setCustomValidity("Mật khẩu nhập lại không trùng khớp.");
       document.getElementById("password_check_del").reportValidity();
     } else {
-      // Nếu mật khẩu mới và mật khẩu nhập lại trùng khớp, hiển thị thông báo thành công
-      alert("Xóa tài khoản thành công!");
+      $.ajax({
+        method: 'PUT',
+        url: 'users/hideFromClient/'+$('#user_id').val(),
+        data: {
+          'password_now': $('#password_now_del').val(),
+        },
+        async: false,
+        success: function(data){
+          alert(data.message);
+          logout()
+          window.location.replace("/home")
+        },
+        error: function(xhr, status, error){
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            var errorMessage = xhr.responseJSON.message;
+            alert(errorMessage);
+        } else {
+            alert('An error occurred while processing your request.');
+        }
+        }
+      })
     }
   }
 

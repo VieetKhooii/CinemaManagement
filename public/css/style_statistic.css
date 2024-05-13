@@ -51,3 +51,28 @@ label{
 #value1,#value2,#value3,#key1,#key2{
     padding-left: 1%;
 }
+
+
+
+#myTable {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#myTable th, #myTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#myTable th {
+    background-color: #f2f2f2;
+}
+
+#myTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#myTable tr:hover {
+    background-color: #ddd;
+}

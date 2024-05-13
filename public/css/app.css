@@ -445,12 +445,14 @@ img {
 #content_booking {
     position: relative;
     min-height: 400px;
+    height: auto;
+    border-radius: 15px;
 }
 
 .cont_ticket {
     width: 100%;
-    min-height: 100px;
-    background-color: #f9f6ec;
+    height: 100px;
+    background-color: beige;
 }
 
 #content_booking .cont_ticket .calendar {
@@ -540,6 +542,7 @@ img {
     transition: all 0.3s ease-in;
     position: relative;
 }
+
 /* .tab_member .member_li .on::before{
     content: '';
     position: absolute;
@@ -701,7 +704,7 @@ table {
     border-spacing: 0;
 }
 
-.boardRead{
+.boardRead {
     width: 100%;
 }
 
@@ -713,7 +716,7 @@ table {
     font-weight: bold;
     color: #231f20;
     vertical-align: middle;
-}   
+}
 
 .boardRead tbody td {
     padding: 20px;
@@ -812,4 +815,447 @@ table {
     font-size: 16px;
     font-weight: bold;
     line-height: 40px;
+}
+
+
+/* Mua vé */
+
+.container_booking {
+    width: 100%;
+    background: linear-gradient(to left, beige, white 35%, white 65%, beige);
+    height: auto;
+}
+
+#content_booking {
+    max-width: 1200px;
+    width: 70%;
+    height: auto;
+    margin: 0 auto;
+    background-image: linear-gradient(to left, white, beige 50%, beige 50%, white);
+    box-shadow: 0 0 40px 0.6px rgb(214, 214, 184);
+
+}
+
+.time_inner {
+    overflow: hidden;
+    width: 70%;
+    max-width: 1200px;
+    height: 300px;
+    margin: 50px auto;
+    background-image: linear-gradient(to left, white, beige 50%, beige 50%, white);
+    box-shadow: 0 0 40px 0.6px rgb(214, 214, 184);
+    border-radius: 15px;
+}
+
+.time_inner .time_header {
+    width: 100%;
+    height: 30px;
+    padding: 0 20px;
+    display: flex;
+    margin: 10px 0;
+    justify-content: space-between;
+}
+
+.time_inner .time_header h3 {
+    padding-top: 10px;
+    margin-right: 20px;
+}
+
+.time_inner .time_header p {
+    display: flex;
+    align-items: end;
+    font-size: 12px;
+}
+
+.time_inner .time_box_data {
+    width: 100%;
+    height: calc(100% - 50px);
+}
+
+.time_inner .time_box_data h4 {
+    width: 100%;
+    height: 70px;
+    background-color: #dad2b4;
+    padding: 20px;
+    font-size: 24px;
+}
+
+.time_inner .time_box_data .list_showtime {
+    width: 100%;
+    height: calc(100% - 70px);
+    /* background-color: black; */
+    overflow: auto;
+}
+
+.time_inner .time_box_data .list_showtime ul {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.time_inner .time_box_data .list_showtime ul li {
+    list-style-type: none;
+    width: 115px;
+    height: 90px;
+    display: block;
+}
+
+.time_inner .time_box_data .list_showtime ul li:hover {
+    background-color: black;
+    color: white;
+}
+
+.time_inner .time_box_data .list_showtime ul li span {
+    border: 1px solid #ebeaea;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 13px;
+    height: 30%;
+}
+
+.time_inner .time_box_data .list_showtime ul li span:nth-child(even) {
+    height: 50%;
+}
+
+.time_inner .time_box_data .list_showtime ul li span:nth-child(odd) {
+    height: 25%;
+}
+
+.select_film {
+    border-left: 4px solid beige;
+    border-right: 2px solid beige;
+    width: 100%;
+    height: 60%;
+    max-height: 800px;
+    overflow-y: scroll;
+    background: linear-gradient(to left, beige, white 35%, white 65%, beige);
+    /* font-size: 23px; */
+    font-family: 'Times New Roman', Times, serif;
+    /* box-shadow: 5px 5px 15px #dbdbdb inset,-5px -5px 15px #dbdbdb inset; */
+}
+
+.select_film::-webkit-scrollbar {
+    width: 10px;
+    height: 15px;
+}
+
+.select_film::-webkit-scrollbar-thumb {
+    border: 0.5px solid #d5d57c;
+    background-color: black;
+    border-radius: 10px;
+}
+
+/* Phần track */
+.select_film::-webkit-scrollbar-track {
+    background-color: beige;
+}
+
+.select_film ul {
+    overflow-x: hidden;
+    margin-left: 20px;
+    padding: 20px;
+    list-style-type: none;
+}
+
+.select_film ul li {
+    display: flex;
+    margin-bottom: 20px;
+    cursor: pointer;
+    position: relative;
+}
+
+.select_film ul li span {
+    /* transform-style: preserve-3d; */
+    border-radius: 50%;
+    border: solid 10px white;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    min-height: 10px;
+    background-color: beige;
+    /* margin-right: 10px;  */
+    vertical-align: middle;
+    transform: translateX(6px);
+    z-index: 12;
+}
+
+.select_film ul li a {
+    padding-left: 35px;
+    display: flex;
+    align-items: center;
+    height: 50px;
+    width: 90%;
+    text-decoration: none;
+    color: black;
+    background-color: beige;
+    position: relative;
+}
+
+.select_film ul li a::before {
+    position: absolute;
+    background-color: white;
+    content: '';
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 30px;
+    clip-path: ellipse(50% 50% at 0 50%);
+}
+
+.action_film {
+    font-weight: bold;
+    font-size: larger;
+}
+
+.li_choose {
+    list-style-type: none;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    border: 1px solid black;
+}
+
+#exit {
+    margin-left: 5px;
+}
+
+.time_ticket {
+    padding: 0 40px;
+    width: 100%;
+    height: 100px;
+    border-radius: 0 0 15px 15px;
+    background-color: #dad2b4;
+    display: flex;
+    align-items: center;
+    /* justify-content: space-between; */
+}
+
+.time_ticket .date,
+.time_ticket .film {
+    width: 50%;
+    height: 30%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.time_ticket .film .film_choose li {
+    width: 100%;
+    margin: 3px;
+}
+
+.time_ticket .film dd {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    white-space: nowrap;
+}
+
+.time_ticket .film dd span {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.time_ticket .film dt {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.time_ticket .film .film_choose {
+    min-width: 100%;
+    width: auto;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: beige;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#content_booking .cont_ticket .calendar {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    position: relative;
+}
+
+#content_booking .cont_ticket .calendar .week_pick_nav {
+    position: absolute;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    top: 50%;
+    width: 40px;
+    height: 50px;
+    padding: 0;
+    text-align: center;
+    text-decoration: none;
+}
+
+#content_booking .cont_ticket .calendar .left {
+    left: 0;
+    z-index: 10;
+}
+
+#content_booking .cont_ticket .calendar .right {
+    right: 0;
+    z-index: 10;
+}
+
+#content_booking .cont_ticket .calendar .week_pick_nav:hover {
+    background-color: #231f20;
+    color: bisque;
+    opacity: 0.9;
+}
+
+#content_booking .cont_ticket .calendar fieldset {
+    height: 100%;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 15px 15px 0 0;
+    background-color: beige;
+    position: relative;
+}
+
+#content_booking .cont_ticket .calendar fieldset .calender_area {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#content_booking .cont_ticket .calendar fieldset input {
+    position: absolute;
+    top: 40px;
+    left: 10%;
+    clip: rect(1px, 1px, 1px, 1px);
+}
+
+#content_booking .cont_ticket .calendar fieldset .calender_area label {
+    width: 10%;
+    height: 70%;
+    font-size: 14px;
+    text-align: center;
+    padding: 0 2.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    overflow: hidden;
+    position: relative;
+    /* max-width: 100px; */
+}
+
+#content_booking .cont_ticket .calendar fieldset .calender_area label span {
+    width: 100%;
+    height: 30%;
+    display: block;
+    min-width: 40px;
+    position: absolute;
+    /* Thêm thuộc tính position: absolute; */
+    top: 0;
+    /* margin-bottom: 10px; */
+}
+
+#content_booking .cont_ticket .calendar fieldset .calender_area label em {
+    width: 70%;
+    height: 50%;
+    font-weight: bold;
+    text-align: center;
+    position: relative;
+    margin-top: 20px;
+}
+
+#content_booking .cont_ticket .calendar fieldset .calender_area label .active_click_day {
+    width: 100%;
+    height: 100%;
+    top: 10%;
+    position: absolute;
+    background-color: black;
+    color: #FFFACD;
+    border-radius: 45%;
+    padding: 1px;
+    display: flex;
+    align-items: normal;
+    justify-content: center;
+}
+
+.active_click_lable {
+    border: 1px solid #fbf3ac;
+    box-shadow: 3px 3px 6px rgb(157, 157, 157);
+    transform: scale(1.25);
+    background-color: #fbf3ac;
+    border-radius: 25%;
+    font-weight: bold;
+    /* background-image: url('/resources/img/book_tickets_rotate.png'); */
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+}
+
+.time_inner .time_header .select_box {
+    /* border: 1px solid black; */
+    width: 70px;
+    height: 100%;
+    justify-content: center;
+
+}
+
+.time_inner .time_header>.select_box>a {
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: black;
+    width: 100%;
+    height: 100%;
+    justify-content: space-around;
+    text-decoration: none;
+}
+
+.time_inner .time_header>.select_box>ul>li>a {
+    text-align: center;
+    display: block;
+    width: 100%;
+    height: auto;
+    text-decoration: none;
+    padding: 3px 0;
+    background-color: transparent;
+    z-index: 4;
+    color: black;
+}
+
+.time_inner .time_header .select_box ul {
+    padding: 0;
+    width: 100%;
+    height: auto;
+}
+
+.time_inner .time_header .select_box ul li {
+    list-style-type: none;
+    z-index: 11;
+    background-color: white;
+    margin: 0;
+    width: 100%;
+    height: auto;
+    opacity: 0;
+    border: 1px solid black;
+    border-top: none;
+    position: relative;
 }

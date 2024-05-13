@@ -14,7 +14,10 @@ setDefaultDate();
 
 function checkSelectionQuery() {
     var valueSelect = document.getElementById('statistic_Select').value;
-
+    if (myChart) {
+        myChart.destroy();
+    }
+    $('#myTable').empty();
     if (valueSelect === "0") {
         veBieuDoFilmSeat();
         // Kích hoạt lại input có name là "date" và "time"
@@ -232,6 +235,28 @@ function loadDataFilmSeat(date) {
                     }
                 }
             });
+
+            $('#myTable').empty();
+    
+            // Tạo header cho bảng
+            var tableHeader = '<thead><tr><th>Movie Name</th><th>Total Seats Booked</th></tr></thead>';
+            
+            // Tạo một biến để lưu body của bảng
+            var tableBody = '<tbody>';
+            
+            // Duyệt qua mỗi item trong jsonData và thêm vào body của bảng
+            jsonData.forEach(function (item) {
+                tableBody += '<tr><td>' + item.movie_name + '</td><td>' + item.total_seats_booked + '</td></tr>';
+            });
+            
+            // Kết thúc body của bảng
+            tableBody += '</tbody>';
+            
+            // Kết hợp header và body để tạo bảng hoàn chỉnh
+            var table = tableHeader + tableBody;
+            
+            // Thêm bảng vào #myTable
+            $('#myTable').html(table);
         },
         error: function (xhr, status, error) {
             console.error(status + ': ' + error);
@@ -287,6 +312,28 @@ function loadDataCombo(date) {
                     }
                 }
             });
+
+            $('#myTable').empty();
+    
+            // Tạo header cho bảng
+            var tableHeader = '<thead><tr><th>Combo Name</th><th>Revenue</th></tr></thead>';
+            
+            // Tạo một biến để lưu body của bảng
+            var tableBody = '<tbody>';
+            
+            // Duyệt qua mỗi item trong jsonData và thêm vào body của bảng
+            jsonData.forEach(function (item) {
+                tableBody += '<tr><td>' + item.combo_name + '</td><td>' + item.revenue + '</td></tr>';
+            });
+            
+            // Kết thúc body của bảng
+            tableBody += '</tbody>';
+            
+            // Kết hợp header và body để tạo bảng hoàn chỉnh
+            var table = tableHeader + tableBody;
+            
+            // Thêm bảng vào #myTable
+            $('#myTable').html(table);
         },
         error: function (xhr, status, error) {
             console.error(status + ': ' + error);
@@ -319,6 +366,7 @@ function loadDataFilm(date) {
                 labels.push(item.movie_name);
                 data.push(item.total_bonus); // Thay đổi từ item.total_seats_booked sang item.total_bonus
             });
+
             var ctx = document.getElementById('myChart').getContext('2d');
             myChart = new Chart(ctx, {
                 type: 'bar',
@@ -342,6 +390,28 @@ function loadDataFilm(date) {
                     }
                 }
             });
+
+            $('#myTable').empty();
+    
+            // Tạo header cho bảng
+            var tableHeader = '<thead><tr><th>Movie Name</th><th>Total Bonus</th></tr></thead>';
+            
+            // Tạo một biến để lưu body của bảng
+            var tableBody = '<tbody>';
+            
+            // Duyệt qua mỗi item trong jsonData và thêm vào body của bảng
+            jsonData.forEach(function (item) {
+                tableBody += '<tr><td>' + item.movie_name + '</td><td>' + item.total_bonus + '</td></tr>';
+            });
+            
+            // Kết thúc body của bảng
+            tableBody += '</tbody>';
+            
+            // Kết hợp header và body để tạo bảng hoàn chỉnh
+            var table = tableHeader + tableBody;
+            
+            // Thêm bảng vào #myTable
+            $('#myTable').html(table);
         },
         error: function (xhr, status, error) {
             console.error(status + ': ' + error);
@@ -378,7 +448,7 @@ function loadDataTotalRevenue(selectedYear) {
             // Tạo biểu đồ Chart.js tại đây
            
             var ctx = document.getElementById('myChart').getContext('2d');
-            var myChart = new Chart(ctx, {
+            myChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: labels,
@@ -400,6 +470,27 @@ function loadDataTotalRevenue(selectedYear) {
                     }
                 }
             });
+            $('#myTable').empty();
+    
+            // Tạo header cho bảng
+            var tableHeader = '<thead><tr><th>Month</th><th>Revenue </th></tr></thead>';
+            
+            // Tạo một biến để lưu body của bảng
+            var tableBody = '<tbody>';
+            
+            // Duyệt qua mỗi item trong jsonData và thêm vào body của bảng
+            jsonData.forEach(function (item) {
+                tableBody += '<tr><td>' + item.purchase_month + '</td><td>' + item.total_revenue + '</td></tr>';
+            });
+            
+            // Kết thúc body của bảng
+            tableBody += '</tbody>';
+            
+            // Kết hợp header và body để tạo bảng hoàn chỉnh
+            var table = tableHeader + tableBody;
+            
+            // Thêm bảng vào #myTable
+            $('#myTable').html(table);
         },
         error: function (xhr, status, error) {
             console.error(status + ': ' + error);
@@ -407,10 +498,10 @@ function loadDataTotalRevenue(selectedYear) {
     });
 }
 
-// Gọi hàm để tải dữ liệu và vẽ biểu đồ khi trang được tải
-$(document).ready(function() {
-    loadDataTotalRevenue();
-});
+// // Gọi hàm để tải dữ liệu và vẽ biểu đồ khi trang được tải
+// $(document).ready(function() {
+//     loadDataTotalRevenue();
+// });
 
 
 
@@ -782,7 +873,7 @@ function getMaxRevenue(date) {
     };
 
     // Mở kết nối đến máy chủ
-    xhr.open('GET', 'maxRevenue.php?date=' + date, true);
+    xhr.open('GET', 'maxRevenue?date=' + date, true);
 
     // Gửi yêu cầu đến máy chủ
     xhr.send();
@@ -824,7 +915,7 @@ function getMinRevenue(date) {
     };
 
     // Mở kết nối đến máy chủ
-    xhr.open('GET', 'minRevenue.php?date=' + date, true);
+    xhr.open('GET', 'minRevenue?date=' + date, true);
 
     // Gửi yêu cầu đến máy chủ
     xhr.send();
@@ -855,7 +946,7 @@ function getTotalRevenue(date) {
     };
 
     // Mở kết nối đến máy chủ
-    xhr.open('GET', 'totalRevenue.php?date=' + date, true);
+    xhr.open('GET', 'totalRevenue?date=' + date, true);
 
     // Gửi yêu cầu đến máy chủ
     xhr.send();

@@ -1,13 +1,40 @@
 <link rel="stylesheet" href="../css/bookingCombo.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<?php
-include("bookingCombo.php");
-?>
+
+<div class="bookingCombo">
+    <div class="bookingCombo_wrap">
+        <h3>Đặt Combo</h3>
+        <div id="hiddenCombo_list">
+            <ul id="combo_list">
+                <?php 
+                $urlEncodedData = urlencode(serialize($necessaryData));
+                    foreach($combos as $row){
+                           echo '
+                           <li class="combo" onclick="showCombo(this, `'.$row['description'].'`)">
+                                <span class="img_combo">
+                                    <img src="'.$row['image'].'" alt="">
+                                </span>
+                                <a href="#" class="combo_txt">'.$row['name'].'</a>
+                                <p class="combo_price">
+                                    <span class="dash_price">Giá bán online</span>
+                                    <span class="price"><em>'.$row['price'].'</em><span>₫</span></span>
+                                </p>
+                            </li>
+                           ';
+                    }
+                ?>
+            </ul>
+            <div class="combo_info">
+                
+            </div>
+        </div>
+    </div>
+</div>
 <div class="bookingFinal">
     <div class="bookingFinal_wrap">
         <div class="btn_back_next">
             <a href="#"><i class="fa-solid fa-left-long"></i>Trở lại</a>
-            <a href="#">Tiếp tục<i class="fa-solid fa-right-long"></i></a>
+            <a href="/payment?data=<?php echo $urlEncodedData ?>">Tiếp tục<i class="fa-solid fa-right-long"></i></a>
         </div>
         <table class="final">
             <colgroup>
@@ -26,10 +53,10 @@ include("bookingCombo.php");
                 <tr class="info_table">
                     <td class="film_booking">
                         <div class="title_left">
-                            <img src="../img/thanhxuan18x2_final.jpg" alt="">
+                            <img src="<?php echo $necessaryData['image'] ?>" alt="">
                         </div>
                         <div class="title_right">
-                            THANH XUÂN 18x2: LỮ TRÌNH HƯỚNG VỀ EM 2D
+                            <?php echo $necessaryData['movie_name'] ?>
                         </div>
                     </td>
                     <td class="info_ticket">
@@ -40,27 +67,11 @@ include("bookingCombo.php");
                             <div>Ghế:</div>
                         </div>
                         <div class="title_right">
-                            <div>2024-04-16</div>
-                            <div>18:00</div>
-                            <div>Rạp A</div>
+                            <div><?php echo $necessaryData['date'] ?></div>
+                            <div><?php echo $necessaryData['start_time'] ?></div>
+                            <div><?php echo $necessaryData['room_id'] ?></div>
                             <div class="seat_chosen">
-                                <!-- <div class="seat">A01</div>
-                                <div class="seat">A02</div>
-                                <div class="seat">A01</div>
-                                <div class="seat">A01</div>
-                                <div class="seat">A01</div>
-                                <div class="seat">A01</div>
-                                <div class="seat">A01</div>
-                                <div class="seat">A01</div>
-                                <div class="seat">A01</div>
-                                <div class="seat">A01</div>
-                                <div class="seat">A02</div>
-                                <div class="seat">A01</div>
-                                <div class="seat">A01</div>
-                                <div class="seat">A01</div>
-                                <div class="seat">A01</div>
-                                <div class="seat">A01</div>
-                                <div class="seat">A01</div> -->
+
                             </div>
                         </div>
 
@@ -101,7 +112,7 @@ include("bookingCombo.php");
                     <td>
                         <div class="total_price_ticket">
                             Giá vé:
-                            <span class="price"><em>0</em><span>₫</span></span>
+                            <span class="price"><em><?php echo $necessaryData['bonus_price'] ?></em><span>₫</span></span>
                         </div>
                     </td>
                     <td></td>
@@ -118,4 +129,3 @@ include("bookingCombo.php");
 
 </div>
 <script src="/js/bookingCombo.js"></script>
-<!-- <script src="/js/seatwrap.js"></script> -->

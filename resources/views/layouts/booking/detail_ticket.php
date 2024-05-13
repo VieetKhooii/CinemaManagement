@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="../css/detail_ticket.css">
+<link rel="stylesheet" href="/css/detail_ticket.css">
 <div class="detail_ticket">
     <div class="detail_ticket_wrap">
         <h1>Bảng Giá Vé <div class="exit" onclick="hidden_detail_ticket()"></div></h1>

@@ -5,17 +5,25 @@
         <h3>Đặt Combo</h3>
         <div id="hiddenCombo_list">
             <ul id="combo_list">
-                <li class="combo" onclick="showCombo(this)">
-                    <span class="img_combo">
-                        <img src="" alt="">
-                    </span>
-                    <a href="#" class="combo_txt">Combo1</a>
-                    <p class="combo_price">
-                        <span class="dash_price">Giá bán online</span>
-                        <span class="price"><em>150000</em><span>₫</span></span>
-                    </p>
-                </li>
-                <li class="combo" onclick="showCombo(this)">
+                <?php 
+                    foreach($combos as $row){
+                        foreach ($row as $data){
+                           echo '
+                           <li class="combo" onclick="showCombo(this)">
+                                <span class="img_combo">
+                                    <img src="'.$data['image'].'" alt="">
+                                </span>
+                                <a href="#" class="combo_txt">'.$data['name'].'</a>
+                                <p class="combo_price">
+                                    <span class="dash_price">Giá bán online</span>
+                                    <span class="price"><em>'.$data['price'].'</em><span>₫</span></span>
+                                </p>
+                            </li>
+                           ';
+                        }
+                    }
+                ?>
+                <!-- <li class="combo" onclick="showCombo(this)">
                     <span class="img_combo">
                         <img src="" alt="">
                     </span>
@@ -64,7 +72,7 @@
                         <span class="dash_price">Giá bán online</span>
                         <span class="price"><em>600000</em><span>₫</span></span>
                     </p>
-                </li>
+                </li> -->
             </ul>
             <div class="combo_info">
                 
@@ -72,4 +80,4 @@
         </div>
     </div>
 </div>
-<script src="../js/bookingCombo.js"></script>
+<script src="/js/bookingCombo.js"></script>

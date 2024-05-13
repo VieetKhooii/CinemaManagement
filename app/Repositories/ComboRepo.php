@@ -18,7 +18,7 @@ class ComboRepo implements ComboRepositoryInterface{
     }
     public function getAllCombosForCustomer(){       
         try {
-            return Combos::where('display', 1)->paginate(6);
+            return Combos::where('display', 1)->get();
         }
         catch (\Exception $exception){
             echo("Error ComboRepo (get by customer): " . $exception->getMessage());

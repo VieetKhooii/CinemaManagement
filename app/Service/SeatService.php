@@ -29,6 +29,10 @@ class SeatService{
         return $this->seatRepository->getASeat($id);
     }
 
+    public function getASeatForController(string $id, string $showtime_id){
+        return $this->seatRepository->getASeatForController($id, $showtime_id);
+    }
+
     public function addSeat(array $data)
     {
         foreach ($data as $key => $value) {
