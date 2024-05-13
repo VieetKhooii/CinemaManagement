@@ -141,52 +141,37 @@
             <div class="seat_Barea">
                 <div class="seat">
                     <?php 
+                        $seatPrice = 0;
                         if ($_POST['seatArray']){
                             $seatArray = $_POST['seatArray'];
                         }
                         else {
                             echo "no seat data ";
                         }
+                        
+                        if ($_POST['necessaryData']){
+                            $necessaryData = $_POST['necessaryData'];
+                        }
+                        else {
+                            echo "no necessary data ";
+                        }
+                        if ($_POST['combos']){
+                            $combos = $_POST['combos'];
+                        }
+                        else {
+                            echo "no combo data ";
+                        }
                     ?>
-                    <ul id="RA">
-                    <li class="header_row"><a href="#">A</a></li>
-                        <?php 
-                            foreach ($seatArray as $row){
-                                if ($row['seat_row'] !== "A") break;
-                                $seatType = '';
-                                if ($row['seat_row'] === "A" && $row['display'] == "true"){
-                                    if ($row['is_reserved'] === "false"){
-                                        if ($row['seat_type_id'] == 1){
-                                            $seatType = '<li class="normal_seat"';
-                                        }
-                                        else if ($row['seat_type_id'] == 2){
-                                            $seatType = '<li class="vip_seat"';
-                                        }
-                                        else {
-                                            $seatType = '<li class="couple_seat"';
-                                        }
-                                        if ($row['seat_number'] == 2){
-                                            $seatType = $seatType . 'id="column_seat_left"';
-                                        }
-                                        else if ($row['seat_number'] == 8){
-                                            $seatType = $seatType . 'id="column_seat_right"';
-                                        }
-                                        $seatType = $seatType . '><a href="#">'.$row['seat_number'].'</a></li>';
-                                    }
-                                    else {
-                                        $seatType = '<li class="enough_seats"></li>';
-                                    }
-                                }
-                                echo $seatType;
-                            }
-                        ?>
-                    </ul>
-                    <ul id="RB">
-                    <li class="header_row"><a href="#">B</a></li>
                     <?php 
-                        $position = "B";
+                        $position = "A";
+                        $i = 0;
                         foreach ($seatArray as $row){
-                            if ($row['seat_row'] == "A") continue;
+                            if ($row['seat_number'] == "1" && $row['seat_row'] === "A") {
+                                echo '<ul id="R'.$row['seat_row'].'">'.
+                                '<li class="header_row">'.
+                                   '<a href="#">'.$row['seat_row'].'</a>'.
+                                '</li>';
+                            }
                             if ($row['seat_row'] != $position && $row['display'] === "true"){
                                 echo '</ul><ul id="R'.$row['seat_row'].'">'.
                                      '<li class="header_row">'.
@@ -195,22 +180,37 @@
                                 $position = $row['seat_row'];
                             }
                             $seatType = '';
-                            if ($row['display'] === "true"){
-                                if ($row['is_reserved'] === "false"){
+                            if ($row['display'] == "true"){
+                                if ($row['final_is_reserved'] == "0"){
                                     if ($row['seat_type_id'] == 1){
                                         $seatType = '<li class="normal_seat"';
                                     }
                                     else if ($row['seat_type_id'] == 2){
                                         $seatType = '<li class="vip_seat"';
                                     }
+
+                                    // ghế couple: Mỗi 2 ghế có 1 khoảng cách 
+                                    if ($row['seat_type_id'] == 3) {
+                                        // ghế couple số chẵn sẽ cách khoảng trắng
+                                        if ($row['seat_number'] % 2 == 0){
+                                            $seatType = '<li class="couple_seat" id="column_seat_left"';
+                                        }
+                                        else {
+                                            $seatType = '<li class="couple_seat"';
+                                        }
+                                    }
+
+                                    // nếu không phải ghế couple
                                     else {
-                                        $seatType = '<li class="couple_seat"';
-                                    }
-                                    if ($row['seat_number'] == 2){
-                                        $seatType = $seatType . 'id="column_seat_left"';
-                                    }
-                                    else if ($row['seat_number'] == 6){
-                                        $seatType = $seatType . 'id="column_seat_right"';
+                                            // sắp xếp ghế, 2 ghế đầu và 2 ghế cuối có khoảng cách với dãy giữa 
+                                        if ($row['seat_number'] == 2){
+                                            $seatType = $seatType . 'id="column_seat_left"';
+                                        }
+                                        else if (isset($seatArray[$i+2])){
+                                            // kiểm nếu 2 ghế tiếp là ghế khác hàng và ghế kế tiếp vẫn còn là cùng hàng
+                                            if ($seatArray[$i+2]['seat_row'] != $position && $seatArray[$i+1]['seat_row'] == $position)
+                                            $seatType = $seatType . 'id="column_seat_right"';
+                                        }
                                     }
                                     $seatType = $seatType . '><a href="#">'.$row['seat_number'].'</a></li>';
                                 }
@@ -219,92 +219,9 @@
                                 }
                             }
                             echo $seatType;
-                        }   
+                            $i = $i + 1;
+                        }
                     ?>
-                    <!-- <ul id="RA">
-                        <li class="header_row"><a href="#">A</a></li>
-                        <li class="normal_seat"><a href="#">1</a></li>
-                        <li class="normal_seat" id="column_seat_left"><a href="#">2</a></li>
-                        <li class="normal_seat"><a href="#">3</a></li>
-                        <li class="normal_seat"><a href="#">4</a></li>
-                        <li class="normal_seat"><a href="#">5</a></li>
-                        <li class="normal_seat"><a href="#">6</a></li>
-                        <li class="normal_seat"><a href="#">7</a></li>
-                        <li class="normal_seat" id="column_seat_right"><a href="#">8</a></li>
-                        <li class="normal_seat"><a href="#">9</a></li>
-                    </ul>
-
-                    <ul id="RB">
-                        <li class="header_row"><a href="#">B</a></li>
-                        <li class="normal_seat"><a href="#">1</a></li>
-                        <li class="normal_seat" id="column_seat_left"><a href="#">2</a></li>
-                        <li class="normal_seat"><a href="#">3</a></li>
-                        <li class="normal_seat"><a href="#">4</a></li>
-                        <li class="normal_seat"><a href="#">5</a></li>
-                        <li class="normal_seat" id="column_seat_right"><a href="#">6</a></li>
-                        <li class="normal_seat"><a href="#">7</a></li>
-                    </ul>
-                    <ul id="RC">
-                        <li class="header_row"><a href="#">C</a></li>
-                        <li class="normal_seat"><a href="#">1</a></li>
-                        <li class="normal_seat" id="column_seat_left"><a href="#">2</a></li>
-                        <li class="normal_seat"><a href="#">3</a></li>
-                        <li class="normal_seat"><a href="#">4</a></li>
-                        <li class="normal_seat"><a href="#">5</a></li>
-                        <li class="normal_seat" id="column_seat_right"><a href="#">6</a></li>
-                        <li class="normal_seat"><a href="#">7</a></li>
-                    </ul>
-                    <ul id="RD">
-                        <li class="header_row"><a href="#">D</a></li>
-                        <li class="normal_seat"><a href="#">1</a></li>
-                        <li class="normal_seat" id="column_seat_left"><a href="#">2</a></li>
-                        <li class="normal_seat"><a href="#">3</a></li>
-                        <li class="normal_seat"><a href="#">4</a></li>
-                        <li class="normal_seat"><a href="#">5</a></li>
-                        <li class="normal_seat" id="column_seat_right"><a href="#">6</a></li>
-                        <li class="normal_seat"><a href="#">7</a></li>
-                    </ul>
-                    <ul id="RE">
-                        <li class="header_row"><a href="#">E</a></li>
-                        <li class="vip_seat"><a href="#">1</a></li>
-                        <li class="vip_seat" id="column_seat_left"><a href="#">2</a></li>
-                        <li class="vip_seat"><a href="#">3</a></li>
-                        <li class="vip_seat"><a href="#">4</a></li>
-                        <li class="vip_seat"><a href="#">5</a></li>
-                        <li class="vip_seat" id="column_seat_right"><a href="#">6</a></li>
-                        <li class="vip_seat"><a href="#">7</a></li>
-                    </ul>
-                    <ul id="RF">
-                        <li class="header_row"><a href="#">F</a></li>
-                        <li class="vip_seat"><a href="#">1</a></li>
-                        <li class="vip_seat" id="column_seat_left"><a href="#">2</a></li>
-                        <li class="vip_seat"><a href="#">3</a></li>
-                        <li class="vip_seat"><a href="#">4</a></li>
-                        <li class="vip_seat"><a href="#">5</a></li>
-                        <li class="vip_seat" id="column_seat_right"><a href="#">6</a></li>
-                        <li class="vip_seat"><a href="#">7</a></li>
-                    </ul>
-                    <ul id="RG">
-                        <li class="header_row"><a href="#">G</a></li>
-                        <li class="vip_seat"><a href="#">1</a></li>
-                        <li class="vip_seat" id="column_seat_left"><a href="#">2</a></li>
-                        <li class="vip_seat"><a href="#">3</a></li>
-                        <li class="vip_seat"><a href="#">4</a></li>
-                        <li class="vip_seat"><a href="#">5</a></li>
-                        <li class="vip_seat" id="column_seat_right"><a href="#">6</a></li>
-                        <li class="vip_seat"><a href="#">7</a></li>
-                    </ul>
-                    <ul id="R_CUOP">
-                        <li class="header_row"><a href="#">H</a></li>
-                        <li class="couple_seat"><a href="#">1</a></li>
-                        <li class="couple_seat" id="column_seat_coup"><a href="#">2</a></li>
-                        <li class="couple_seat"><a href="#">3</a></li>
-                        <li class="couple_seat" id="column_seat_coup"><a href="#">4</a></li>
-                        <li class="couple_seat"><a href="#">5</a></li>
-                        <li class="couple_seat" id="column_seat_coup"><a href="#">6</a></li>
-                        <li class="couple_seat"><a href="#">7</a></li>
-                        <li class="couple_seat" id="column_seat_coup"><a href="#">8</a></li>
-                    </ul> -->
                 </div>
             </div>
         </div>
@@ -328,4 +245,5 @@
     </div>
 </div>
 <script src="/js/seatwrap.js"></script>
+<script src="/js/bookingCombo.js"></script>
 <script src="/js/app.js"></script>

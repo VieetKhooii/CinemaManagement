@@ -42,7 +42,7 @@ class ReservationService {
         $tranTotalPrice = $this->transactionRepo->getATransaction($data['transaction_id'])->total_cost;
         $movieId = $this->showTimeRepo->getAShowtime($data['showtime_id'])->movie_id;
         $moviePrice = $this->movieRepo->getAMovie($movieId)->bonus_price;
-        $seatTypeId = $this->seatRepo->getASeat($data['seat_id'])->seat_type_id;
+        $seatTypeId = $this->seatRepo->getASeat($data['seat_id'])[0]['seat_type_id'];
         $seatTypePrice = $this->seatTypeRepo->getASeatType($seatTypeId)->bonus_price;
 
         $data['price'] = $moviePrice + $seatTypePrice;

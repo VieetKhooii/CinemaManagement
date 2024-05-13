@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Users;
 use App\Service\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Hash;
+use \Illuminate\Support\Facades\Cookie;
 
 class UserController extends Controller
 {
@@ -107,14 +107,11 @@ class UserController extends Controller
     public function update($id, Request $request){
         $validator = Validator::make($request->all(), [
             'full_name' => 'required|string|between:1,50',
-            'email' => 'required|string|between:1,100|email|ends_with:@gmail.com|unique:users,email',
+            'email' => 'required|string|between:1,100|email|ends_with:@gmail.com|',
             'phone' => 'required|string|size:10',
             'date_of_birth' => 'required|date',
             'gender' => 'required|string|between:1,20',
             'address' => 'required|string|between:1,100',
-            'score' => 'required|int',
-            'coin' => 'required|int',
-            'role_id' => 'required|int',
         ]);
 
         if ($validator->fails()) {
@@ -130,29 +127,32 @@ class UserController extends Controller
             'date_of_birth' => $request->input('date_of_birth'),
             'gender' => $request->input('gender'),
             'address' => $request->input('address'),
-            'score' => $request->input('score'),
-            'coin' => $request->input('coin'),
-            'status' => $request->input('status'),
-            'role_id' => $request->input('role_id'),
         ];
+        if ($request->has('score')) {
+            $user['score'] = $request->input('score');
+        }
+        if ($request->has('coin')) {
+            $user['coin'] = $request->input('coin');
+        }
+        if ($request->has('status')) {
+            $user['status'] = $request->input('status');
+        }
+        if ($request->has('role_id')) {
+            $user['role_id'] = $request->input('role_id');
+        }
         $result = $this->userService->updateUser($user, $id);
         if ($result){
             return response()->json([
-                'message' => 'update successfully',
-                'status' => 'success'],
-                200);
+                'message' => 'User updated successfully',
+                'status' => 'success',
+                'data' => $result
+            ], 201);
         }
-        // else if ($result == 0){
-        //     return response()->json([
-        //         'message' => 'Data stays the same',
-        //         'status' => 'error'], 
-        //         200);
-        // }
         else {
             return response()->json([
                 'error' => 'update failed',
                 'status' => 'error'], 
-                422);
+                500);
         }
     }
 
@@ -179,6 +179,24 @@ class UserController extends Controller
     }
 
     public function hide (string $id){
+        $array = [
+            'status' => false,
+        ];
+        $user = $this->userService->updateUser($array, $id);
+        if ($user){
+            return response()->json(['status' => 'success', 'message' => 'user hid successfully', 'data' => $user], 201);
+        }
+        else {
+            return response()->json(['error' => '$validator->errors()'], 422);
+        }
+    }
+
+    public function hideFromClient (Request $request, string $id){
+        $curr_password = $request->input('password_now');
+        $user = Users::where('user_id', $id)->firstOrFail();
+        if (!Hash::check($curr_password, $user->password)){
+            return response()->json(['status' => 'error', 'message' => 'Mật khẩu hiện tại không đúng'], 422);
+        }
         $array = [
             'status' => false,
         ];

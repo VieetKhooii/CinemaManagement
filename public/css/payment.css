@@ -1,0 +1,368 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+.container_payment{
+    width: 100%;
+    height: auto;
+    background-image: linear-gradient(to left, beige, white 35%, white 65%, beige);
+}
+.container_payment .payment{
+    position: relative;
+    margin: 50px auto;
+    width: 70%;
+    height: auto;
+    background: linear-gradient(to left, white, beige 50%, beige 50%, white);
+    box-shadow: 0 0 40px 0.6px rgb(214, 214, 184);
+    padding-bottom: 100px;
+}
+.container_payment .qr_code_container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999; 
+}
+
+.container_payment .qr_code_container .content_qr {
+    width: 700px;
+    height: 400px;
+    background-color: beige;
+    display: flex;
+    border-radius: 20px;
+}
+.container_payment .qr_code_container .content_qr .qr_code,
+.container_payment .qr_code_container .content_qr .instruct_step{
+    display: flex;
+    border-radius: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 20px;
+    width: 50%;
+    height: calc(100% - 46px);
+}
+.container_payment .qr_code_container .content_qr .instruct_step{
+    position: relative;
+}
+.container_payment .qr_code_container .content_qr .instruct_step .exit_momo{
+    top: 0;
+    right: -3px;
+    z-index: 1;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+}
+.container_payment .qr_code_container .content_qr .instruct_step .exit_momo>a>i{
+    font-size: 32px;
+}
+.container_payment .qr_code_container .content_qr .instruct_step .exit_momo a{
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: black;
+}
+.container_payment .qr_code_container .content_qr .qr_code{
+    box-shadow: 0 0 20px 10px white inset;
+    background-color: rgb(233, 233, 184);
+    border: 3px solid rgb(227, 227, 173);
+}
+.container_payment .qr_code_container .content_qr .qr_code img{
+    width: 250px; 
+    height: 250px;
+    object-fit: contain;
+    box-shadow: 0 0 20px 10px white;
+}
+.container_payment .qr_code_container .content_qr .instruct_step p{
+    color: black;
+    width: 100%; 
+    font-size: 18px;
+    height: 100%;
+    white-space: pre-line;
+}
+.container_payment>.payment>h5{
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 28px;
+    border-bottom:2px solid black ;
+    height: 70px;
+}
+.container_payment>.payment>.list_item_pay>h5{
+    padding: 10px;
+    margin: 0;
+    font-size: 22px;
+}
+.container_payment>.payment>.list_item_pay{
+    box-shadow: 0 0 40px 0.6px rgb(214, 214, 184);
+    height: auto;
+    max-height: 60%;
+    overflow-y: auto;
+}
+.container_payment>.payment>.list_item_pay::-webkit-scrollbar{
+    width: 7px;
+}
+.container_payment>.payment>.list_item_pay::-webkit-scrollbar-thumb{
+    background-color: black;
+}
+#tbl_item{
+    width: 100%;
+    height: 300px;
+    background-color: white;
+}
+#tbl_item .img_item img{
+    display: block;
+    width: auto;
+    height: 100px;
+}
+#total_price{
+    text-align: center;
+}
+.price_item{
+    text-align: center;
+    border-left: 2px solid rgba(183, 181, 181, 0.4);
+}
+#tbl_item tbody tr td{
+    height: 70px;
+    /* background-color: black; */
+    border-bottom: 2px solid rgba(183, 181, 181, 0.4);
+}
+
+#tbl_item tbody{
+    width: 100%;
+    height: 100%;
+}
+#tbl_item tfoot{
+    width: 100%;
+    height: 70px;
+    background-color: #dad2b4;
+}
+
+.container_payment>.payment>.payment_method{
+    width: calc(100% - 4px);
+    height: 150px;
+    background-color: white;
+    border: 2px solid beige;
+    margin-top: 20px;
+    box-shadow: 0 0 40px 0.6px rgb(214, 214, 184);
+}
+.container_payment>.payment>.payment_method #payment_form{
+    width: 100%;
+    height: calc(100% - 65px);
+}
+.payment_method #payment_form .info_payment{
+    width: calc(100% - 20px);
+    height: 100%;
+    margin-left: 20px;
+}
+.container_payment>.payment>.payment_method>h5{
+    margin: 20px 10px;
+    font-size: 22px;
+}
+.input_wrapper {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.input_wrapper img{
+    margin-left: 5px;
+}
+
+.payment_method .payment_method_chosen{
+    background-color: #dad2b4;
+    width: calc(100% - 20px);
+    padding: 20px 10px;
+    /* height: 50px; */
+    display: flex;
+    flex-direction: column;
+}
+.payment_method .payment_method_chosen div{
+    font-size: 20px;
+}
+.payment_method .payment_method_chosen div input{
+    height: 100%;
+}
+
+.info_item .info_name{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 30%;
+    font-weight: bold;
+    font-size: 22px;
+}
+.info_item .info_chosen{
+    width: 100%;
+    height: 65%;
+}
+.info_item .info_chosen p{
+    margin:5px 0 ;
+}
+/* ********************************************************bảng thanh toán**************************************** */
+
+
+.invoice {
+    box-shadow: 0 0 40px 0.6px rgb(214, 214, 184);
+    margin-top: 20px;
+    position: relative;
+    width:calc(100% - 40px);
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #333; /* Màu chữ cho nội dung trong .invoice */
+}
+#payment_button{
+    margin-right: 20px;
+    margin-bottom: 20px;
+    width: 180px;
+    height: 50px;
+    background-color: black;
+    color: white;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 10;
+    border-radius: 10px;
+    color: beige;
+    overflow: hidden;
+}
+#payment_button::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(120deg,
+            rgba(253, 3, 3, 0) 30%,
+            beige,
+            rgba(247, 0, 0, 0) 70%);
+    top: 0;
+    left: -100%;
+    opacity: 0.6;
+}
+#payment_button:hover::before {
+    animation: shine 1.5s ease-out infinite;
+}
+.invoice h2 {
+    text-align: start;
+}
+
+.invoice-table {
+    background-color: black;
+    width: 100%;
+    height: fit-content;
+    color: white;
+    border-collapse: collapse;
+}
+
+.invoice-table th, .invoice-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+.invoice-table th {
+    color: beige; /* Màu chữ cho phần tiêu đề của bảng */
+}
+
+.invoice-table td {
+    color: beige;
+}
+.invoice-table td .film,
+.invoice-table td .combo{
+    display: flex;
+    justify-content: space-between;
+}
+.button-back{
+    /* text-align: center; */
+    margin-top: 20px;
+    background-image: linear-gradient(to left, rgb(243, 243, 142), white 50%, white 50%, rgb(243, 243, 142));
+    width: 100%;
+    height: 50px;
+    overflow: hidden;
+}
+
+.button-back a {
+    overflow: hidden;
+    color: black;
+    text-decoration: none;
+    padding: 10px 20px;
+    float: left;
+    position: relative;
+}
+.button-back a i{
+    margin-right: 5px;
+}
+.button-back a:hover{
+    transform: scale(1.2);
+}
+.button-back a::before{
+    position: absolute;
+    content: '';
+    top: 10px;
+    left: 100%;
+    width: 100%;
+    height: 90%;
+    background-image: linear-gradient(120deg,
+    rgba(253, 3, 3, 0) 30%,
+    rgb(245, 245, 181),
+    rgba(247, 0, 0, 0) 70%);
+    transition: all 1.5s ease-in;
+    opacity: 0.7;
+}
+.button-back a:hover::before {
+    animation: shine 1.5s ease-out infinite;
+}
+@keyframes shine {
+    0% {
+        left: -100px;
+    }
+
+    60% {
+        left: 100%;
+    }
+
+    to {
+        left: 100%;
+    }
+}
+
+/* ***********************************************************voucher ***********************************************/
+.voucher_box {
+    margin-top: 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    width: calc(100% - 40px);
+    height: 120px;
+    box-shadow: 0 0 30px 0.6px rgb(214, 214, 184);
+    overflow-y: auto;
+}
+.voucher_box::-webkit-scrollbar{
+    width: 7px;
+}
+.voucher_box::-webkit-scrollbar-thumb{
+    background-color: black;
+}
+.voucher_list {
+    list-style-type: none; 
+    padding: 0;
+    margin-bottom: 0;
+}
+
+.voucher_list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd; 
+}
+
+.voucher h3 {
+    font-size: 18px;
+    margin: 0;
+    color: #333;
+}

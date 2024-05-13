@@ -18,7 +18,7 @@ $sql = "SELECT
                 m.movie_name,
                 s.showtime_id,
                 COUNT(r.reservation_id) AS reservation_count,
-                m.bonus_price * COUNT(r.reservation_id) + r.price * COUNT(r.reservation_id) AS total_bonus
+                r.price * COUNT(r.reservation_id) AS total_bonus
             FROM
                 movies m
             JOIN

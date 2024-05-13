@@ -44,8 +44,8 @@ class ReservationController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'reservation_id' => 'required|string|between:1,6',
-            'price' => 'required|int|min:0.01',
+            // 'reservation_id' => 'required|string|between:1,6',
+            // 'price' => 'required|int|min:0.01',
             'showtime_id' => 'required|string|between:1,10',
             'seat_id' => 'required|string|between:1,4', 
             'transaction_id' => 'required|string|between:1,10',
@@ -100,30 +100,30 @@ class ReservationController extends Controller
         //
     }
 
-    public function search(Request $request)
-    {
-        //
-        $array = [    
-            'reservation_id'=> $request->input('reservation_id'),
-            'price'=> $request->input('price'),
-            'showtime_id'=> $request->input('showtime_id'),
-            'seat_id'=> $request->input('seat_id'),
-            'transaction_id'=> $request->input('transaction_id'),
-        ];
-        $reservation = $this->reservationService->searchReservation($array);
-        if ($reservation){
-            return response()->json(['status' => 'success', 'message' => 'reservation searched successfully', 'data' => $reservation], 201);
-        }
-        else {
-            return response()->json(['error' => '$validator->errors()'], 422);
-        }
-    }
+    // public function search(Request $request)
+    // {
+    //     //
+    //     $array = [    
+    //         'reservation_id'=> $request->input('reservation_id'),
+    //         'price'=> $request->input('price'),
+    //         'showtime_id'=> $request->input('showtime_id'),
+    //         'seat_id'=> $request->input('seat_id'),
+    //         'transaction_id'=> $request->input('transaction_id'),
+    //     ];
+    //     $reservation = $this->reservationService->searchReservation($array);
+    //     if ($reservation){
+    //         return response()->json(['status' => 'success', 'message' => 'reservation searched successfully', 'data' => $reservation], 201);
+    //     }
+    //     else {
+    //         return response()->json(['error' => '$validator->errors()'], 422);
+    //     }
+    // }
 
     public function hide(string $id){
         $array = [
             'display'=> false,
         ];
-        $reservation = $this->reservationService->updateReservation($array, $id);
+        $reservation = $this->reservationService->deleteReservation($id);
         if ($reservation){
             return response()->json(['status' => 'success', 'message' => 'reservation hid successfully', 'data' => $reservation], 201);
         }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+
 class Movies extends Model
 {
     protected $table = 'movies';
@@ -75,21 +76,19 @@ class Movies extends Model
     public static function getMoviesForCustomer1(){
         try {
             return Movies::select('movies.*', 'categories.category_name', DB::raw('MIN(showtimes.date) as start_time'))
-        ->join('showtimes', 'movies.movie_id', '=', 'showtimes.movie_id')
-        ->join('categories', 'categories.category_id', '=', 'movies.category_id')
-        ->whereIn('movies.movie_id', function($query) {
-            $query->select('movie_id')
-                ->from('showtimes')
-                ->whereDate('date', '<=', now()->toDateString());
-        })
-        ->whereIn('movies.movie_id', function($query) {
-            $query->select('movie_id')
-                ->from('showtimes')
-                ->whereDate('date', '>', now()->toDateString());
-        })
-        ->where('movies.display', '1')
-        ->groupBy('movies.movie_id')
-        ->get()->toArray();
+    ->join('showtimes', 'movies.movie_id', '=', 'showtimes.movie_id')
+    ->join('categories', 'categories.category_id', '=', 'movies.category_id')
+    ->whereIn('movies.movie_id', function($query) {
+        $query->select('movie_id')
+            ->from('showtimes')
+            ->whereDate('date', '>=', now()->toDateString()) // Change here
+            ->whereDate('date', '<=', now()->addDays(14)->toDateString());
+    })
+    ->where('movies.display', '1')
+    ->groupBy('movies.movie_id')
+    ->get()
+    ->toArray();
+
         }
         catch(\Exception $exception){
             echo("Error get movies 1: " . $exception->getMessage());
@@ -106,6 +105,12 @@ class Movies extends Model
             $query->select('movie_id')
                 ->from('showtimes')
                 ->whereDate('date', '<=', now()->toDateString());
+        })
+        ->whereNotIn('movies.movie_id', function($query) {
+            $query->select('movie_id')
+                ->from('showtimes')
+                ->whereDate('date', '>=', now()->toDateString()) // Change here
+                ->whereDate('date', '<=', now()->addDays(14)->toDateString());
         })
         ->where('movies.display', '1')
         ->groupBy('movies.movie_id')

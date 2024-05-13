@@ -1,24 +1,19 @@
-<link rel="stylesheet" href="../css/detail.css">
+<style>
+    *{
+        font-family: 'Times New Roman', Times, serif;
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<div class="header">
+    <?php
+    if(isset($_COOKIE['jwt'])) {
+        include("header1.php");
+    }
+    ?>
+</div>
+<div class="content_main" id="content_main">
+<link rel="stylesheet" href="/css/detail.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<?php
-// $comments = [
-//     ['author' => 'Alice', 'content' => 'Phim hay quá!', 'rating' => rand(0, 10), 'date' => date('Y-m-d H:i:s', rand(1, time()))],
-//     ['author' => 'Bob', 'content' => 'Đúng vậy!', 'rating' => rand(0, 10), 'date' => date('Y-m-d H:i:s', rand(1, time()))],
-//     ['author' => 'Charlie', 'content' => 'Tôi đồng ý!', 'rating' => rand(0, 10), 'date' => date('Y-m-d H:i:s', rand(1, time()))],
-//     ['author' => 'David', 'content' => 'Tuyệt vời!', 'rating' => rand(0, 10), 'date' => date('Y-m-d H:i:s', rand(1, time()))],
-//     ['author' => 'Eva', 'content' => 'Cảm ơn về bài đánh giá!', 'rating' => rand(0, 10), 'date' => date('Y-m-d H:i:s', rand(1, time()))],
-//     ['author' => 'Fiona', 'content' => 'Rất hữu ích!', 'rating' => rand(0, 10), 'date' => date('Y-m-d H:i:s', rand(1, time()))],
-//     ['author' => 'George', 'content' => 'Phim không ấn tượng lắm.', 'rating' => rand(0, 10), 'date' => date('Y-m-d H:i:s', rand(1, time()))],
-//     ['author' => 'Helen', 'content' => 'Tôi không thích cách kết thúc của phim.', 'rating' => rand(0, 10), 'date' => date('Y-m-d H:i:s', rand(1, time()))],
-//     ['author' => 'Ivy', 'content' => 'Phim tệ quá.', 'rating' => rand(0, 10), 'date' => date('Y-m-d H:i:s', rand(1, time()))],
-//     ['author' => 'Jack', 'content' => 'Một trong những bộ phim hay nhất mà tôi từng xem!', 'rating' => rand(0, 10), 'date' => date('Y-m-d H:i:s', rand(1, time()))],
-//     ['author' => 'Kate', 'content' => 'Tôi thích cách diễn xuất của diễn viên chính.', 'rating' => rand(0, 10), 'date' => date('Y-m-d H:i:s', rand(1, time()))]
-// ];
-// // Convert array to JSON
-// $comments_json = json_encode($comments);
-?>
-
-
 
 <div class="container_detail" id="container_detail">
     <div class="trailer_container">
@@ -191,3 +186,12 @@
     };
 </script>
 <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
+</div>
+<div class="footer">
+    <?php
+    include("footer.php");
+    ?>
+</div>
+<script src="/js/seatwrap.js"></script>
+<script src="/js/app.js"></script>

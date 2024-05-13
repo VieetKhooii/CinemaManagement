@@ -33,7 +33,30 @@ class SeatRepo implements SeatRepositoryInterface
 
     public function getASeat(string $id){
         try {
-            return Seats::select('seats.*')->where('seat_id', 'like', '%' . $id . '%')->get();
+            return Seats::select('*')
+            ->join('seattypes', 'seats.seat_type_id', '=', 'seattypes.seat_type_id')
+            ->where('seats.seat_id', 'like', '%' . $id . '%')
+            ->where('seats.display', 1)
+            ->get();
+        }
+        catch (\Exception $exception){
+            echo("Error SeatRepo (get a Seat): " . $exception->getMessage());
+            return null;    
+        }
+    }
+    
+    public function getASeatForController(string $id, string $showtime_id){
+        try {
+            return Seats::select('seats.*', 'seattypes.*')
+            ->leftJoin('seattypes', 'seats.seat_type_id', '=', 'seattypes.seat_type_id')
+            ->leftJoin('reservations', function ($join) use ($showtime_id) {
+                $join->on('seats.seat_id', '=', 'reservations.seat_id')
+                    ->where('reservations.showtime_id', '=', $showtime_id);
+            })
+            ->selectRaw('CASE WHEN reservations.seat_id IS NOT NULL THEN TRUE ELSE FALSE END AS final_is_reserved')
+            ->where('seats.seat_id', 'like', '%' . $id . '%')
+            ->where('seats.display', '=', 1)
+            ->get();
         }
         catch (\Exception $exception){
             echo("Error SeatRepo (get a Seat): " . $exception->getMessage());

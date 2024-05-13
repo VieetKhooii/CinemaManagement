@@ -31,7 +31,7 @@ class Reservation extends Model
         parent::boot();
 
         static::creating(function ($reservation) {
-            $latestId = static::max('id');
+            $latestId = static::max('reservation_id');
 
             // Nếu không có ID trước đó, bắt đầu từ CA0000
             if (!$latestId) {
@@ -46,7 +46,7 @@ class Reservation extends Model
             }
 
             // Gán ID mới cho model
-            $reservation->id = $newId;
+            $reservation->reservation_id = $newId;
         });
     }
 

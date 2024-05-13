@@ -118,6 +118,49 @@ class Detail_model{
         
     }
 
+    static function get_comment_by_user($user_id)
+    {
+        $con = Database::connection();
+        if (!$con) {
+            die("Lỗi kết nối đến cơ sở dữ liệu: " . mysqli_connect_error());
+        }
+        
+        // Truy vấn SQL để lấy các comment của phim dựa trên user_id
+        $stmt = $con->prepare("SELECT comments.*, movies.movie_name
+                                FROM comments
+                                LEFT JOIN movies ON comments.movie_id = movies.movie_id
+                                WHERE comments.user_id = ?
+                                ORDER BY comments.post_time DESC");
+        $stmt->bind_param("s", $user_id);
+
+        // Thực hiện truy vấn
+        if (!$stmt->execute()) {
+            die("Lỗi khi thực hiện truy vấn: " . $stmt->error);
+        }
+
+        // Lấy kết quả trả về
+        $result = $stmt->get_result();
+
+        // Kiểm tra xem có dữ liệu trả về không
+        if ($result->num_rows > 0) {
+            // Khởi tạo mảng để chứa danh sách các comment
+            $comments = array();
+
+            // Lặp qua các dòng kết quả để lấy thông tin từng comment
+            while ($row = $result->fetch_assoc()) {
+                $comments[] = $row; // Thêm comment vào mảng
+            }
+
+            return $comments; // Trả về danh sách các comment
+        } else {
+            // Trả về mảng rỗng nếu không có comment nào
+            return array();
+        }
+
+        // Đóng statement
+        
+    }
+
     // Hàm để thêm comment vào bảng comments
     static function send_comment($commentData) {
         $con = Database::connection();

@@ -74,14 +74,20 @@ class SeatController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function getForBooking(string $id, string $showtime_id)
     {
-        $seat = $this->seatService->getASeat($id);
-        if ($seat){
-            return response()->json(['status' => 'success', 'message' => 'seat showed successfully', 'data' => $seat], 201);
+        if ($id && $showtime_id)
+        {
+            $seat = $this->seatService->getASeatForController($id, $showtime_id);
+            if ($seat){
+                return response()->json(['status' => 'success', 'message' => 'seat showed successfully', 'data' => $seat], 201);
+            }
+            else {
+                return response()->json(['status' => 'error', 'message' => 'seat showed failed', 'error' => '$validator->errors()'], 422);
+            }
         }
         else {
-            return response()->json(['status' => 'error', 'error' => '$validator->errors()'], 422);
+            return response()->json(['status' => 'error', 'message' => 'seat showed failed', 'error' => '$validator->errors()'], 500);
         }
     }
 

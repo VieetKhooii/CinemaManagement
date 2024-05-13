@@ -3,7 +3,7 @@ function hideCombo() {
     combo_info.style.display = 'none';
 }
 
-function showCombo(combo_choosed) {
+function showCombo(combo_choosed, description) {
     var combo_info = document.querySelector('.combo_info');
     combo_info.style.display = 'block';
     var name_combo = combo_choosed.querySelector('.combo_txt');
@@ -18,11 +18,7 @@ function showCombo(combo_choosed) {
             <table>
                 <tr>
                     <th>Nội dung sản phẩm</th>
-                    <td>1Qty/ 1Qty/ 2Qty</td>
-                </tr>
-                <tr>
-                    <th>Tính khả dụng</th>
-                    <td>2023.04.06~2999.12.31</td>
+                    <td>${description}</td>
                 </tr>
                 <tr>
                     <th>Số lượng mua tối thiểu</th>
@@ -34,7 +30,7 @@ function showCombo(combo_choosed) {
                 </tr>
                 <tr>
                     <th>Giải thích</th>
-                    <td>Combo Crunchy 2A, bao gồm 1 bắp Shake (bắp lắc), 1 bánh snack tùy chọn và 2 nước ngọt lớn. Voucher không hỗ trợ đổi trả và hoàn tiền.</td>
+                    <td>Combo ${name_combo.innerText}, bao gồm ${description}. Voucher không hỗ trợ đổi trả và hoàn tiền.</td>
                 </tr>
             </table>
         </dl>

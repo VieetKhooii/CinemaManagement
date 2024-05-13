@@ -1,4 +1,7 @@
 var isUlDisplayed = false; // biến kiển tra load hay hidden
+$(document).ready(function(){
+    loadContentSeatWrap()
+})
 function loadPerson(event, elementClick) {
     event.preventDefault();
     var ulElement = elementClick.nextElementSibling;
@@ -55,12 +58,12 @@ var disabled2 = "";
 var disabled3 = "";
 var disabled4 = "";
 
-function disabledGet(){
+function disabledGet() {
     disabled1 = document.querySelector(' .container_seat .seatwrap .seatarea .seatbox .seat_bottom .seatset .seat_setting .per1 #per1')
     disabled2 = document.querySelector(' .container_seat .seatwrap .seatarea .seatbox .seat_bottom .seatset .seat_setting .per2 #per2')
     disabled3 = document.querySelector(' .container_seat .seatwrap .seatarea .seatbox .seat_bottom .seatset .seat_setting .per3 #per3')
     disabled4 = document.querySelector(' .container_seat .seatwrap .seatarea .seatbox .seat_bottom .seatset .seat_setting .per4 #per4')
-    onPageLoad();
+    // onPageLoad();
     checkSeatLoad();
 
 }
@@ -185,7 +188,7 @@ function disabledSeat(showDisabled1, showDisabled2, showDisabled3, showDisabled4
     var oneChecked = false;
     console.log(disabled_seat)
     disabled_seat.forEach(function (disabledSeat, index) {
-        
+
         disabledSeat.disabled = show_seat[index]
         var parentdisabledSeat = disabledSeat.parentNode
         if (show_seat[index] === true) {
@@ -265,13 +268,13 @@ function checkSeatLoad() {
             var areaSeat = ['left', 'middle', 'right']
             areaSeat.forEach(function (area) {
                 var areaSeats = seatRow.querySelectorAll('.normal_seat.' + area + ', .vip_seat.' + area);
-                if (areaSeats.length < numSelectedSeats){
-                    areaSeats.forEach(function(area){
+                if (areaSeats.length < numSelectedSeats) {
+                    areaSeats.forEach(function (area) {
                         // console.log(area)
                         area.classList.add('enough_seats');
                     })
-                }else{
-                    areaSeats.forEach(function(area){
+                } else {
+                    areaSeats.forEach(function (area) {
                         area.classList.remove('enough_seats');
                     })
                 }
@@ -282,7 +285,7 @@ function checkSeatLoad() {
 }
 loadContentSeatWrap()
 // document.addEventListener('DOMContentLoaded', function () {
-function loadContentSeatWrap(){
+function loadContentSeatWrap() {
     // alert('lo')
     onPageLoad(); // Gọi hàm xử lý khi trang được tải
     checkSeatLoad()
@@ -339,7 +342,7 @@ function loadContentSeatWrap(){
                             startIndex = Array.from(seatsInRowCoup).indexOf(seat);
                             endIndex = startIndex + 1
                             for (var i = startIndex; i <= endIndex; i++) {
-seatsInRowCoup[i].classList.add('selected')
+                                seatsInRowCoup[i].classList.add('selected')
                             }
                         }
                     }
@@ -392,7 +395,7 @@ seatsInRowCoup[i].classList.add('selected')
                                 seat.classList.remove('selected');
                             });
                             var startIndex = Array.from(seats).indexOf(seat);
-var endIndex = startIndex + numSelectedSeats - 1;
+                            var endIndex = startIndex + numSelectedSeats - 1;
                             var seatNumchoose = 0;
                             var arraySeatselected = []
                             // console.log('startIndex: '+startIndex)
@@ -439,7 +442,7 @@ var endIndex = startIndex + numSelectedSeats - 1;
                                 }
                                 if (arraySeatselected.length === numSelectedSeats) {
                                     arraySeatselected.forEach(function (seat) {
-seat.classList.add('selected');
+                                        seat.classList.add('selected');
                                     });
                                 }
                             }
@@ -508,7 +511,7 @@ seat.classList.add('selected');
             return capsoToKeep.some(function (capso) {
                 return pair.capso === capso;
             });
-});
+        });
 
         for (var i = 0; i < pair_of_seat.length; i++) {
             var pair = pair_of_seat[i];
@@ -577,5 +580,5 @@ seat.classList.add('selected');
         });
         return { leftSeats, middleSeats, rightSeats };
     }
-// });
+    // });
 }

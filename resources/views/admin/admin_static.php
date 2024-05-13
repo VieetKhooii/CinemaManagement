@@ -69,5 +69,5 @@
     </div>
 </div>
 <canvas id="myChart"></canvas>
-
+<table id="myTable"></table>
 <script src="/js/script_statistic.js"></script>

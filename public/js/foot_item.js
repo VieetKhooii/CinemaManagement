@@ -1,4 +1,3 @@
-// *******************************************************hàm display none các sản phẩm ngoài 8 cái default*************
 var itemsToShow = 8; // Số lượng sản phẩm hiển thị ban đầu
 var currentShown = 0; // Số lượng sản phẩm đã hiển thị
 
@@ -30,7 +29,7 @@ function type_film(movies) {
                     <span class="num">${count}</span>
                 </div>
                 <div class="hover_item">
-                    <a href="#" data-url="film_booking.php" class="button" onclick="getSeatsOfRoom('R1')">Đặt Vé</a>
+                    <a href="dashboard/film_booking" class="button">Đặt Vé</a>
                     <a href="detail_film/get?movie_id=${movie.movie_id}" class="button" onclick="loadDetail(event,'content_main', ${movie.movie_id})">Chi Tiết</a>
                 </div>
                 <div id="text_film">
@@ -52,6 +51,15 @@ function type_film(movies) {
     // Cập nhật nội dung của list_item_film
     list_item_film.innerHTML = html;
 }
+
+// function film_booking(){
+//     const urlParams = new URLSearchParams(window.location.search);
+//     fetch('dashboard/film_booking').then(response => response.text())
+//       .then(data => {
+//         document.getElementById('content_main').innerHTML = data;
+//       })
+//       .catch(error => console.error('error', error));
+// }
 
 function getSeatsOfRoom(id) {
     $.ajax({
@@ -195,11 +203,10 @@ function loadDetail(event, content) {
     event.preventDefault();
     // var movie_id = event.currentTarget.parentElement.parentElement.getAttribute("value");
     const urlParams = new URLSearchParams(window.location.search);
-
     const movie_id = urlParams.get('movie_id');
-    alert(movie_id)
+    // alert(movie_id)
     // Gọi AJAX chỉ khi cần thiết
-    fetch('detail_film/get?movie_id=' + movie_id, {
+    fetch('dashboard/detail_film/get?movie_id=' + movie_id, {
         method: 'GET',
     })
         .then(response => response.text()) // Chuyển đổi dữ liệu nhận được sang dạng văn bản
@@ -256,15 +263,6 @@ function getMovies() {
                     },
                     success: function (response) {
                         document.getElementById('list_item_container').innerHTML = response;
-                        // document.getElementById('list_item_container').innerHTML += '<script src="/js/foot_item.js"></script>';
-                        // document.getElementById('list_item_container').innerHTML += '<script>'+
-                        //     '$(document).ready(function() {'+
-                        //             'var movies = <?php echo json_encode($moviesOnScreen); ?>;'+
-                        //             'alert(movies.length); // Removed quotes around movies.length'+
-                        //             'type_film(movies);'+
-                        //             'showItem(movies.length);'+
-                        //     '});'+
-                        //     '</script>';
                         var scripts = document.getElementById('list_item_container').getElementsByTagName('script');
                         for (var i = 0; i < scripts.length; i++) {
                             eval(scripts[i].innerText || scripts[i].textContent);

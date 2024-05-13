@@ -15,8 +15,10 @@ use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\ComboTransactionController;
 use App\Http\Controllers\DetailController;
+use App\Http\Controllers\Film_booking_controller;
 use App\Http\Controllers\ShowtimeRoomController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -27,6 +29,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Http\Request;
 use App\Http\Middleware\TrustHosts;
+use App\Models\Detail_model;
 
 /*
 |--------------------------------------------------------------------------
@@ -139,6 +142,14 @@ Route::middleware(['jwt.attach', 'refresh.token'])->group(function () {
     Route::post('vouchers_get', function(){
         return view('layouts/voucher');
     });
+    Route::get('/payment', function (Request $request) {
+        $necessaryData = $request->query('data');
+        return view('layouts/booking/payment', ['necessaryData' => $necessaryData]);
+    });
+    Route::post('/momo', function(Request $request){
+        $amount = $request->query('amount');
+        return view('layouts/booking/momo', ['amount' => $amount]);
+    });
     //----------------------------User view----------------------------
     
     //Backend
@@ -156,12 +167,27 @@ Route::middleware(['jwt.attach', 'refresh.token'])->group(function () {
     Route::post('combos/search', [ComboController::class,'search']);
     Route::put('combos/hide/{id}', [ComboController::class,'hide']);
 
+    Route::get('comments/{user_id}', function($user_id){
+        $comment_list = Detail_model::get_comment_by_user($user_id);
+        if ($comment_list){
+            return response()->json([
+                'message' => 'List comments by user_id gotten successfully',
+                'status' => 'success',
+                'data' => $comment_list
+            ], 201);
+        }
+        else {
+            return response()->json([
+                'error' => 'getting comment list by user_id failed',
+                'status' => 'error'], 
+                500);
+        }
+    });
+
     //ComboTransaction Routes
     Route::delete('comboTransactions/{id1}/{id2}', [ComboTransactionController::class,'destroy']);
     Route::put('comboTransactions/{id1}/{id2}', [ComboTransactionController::class,'update']);
     Route::resource('comboTransactions',ComboTransactionController::class);
-
-    
 
     //Reservation Routes
     Route::resource('reservations',ReservationController::class);
@@ -185,6 +211,7 @@ Route::middleware(['jwt.attach', 'refresh.token'])->group(function () {
     //Seat Routes
     Route::get('seats/customerget', [SeatController::class,'getAllSeatsForCustomer']);
     Route::resource('seats', SeatController::class);
+    Route::get('seats/{id}/{showtime_id}', [SeatController::class,'getForBooking']);
     Route::put('seats/{id}', [SeatController::class,'update']);
     Route::post('seats/search', [SeatController::class,'search']);
     Route::put('seats/hide/{id}', [SeatController::class,'hide']);
@@ -219,6 +246,7 @@ Route::middleware(['jwt.attach', 'refresh.token'])->group(function () {
     Route::post('users/search', [UserController::class, 'search']);
     Route::put('users/{id}', [UserController::class,'update']);
     Route::put('users/hide/{id}', [UserController::class,'hide']);
+    Route::put('users/hideFromClient/{id}', [UserController::class,'hideFromClient']);
 
     // Voucher Routes
     Route::resource('vouchers', VoucherController::class);
@@ -227,6 +255,24 @@ Route::middleware(['jwt.attach', 'refresh.token'])->group(function () {
     // Route::post('vouchers/search',[VoucherController::class, 'searchByDate']);
     Route::post('vouchers/search',[VoucherController::class, 'search']);
     // Auth::routes();
+
+    Route::view('dashboard/film_booking', 'layouts/film_booking');
+    Route::post('dashboard/film_booking_controller',[Film_booking_controller::class, 'filmBooking']);
+    Route::get('dashboard/film_booking_controller',[Film_booking_controller::class, 'filmBooking']);
+    // Route::view('/seat-wrap', 'layouts/booking/seatwrap');
+    Route::post('/seat-wrap', function(){
+        return view('layouts/booking/seatwrap');
+    });
+    // Route::get('/seat-wrap', function(Request $request) {
+    //     $combos = $request->input('combos');
+    //     $necessaryData = $request->input('necessaryData');
+    //     $seatArray = $request->input('seatArray');
+    //     return view("layouts/booking/seatwrap", [
+    //         'combos' => $combos,
+    //         'necessaryData' => $necessaryData,
+    //         'seatArray' => $seatArray
+    //     ]);
+    // });
 });
 
 
@@ -244,6 +290,7 @@ Route::post('sign-up', [RegisterController::class, 'create']);
 // Forgot password
 Route::post('password/resent', [ForgotPasswordController::class, 'forgotPassword']);
 // Route::post('password/reset/{token}', [ForgotPasswordController::class, 'resetRequest']);
+Route::post('password/update', [ResetPasswordController::class, 'resetPass']);
 Route::post('password/pass-reset', [ForgotPasswordController::class, 'updatePassword']);
 Route::view('/forget_pass','auth/passwords/forgetpass');
 Route::view('/xacthuc','auth/passwords/xacthuc');
@@ -254,13 +301,10 @@ Auth::routes(['verify' => true]);
 Route::view('/sign-up', 'auth/signup');
 Route::view('/login', 'auth/signin')->middleware('pass.login');
 
-Route::view('/seat-wrap', 'layouts/booking/seatwrap');
-Route::post('/seat-wrap', function(){
-    return view('layouts/booking/seatwrap');
-});
 
-Route::view('/detail_film', 'layouts/detail_film');
+
+// Route::view('/detail_film', 'layouts/detail_film');
 Route::get('detail_film/get', [DetailController::class, 'get']);
 Route::post('detail_film/post', [DetailController::class, 'post']);
 
-Route::view('/detail_ticket', 'layouts/booking/detail_ticket');
+Route::view('/dashboard/detail_ticket', 'layouts/booking/detail_ticket');
