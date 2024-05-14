@@ -10,11 +10,14 @@
     try{
             $firstColumnName = "";
             $statusDisplay = [];
+            $columnIndex=0;
             foreach ($result[0] as $key => $value) {
-                echo "<th>" . $key . "</th>";
+                // echo "<th>" . $key . "</th>";
+                echo "<th onclick=\"sortTable('$columnIndex')\">" . $key . "<span class='sort-arrow'>&#x25B2;</span></th>";
                 if ($firstColumnName === "") {
                     $firstColumnName = $key;
                 }
+                $columnIndex++;
             }
             echo "<th>Actions</th>";
             echo "</tr>";

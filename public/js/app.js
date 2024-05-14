@@ -183,43 +183,43 @@ function exit() {
   });
 }
 
-var slideIndex = 0;
-showSlides(slideIndex);
+// var slideIndex = 0;
+// showSlides(slideIndex);
 
-function plusSlides(n) {
-  showSlides(slideIndex += n);
-}
+// function plusSlides(n) {
+//   showSlides(slideIndex += n);
+// }
 
-function currentSlide(n) {
-  showSlides(slideIndex = n - 1);
-}
+// function currentSlide(n) {
+//   showSlides(slideIndex = n - 1);
+// }
 
-function showSlides(n) {
-  let i;
-  let slides = document.getElementsByClassName("slides");
-  let dots = document.getElementsByClassName("dot");
+// function showSlides(n) {
+//   let i;
+//   let slides = document.getElementsByClassName("slides");
+//   let dots = document.getElementsByClassName("dot");
 
-  if (n >= slides.length) {
-    slideIndex = 0;
-  }
-  if (n < 0) {
-    slideIndex = slides.length - 1;
-  }
+//   if (n >= slides.length) {
+//     slideIndex = 0;
+//   }
+//   if (n < 0) {
+//     slideIndex = slides.length - 1;
+//   }
 
-  // Ẩn tất cả các slide
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-  }
+//   // Ẩn tất cả các slide
+//   for (i = 0; i < slides.length; i++) {
+//     slides[i].style.display = "none";
+//   }
 
-  // Loại bỏ tất cả các lớp active từ nút tròn
-  for (i = 0; i < dots.length; i++) {
-    dots[i].className = dots[i].className.replace(" active", "");
-  }
+//   // Loại bỏ tất cả các lớp active từ nút tròn
+//   for (i = 0; i < dots.length; i++) {
+//     dots[i].className = dots[i].className.replace(" active", "");
+//   }
 
-  // Hiển thị slide hiện tại và đánh dấu nút tròn tương ứng là active
-  slides[slideIndex].style.display = "block";
-  dots[slideIndex].className += " active";
-}
+//   // Hiển thị slide hiện tại và đánh dấu nút tròn tương ứng là active
+//   slides[slideIndex].style.display = "block";
+//   dots[slideIndex].className += " active";
+// }
 
 
 document.getElementById("header_contain").addEventListener("click", function (event) {
@@ -298,6 +298,7 @@ function pleaseLogIn() {
 }
 
 function loadViewOnly(file) {
+  window.history.pushState({}, "dashboard", `dashboard?${file}`);
   if (file == "myself") {
     $.ajax({
       method: 'GET',
@@ -311,22 +312,31 @@ function loadViewOnly(file) {
           success: function (commentsOfUser) {
             $.ajax({
               method: 'GET',
-              url: 'myself',
-              data: {
-                personalInfo: personalInfo,
-                commentsOfUser: commentsOfUser.data
-              },
+              url: 'transactions/customerget/' + $('#user_id').val(),
               async: false,
-              success: function (data) {
-                document.getElementById('content_main').innerHTML = data;
-                var script1 = document.createElement('script');
-                script1.src = '/js/myself.js';
-                document.head.appendChild(script1);
-              },
-              error: function (xhr, status, error) {
-                console.log(personalInfo)
+              success: function (payment) {
+                $.ajax({
+                  method: 'GET',
+                  url: 'myself',
+                  data: {
+                    personalInfo: personalInfo,
+                    commentsOfUser: commentsOfUser.data,
+                    payment: payment.data
+                  },
+                  async: false,
+                  success: function (data) {
+                    document.getElementById('content_main').innerHTML = data;
+                    var script1 = document.createElement('script');
+                    script1.src = '/js/myself.js';
+                    document.head.appendChild(script1);
+                  },
+                  error: function (xhr, status, error) {
+                    console.log(personalInfo)
+                  }
+                })
               }
             })
+            
           },
           //Error of getting comments by user
           error: function (xhr, status, error) {

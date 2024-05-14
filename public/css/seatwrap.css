@@ -574,6 +574,13 @@ body {
     background: url('../img/type_seat/bg_disabled.gif') no-repeat center;
     background-size: 30px;
 }
+.bought_seats{
+    background: url('../img/type_seat/bg_disabled.gif') no-repeat center;
+    background-size: 30px;
+}
+.bought_seats a{
+    color: white;
+}
 .enough_seats a{
     color: white;
 }

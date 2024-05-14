@@ -27,10 +27,8 @@
         <h1><a href="/dashboard">CINEMA</a></h1>
     </div>
     <div id="header_menu">
-        <h3 id="shopquatang">SHOP QUÀ TẶNG </h3>
-        <h3><a id="muave" onclick="film_booking()">MUA VÉ</a></h3>
+        <h3><a id="muave" href="film_booking">MUA VÉ</a></h3>
         <h3 id="phim">PHIM</h3>
-        <h3 id="rapchieuphim">RẠP CHIẾU PHIM</h3>
         <h3><a id="khuyenmai" onclick="loadSign('vouchers')">KHUYẾN MÃI</a></h3>
         <h3 id="lienhe">LIÊN HỆ</h3>
     </div>

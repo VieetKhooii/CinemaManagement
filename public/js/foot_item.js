@@ -29,13 +29,14 @@ function type_film(movies) {
                     <span class="num">${count}</span>
                 </div>
                 <div class="hover_item">
-                    <a href="dashboard/film_booking" class="button">Đặt Vé</a>
+                    <a href="film_booking" class="button">Đặt Vé</a>
                     <a href="detail_film/get?movie_id=${movie.movie_id}" class="button" onclick="loadDetail(event,'content_main', ${movie.movie_id})">Chi Tiết</a>
                 </div>
                 <div id="text_film">
                     <dt id="name_film"><a href="#" title="${movie.movie_name}">${movie.movie_name}</a></dt>
                     <dd>
-                        <span id="time">${movie.duration} Giờ</span>
+                        <span id="time">${movie.duration} Phút</span>
+                        <span id="date"> ${movie.start_time}</span>
                     </dd>
                 </div>
             </div>`;
@@ -121,7 +122,13 @@ function Hidden() {
     var heightshow = tab.offsetHeight;
     document.getElementById("list_item_film").style.height = (heightshow - 370) + "px";
     document.getElementById("tab_list").style.height = (heightshow - 370) + "px";
-    var minShown = currentShown - 4; // Số lượng sản phẩm cần hiển thị sau khi bấm nút
+    var lastRowItemCount = currentShown % 4;
+    console.log(lastRowItemCount)
+    if (lastRowItemCount === 0) {
+        minShown = currentShown - 4; // Trừ đi 4 sản phẩm
+    } else {
+        minShown = currentShown - lastRowItemCount; // Trừ đi số lượng sản phẩm thừa trên dòng cuối cùng
+    }
     if (minShown < 8) {
         minShown = 8;
     }
@@ -139,6 +146,7 @@ function Hidden() {
         document.getElementById("foot_item_hidden").classList.add('display');
     }
 }
+
 //đang kiểm tra lỗi
 //*************************************************************hàm hiện 2 loại phim đang chiếu và sắp chiếu***********************
 function header_choose(chooseID, movies) {

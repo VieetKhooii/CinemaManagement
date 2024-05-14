@@ -89,6 +89,7 @@ class MovieController extends Controller
             'image'=> $filePath,
             'duration'=> $request->input('duration'),
             'bonus_price'=> $request->input('bonus_price'),
+            'trailer_code'=> $request->input('trailer_code'),
             'category_id'=> $request->input('category_id'),
             'display'=> 1,
         ];
@@ -146,9 +147,9 @@ class MovieController extends Controller
             'bonus_price'=> $request->input('bonus_price'),
             'category_id'=> $request->input('category_id'),
         ];
-        if ($request->hasFile('image')) {
+        if ($request->hasFile('image_upload')) {
             // Lưu file vào thư mục trên server
-            $file = $request->file('image');
+            $file = $request->file('image_upload');
             $originalName = $file->getClientOriginalName();
             $directory = public_path('uploads/movie');
             if(!File::exists($directory . '/' . $originalName)){

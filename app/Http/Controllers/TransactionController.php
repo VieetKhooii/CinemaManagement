@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Service\TransactionService;
+use App\Models\Transactions;
+use App\Models\Reservation;
+use App\Models\Showtimes;
+use App\Models\Movies;
 
 class TransactionController extends Controller
 {
@@ -26,10 +30,20 @@ class TransactionController extends Controller
         }
     }
 
-    public function getAllTransactionsForCustomer()
+    public function getAllTransactionsForCustomer(string $userId)
     {
-        //
-        $transaction = $this->transactionService->getAllTransactionsForCustomer();
+        $transaction = Transactions::select(
+            'transactions.purchase_date',
+            'reservations.showtime_id',
+            'reservations.seat_id',
+            'showtimes.room_id',
+            'movies.movie_name'
+        )
+        ->join('reservations', 'transactions.transaction_id', '=', 'reservations.transaction_id')
+        ->join('showtimes', 'showtimes.showtime_id', '=', 'reservations.showtime_id')
+        ->join('movies', 'movies.movie_id', '=', 'showtimes.movie_id')
+        ->where('transactions.user_id', $userId)
+        ->get();
         if ($transaction){
             return response()->json(['status' => 'success', 'message' => 'transaction for customer got successfully', 'data' => $transaction], 201);
         }
@@ -54,18 +68,18 @@ class TransactionController extends Controller
         $array = [
             // 'transaction_id'=> $request->input('transaction_id'),
             'user_id'=> $request->input('user_id'),
-            'total_cost'=> 0,
-            'voucher_id'=> $request->input('voucher_id'),
+            'total_cost'=> $request->input('total_cost'),
+            // 'voucher_id'=> $request->input('voucher_id'),
             'payment_method'=> $request->input('payment_method'),
             'purchase_date'=> date("Y-m-d H:i:s"),
-            'display'=> 1,
+            'display'=> $request->input('display'),
         ];
         $transaction = $this->transactionService->addTransaction($array);
         if ($transaction){
             return response()->json(['status' => 'success', 'message' => 'transaction added successfully', 'data' => $transaction], 201);
         }
         else {
-            return response()->json(['error' => '$validator->errors()', 'status' => 'error'], 422);
+            return response()->json(['message' => '$validator->errors()', 'status' => 'error'], 422);
         }
     }
 

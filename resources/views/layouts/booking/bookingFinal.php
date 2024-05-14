@@ -6,11 +6,11 @@
         <h3>Đặt Combo</h3>
         <div id="hiddenCombo_list">
             <ul id="combo_list">
-                <?php 
-                $urlEncodedData = urlencode(serialize($necessaryData));
+                <?php
                     foreach($combos as $row){
                            echo '
                            <li class="combo" onclick="showCombo(this, `'.$row['description'].'`)">
+                                <input class="id" type="hidden" value="'.$row['combo_id'].'"></input>
                                 <span class="img_combo">
                                     <img src="'.$row['image'].'" alt="">
                                 </span>
@@ -34,7 +34,12 @@
     <div class="bookingFinal_wrap">
         <div class="btn_back_next">
             <a href="#"><i class="fa-solid fa-left-long"></i>Trở lại</a>
-            <a href="/payment?data=<?php echo $urlEncodedData ?>">Tiếp tục<i class="fa-solid fa-right-long"></i></a>
+            <form type="hidden" id="paymentForm" action="/payment" method="GET">
+                <input type="hidden" name="necessaryData" id="necessaryData" value="<?php echo htmlspecialchars(json_encode($necessaryData)); ?>">
+                <input type="hidden" name="chosenSeats" id="chosenSeats">
+                <input type="hidden" name="listOfCombos" id="listOfCombos">
+            </form>
+            <a href="#" id="submitForm">Tiếp tục<i class="fa-solid fa-right-long"></i></a>
         </div>
         <table class="final">
             <colgroup>
@@ -97,7 +102,7 @@
                         </div>
                         <div class="title_right" style="text-align: right;">
                             <div class="ticket_info_price">
-                                <span class="price price_ticket"><em>0</em><span>₫</span></span>
+                                <span class="price price_ticket"><em><?php echo $necessaryData['bonus_price'] ?></em><span>₫</span></span>
                             </div>
                             <div class="combo_info_price">
                                 <span class="price price_combo_info"><em>0</em><span>₫</span></span>

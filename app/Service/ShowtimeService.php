@@ -1,6 +1,7 @@
 <?php
 namespace App\Service;
 
+use App\Models\Movies;
 use App\Repositories\Interface\ShowtimeRepositoryInterface ;
 
 class ShowtimeService {
@@ -19,6 +20,9 @@ class ShowtimeService {
         return $this->showtimeRepository->getAShowtime($id);
     }
     public function addShowtime(array $data){
+        $movie = Movies::findOrFail($data['movie_id']);
+        $duration = $movie->duration;
+        
         return $this->showtimeRepository->addShowtime($data);
     }
     public function updateShowtime(array $data, string $id){

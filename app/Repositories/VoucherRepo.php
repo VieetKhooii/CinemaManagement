@@ -42,9 +42,9 @@ class VoucherRepo implements VoucherRepositoryInterface{
         }
     }
 
-    public function searchByDate(string $date){
+    public function searchById(string $id){
         try {
-            $result = Voucher::findOrFail($date);
+            $result = Voucher::findOrFail($id);
             return $result;
         }
         catch (\Exception $exception){

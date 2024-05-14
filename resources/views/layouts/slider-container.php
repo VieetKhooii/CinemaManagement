@@ -2,13 +2,13 @@
 
 <div class="slideshow-container">
   <div class="slides">
-    <img src="../img/dune2.jpg" alt="Slide 1">
+    <img src="../img/slides/slide_1.jpg" alt="Slide 1">
   </div>
   <div class="slides">
-    <img src="../img/kungfupanda4.jpg" alt="Slide 2">
+    <img src="../img/slides/slide_2.jpg" alt="Slide 2">
   </div>
   <div class="slides">
-    <img src="../img/mai.jpg" alt="Slide 3">
+    <img src="../img/slides/slide_3.jpg" alt="Slide 3">
   </div>
 
   <!-- Nút điều hướng trước và sau -->  
@@ -23,4 +23,4 @@
   </div>
 </div>
 
-<script src="/js/app.js"></script>
+<script src="/js/slider.js"></script>

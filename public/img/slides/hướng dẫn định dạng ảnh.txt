@@ -1,0 +1,6 @@
+ảnh phải có kích thước hình chữ nhật nằm ngang
+định dạnh ảnh là .jpg
+link chuyển đổi định dạnảnh cho phù hợp
+https://convertio.co/vn/ 
+3 slide đầu sẻ hiện lên web 
+slide_1,slide_2,slide_3

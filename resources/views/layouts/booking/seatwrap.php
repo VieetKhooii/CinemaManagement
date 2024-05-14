@@ -183,20 +183,20 @@
                             if ($row['display'] == "true"){
                                 if ($row['final_is_reserved'] == "0"){
                                     if ($row['seat_type_id'] == 1){
-                                        $seatType = '<li class="normal_seat"';
+                                        $seatType = '<li class="normal_seat" data-bonus-price="' . $row['bonus_price'] . '"';
                                     }
                                     else if ($row['seat_type_id'] == 2){
-                                        $seatType = '<li class="vip_seat"';
+                                        $seatType = '<li class="vip_seat" data-bonus-price="' . $row['bonus_price'] . '"';
                                     }
 
                                     // ghế couple: Mỗi 2 ghế có 1 khoảng cách 
                                     if ($row['seat_type_id'] == 3) {
                                         // ghế couple số chẵn sẽ cách khoảng trắng
                                         if ($row['seat_number'] % 2 == 0){
-                                            $seatType = '<li class="couple_seat" id="column_seat_left"';
+                                            $seatType = '<li class="couple_seat" data-bonus-price="' . $row['bonus_price'] . '" id="column_seat_left"';
                                         }
                                         else {
-                                            $seatType = '<li class="couple_seat"';
+                                            $seatType = '<li class="couple_seat" data-bonus-price="' . $row['bonus_price'] . '"';
                                         }
                                     }
 
@@ -215,7 +215,38 @@
                                     $seatType = $seatType . '><a href="#">'.$row['seat_number'].'</a></li>';
                                 }
                                 else {
-                                    $seatType = '<li class="enough_seats"></li>';
+                                    // $seatType = '<li class="bought_seats"></li>';
+                                    if ($row['seat_type_id'] == 1){
+                                        $seatType = '<li class="bought_seats" data-bonus-price="' . $row['bonus_price'] . '"';
+                                    }
+                                    else if ($row['seat_type_id'] == 2){
+                                        $seatType = '<li class="bought_seats" data-bonus-price="' . $row['bonus_price'] . '"';
+                                    }
+
+                                    // ghế couple: Mỗi 2 ghế có 1 khoảng cách 
+                                    if ($row['seat_type_id'] == 3) {
+                                        // ghế couple số chẵn sẽ cách khoảng trắng
+                                        if ($row['seat_number'] % 2 == 0){
+                                            $seatType = '<li class="bought_seats" data-bonus-price="' . $row['bonus_price'] . '" id="column_seat_left"';
+                                        }
+                                        else {
+                                            $seatType = '<li class="bought_seats" data-bonus-price="' . $row['bonus_price'] . '"';
+                                        }
+                                    }
+
+                                    // nếu không phải ghế couple
+                                    else {
+                                            // sắp xếp ghế, 2 ghế đầu và 2 ghế cuối có khoảng cách với dãy giữa 
+                                        if ($row['seat_number'] == 2){
+                                            $seatType = $seatType . 'id="column_seat_left"';
+                                        }
+                                        else if (isset($seatArray[$i+2])){
+                                            // kiểm nếu 2 ghế tiếp là ghế khác hàng và ghế kế tiếp vẫn còn là cùng hàng
+                                            if ($seatArray[$i+2]['seat_row'] != $position && $seatArray[$i+1]['seat_row'] == $position)
+                                            $seatType = $seatType . 'id="column_seat_right"';
+                                        }
+                                    }
+                                    $seatType = $seatType . '><a href="#">'.$row['seat_number'].'</a></li>';
                                 }
                             }
                             echo $seatType;

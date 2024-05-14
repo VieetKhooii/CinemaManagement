@@ -6,7 +6,7 @@ interface VoucherRepositoryInterface{
     public function getAllVoucher();
     public function addVoucher(array $info);
     public function updateVoucher(array $info, string $id);
-    public function searchByDate(string $date);
+    public function searchById(string $id);
     public function searchVoucher(array $info);
     public function existByName($name);
 

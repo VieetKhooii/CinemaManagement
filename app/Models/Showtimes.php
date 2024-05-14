@@ -19,6 +19,7 @@ class Showtimes extends Model
         'movie_id',
         'date',
         'start_time',
+        'room_id'
     ];
 
     protected $casts = [

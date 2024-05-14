@@ -109,19 +109,19 @@ class VoucherController extends Controller
         }
     }
 
-    public function searchByDate(Request $request){
-        $date = $request->input('voucher_condition');
-        $result = $this->voucherService->searchByDate($date);
+    public function searchById(Request $request){
+        $id = $request->input('voucher_condition');
+        $result = $this->voucherService->searchById($id);
         if ($result){
             return response()->json([
-                'message' => 'get voucher by date successfully',
+                'message' => 'get voucher by id successfully',
                 'status' => 'success',
                 'data' => $result
             ]);
         }
         else{
             return response()->json([
-                'error' => 'cannot get voucher by date', 
+                'error' => 'cannot get voucher by id', 
                 'status' => 'error'], 
                 422);
         }

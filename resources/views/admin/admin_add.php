@@ -105,6 +105,16 @@ try{
                             $tableTextCombobox='rooms';
                         }
                     }   
+                    if ($tableName == 'showtimes'){
+                        if ($columnName === 'movie_id'){
+                            $nameTextCombobox = 'movie_name';
+                            $tableTextCombobox = 'movies';
+                        }
+                        elseif ($columnName === 'room_id'){
+                            $nameTextCombobox = 'room_name';
+                            $tableTextCombobox = 'rooms';
+                        }
+                    }
                     else if ($tableName=='transactions'){
                         if($columnName=='user_id'){
                             $nameTextCombobox='full_name';
@@ -291,6 +301,10 @@ try{
                                 if ($columnName === 'movie_id'){
                                     $nameTextCombobox = 'movie_name';
                                     $tableTextCombobox = 'movies';
+                                }
+                                elseif ($columnName === 'room_id'){
+                                    $nameTextCombobox = 'room_name';
+                                    $tableTextCombobox = 'rooms';
                                 }
                             }
                             else if ($tableName=='transactions'){
