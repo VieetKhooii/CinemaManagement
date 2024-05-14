@@ -61,26 +61,26 @@ class ComboController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->first(),'status' => 'error'], 422);
         }     
-        // if ($request->hasFile('image')) {
-        //     // Lưu file vào thư mục trên server
-        //     $file = $request->file('image');
-        //     $newName = Str::uuid() . '.' . $file->getClientOriginalExtension();
-        //     $directory = public_path('uploads/combo');
-        //     // Tạo thư mục nếu chưa tồn tại
-        //     if (!File::isDirectory($directory)) {
-        //         File::makeDirectory($directory, 0755, true, true);
-        //     }
-        //     $file->move($directory, $newName);
-        //     $filePath = '/uploads/combo/' . $newName;            
-        // } else {
-        //     return response()->json(['status' => 'error', 'message' => 'No file uploaded'], 400);
-        // }
+        if ($request->hasFile('image_upload')) {
+            // Lưu file vào thư mục trên server
+            $file = $request->file('image_upload');
+            $newName = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $directory = public_path('uploads/movie');
+            // Tạo thư mục nếu chưa tồn tại
+            if (!File::isDirectory($directory)) {
+                File::makeDirectory($directory, 0755, true, true);
+            }
+            $file->move($directory, $newName);
+            $filePath = '/uploads/movie/' . $newName;            
+        } else {
+            return response()->json(['status' => 'error', 'message' => 'No file uploaded'], 400);
+        }
 
         $array = [
             'price'=> $request->input('price'),
             'name'=> $request->input('name'),
             'description'=> $request->input('description'),
-            // 'image' => $filePath,
+            'image' => $filePath,
             'display'=> true,
         ];
         $combo = $this->comboService->addCombo($array);
@@ -130,27 +130,27 @@ class ComboController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->first()], 422);
         }  
+        if ($request->hasFile('image_upload')) {
+            // Lưu file vào thư mục trên server
+            $file = $request->file('image_upload');
+            $newName = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $directory = public_path('uploads/movie');
+            // Tạo thư mục nếu chưa tồn tại
+            if (!File::isDirectory($directory)) {
+                File::makeDirectory($directory, 0755, true, true);
+            }
+            $file->move($directory, $newName);
+            $filePath = '/uploads/movie/' . $newName;            
+        } else {
+            return response()->json(['status' => 'error', 'message' => 'No file uploaded'], 400);
+        }
         $array = [
             'price'=> $request->input('price'),
             'name'=> $request->input('name'),
+            'image'=> $filePath,
             'description'=> $request->input('description'),           
         ]; 
 
-        if ($request->hasFile('image')) {
-            // Lưu file vào thư mục trên server
-            $file = $request->file('image');
-            $originalName = $file->getClientOriginalName();
-            $directory = public_path('uploads/combo');
-            if(!File::exists($directory . '/' . $originalName)){
-                $newName = Str::uuid() . '.' . $file->getClientOriginalExtension();
-                $file->move($directory, $newName);
-                $filePath = '/uploads/combo/' . $newName;
-                $array['image'] = $filePath;
-            }
-                        
-        }else {
-            return response()->json(['status' => 'success', 'message' => 'No file uploaded'], 400);
-        }
         
         $combo = $this->comboService->updateCombo($array, $id);
         if ($combo){

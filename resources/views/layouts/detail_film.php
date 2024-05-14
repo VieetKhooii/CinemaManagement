@@ -30,7 +30,7 @@
                 </div> -->
                     <div id="film">
                         <img src="<?php echo $detail_movie['image'] ?>" alt="">
-                        <button type="button" onclick=show()>Đặt Vé</button>
+                        <button type="button" href="film_booking">Đặt Vé</button>
                     </div>
                 </div>
                 <div class="info_main" id="info_main">

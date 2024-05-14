@@ -25,6 +25,7 @@ class Movies extends Model
         'duration',
         'bonus_price',
         'category_id',
+        'trailer_code',
         'display',
     ];
 

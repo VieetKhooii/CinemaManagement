@@ -26,8 +26,8 @@ class VoucherService{
         return $this->voucherRepository->updateVoucher($info, $id);
     }
 
-    public function searchByDate(string $date){
-        return $this->voucherRepository->searchByDate($date);
+    public function searchById(string $id){
+        return $this->voucherRepository->searchByid($id);
     }
 
     public function searchVoucher(array $data){

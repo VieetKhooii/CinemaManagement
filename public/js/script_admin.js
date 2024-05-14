@@ -243,7 +243,7 @@ function insertDB(tableName, e) {
         contentType: false,
         success: function (response) {
             $('#add_form')[0].reset(); // Đặt lại form sau khi gửi thành công
-            alert("Dữ liệu đã được chèn thành công!");
+            alert(response.message);
         },
         error: function (xhr, status, error) {
             if (xhr.status === 422) {
@@ -259,13 +259,42 @@ function insertDB(tableName, e) {
         }
     });
 }
+let sortDirection = 'asc';
 
+function sortTable(column) {
+    const table = document.getElementById('table_query');
+    const rows = Array.from(table.rows).slice(1);
+    const sortedRows = rows.sort((a, b) => {
+        // const aText = a.querySelector(`td:nth-child(${column + 1})`).innerText;
+        const aText=a.cells[column].innerText;
+        // const bText = b.querySelector(`td:nth-child(${column + 1})`).innerText;
+        const bText=b.cells[column].innerText;
+
+        // if (aText < bText) {
+        if(!isNaN(aText)&& !isNaN(bText)){
+            // return sortDirection === 'asc' ? -1 : 1;
+            return sortDirection === 'asc' ? aText - bText : bText - aText;
+        }
+        if (aText > bText) {
+            // return sortDirection === 'asc' ? 1 : -1;
+            return sortDirection === 'asc' ? aText.localeCompare(bText) : bText.localeCompare(aText) ;
+        }
+        // return 0;
+    });
+
+    sortedRows.forEach(row => table.appendChild(row));
+
+    sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+    document.querySelectorAll('.sort-arrow').forEach(arrow => arrow.innerHTML = '&#x25B2;');
+    document.querySelector(`th:nth-child(${column + 1}) .sort-arrow`).innerHTML = sortDirection === 'asc' ? '&#x25B2;' : '&#x25BC;';
+}
 //cập nhật, sửa 
 function updateDB(tableName, id, idtable, e) {
     e.preventDefault();
     url = 'http://localhost:8000/' + tableName + '/' + id;
     console.log(url);
-    // var formData = new FormData($('#add_form')[0]); // Sử dụng FormData để lấy dữ liệu từ form
+
+    // var formData = new FormData($('#edit_form')[0]); // Sử dụng FormData để lấy dữ liệu từ form
     // formData.append('tableName', tableName); // Thêm tên bảng vào formData
     var formData = $('#edit_form').serialize();
     console.log(formData)

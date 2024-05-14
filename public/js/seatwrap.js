@@ -209,6 +209,7 @@ function disabledSeat(showDisabled1, showDisabled2, showDisabled3, showDisabled4
 function hidden_message() {
     var message = document.querySelector('.container_message')
     message.style.display = 'none'
+    reset_seatwrap()
 }
 function show_detail_ticket() {
     var show_detail_ticket = document.querySelector('.show_detail_ticket');
@@ -285,11 +286,13 @@ function checkSeatLoad() {
 }
 loadContentSeatWrap()
 // document.addEventListener('DOMContentLoaded', function () {
+
 function loadContentSeatWrap() {
     // alert('lo')
     onPageLoad(); // Gọi hàm xử lý khi trang được tải
     checkSeatLoad()
-    function onPageLoad() {
+    checkCoupLoad()
+    function onPageLoad(){
         var seatSelectInputs = document.querySelectorAll('.seat_setting input[type="radio"]');
         seatSelectInputs.forEach(function (input) {
             input.addEventListener('change', function (event) {
@@ -332,19 +335,22 @@ function loadContentSeatWrap() {
                         });
                         var startIndex;
                         var endIndex;
-                        if (seat.id === 'column_seat_coup') {
-                            startIndex = Array.from(seatsInRowCoup).indexOf(seat);
-                            endIndex = startIndex - 1
-                            for (var i = startIndex; i >= endIndex; i--) {
-                                seatsInRowCoup[i].classList.add('selected')
-                            }
-                        } else {
-                            startIndex = Array.from(seatsInRowCoup).indexOf(seat);
-                            endIndex = startIndex + 1
-                            for (var i = startIndex; i <= endIndex; i++) {
-                                seatsInRowCoup[i].classList.add('selected')
+                        if(!seat.classList.contains('bought_seats')){
+                            if (seat.id === 'column_seat_coup') {
+                                startIndex = Array.from(seatsInRowCoup).indexOf(seat);
+                                endIndex = startIndex - 1
+                                for (var i = startIndex; i >= endIndex; i--) {
+                                    seatsInRowCoup[i].classList.add('selected')
+                                }
+                            } else {
+                                startIndex = Array.from(seatsInRowCoup).indexOf(seat);
+                                endIndex = startIndex + 1
+                                for (var i = startIndex; i <= endIndex; i++) {
+                                    seatsInRowCoup[i].classList.add('selected')
+                                }
                             }
                         }
+                        
                     }
                 }
             })
@@ -355,6 +361,7 @@ function loadContentSeatWrap() {
                 if (selectedSeats.length > 0) {
                     selectedSeats.forEach(function (selectedSeat) {
                         selectedSeat.classList.add('choosen');
+                        selectedSeat.classList.remove('selected');
                         seatToBill.push(selectedSeat)
                     });
                     removeUnnecessarySeats(numSelectedSeats);
@@ -373,6 +380,8 @@ function loadContentSeatWrap() {
                     // console.log('sumSelectedSeats: ' + sumSelectedSeats)
                     // console.log('sumText: ' + sumText)
                     addSeatToBill(seatToBill)
+                    checkSeatLoad()
+                    checkCoupLoad()
                 }
             }
         });
@@ -383,7 +392,7 @@ function loadContentSeatWrap() {
             seat.classList.add(className);
             seat.addEventListener('mouseenter', function (event) {
                 // Kiểm tra nếu ghế có class 'choosen' thì không thực hiện hành động
-                if (!seat.classList.contains('choosen')) {
+                if (!seat.classList.contains('choosen') && !seat.classList.contains('bought_seats')) {
                     var checkedInput = document.querySelector('.seat_setting input[type="radio"]:checked');
                     if (checkedInput) {
                         numSelectedSeats = parseInt(checkedInput.value);
@@ -398,7 +407,7 @@ function loadContentSeatWrap() {
                             var endIndex = startIndex + numSelectedSeats - 1;
                             var seatNumchoose = 0;
                             var arraySeatselected = []
-                            // console.log('startIndex: '+startIndex)
+                            // console.log('startIndex: '+seats.length)
                             // console.log('endIndex: '+endIndex)
                             var check = false;
                             if (endIndex >= seats.length) {
@@ -409,7 +418,8 @@ function loadContentSeatWrap() {
                                 // console.log(arraySeatselected.length)
                                 // console.log('seatNumchoose: ' + (seats.length - numSelectedSeats))
                                 for (var i = seats.length - seatNumchoose - 1; i >= seats.length - numSelectedSeats; i--) {
-                                    if (seats[i].classList.contains('choosen')) {
+                                    if (seats[i].classList.contains('choosen') || seats[i].classList.contains('bought_seats')) {
+                                        // console.log("seats[i]: "+seats[i]);
                                         break;
                                     } else {
                                         arraySeatselected.push(seats[i])
@@ -423,7 +433,7 @@ function loadContentSeatWrap() {
                                 }
                             } else {
                                 for (var i = startIndex; i <= endIndex && i < seats.length; i++) {
-                                    if (seats[i].classList.contains('choosen')) {
+                                    if (seats[i].classList.contains('choosen') || seats[i].classList.contains('bought_seats')) {
                                         check = true;
                                         break;
                                     } else {
@@ -457,6 +467,7 @@ function loadContentSeatWrap() {
                 if (selectedSeats.length > 0) {
                     selectedSeats.forEach(function (selectedSeat) {
                         selectedSeat.classList.add('choosen');
+                        selectedSeat.classList.remove('selected');
                         seatToBill.push(selectedSeat)
                     });
                     removeUnnecessarySeats(numSelectedSeats);
@@ -473,6 +484,8 @@ function loadContentSeatWrap() {
                         disabledSeat(true, true, true, true);
                     }
                     addSeatToBill(seatToBill)
+                    checkSeatLoad()
+                    checkCoupLoad()
                     // console.log('sumSelectedSeats: ' + sumSelectedSeats)
                     // console.log('sumText: ' + sumText)
                 }
@@ -484,20 +497,22 @@ function loadContentSeatWrap() {
     function addSeatToBill(seatToBill) {
         // console.log(seatToBill)
         var seatbill = document.querySelector('.info_ticket .title_right .seat_chosen')
-        // var seatbillOld = seatbill.querySelectorAll('.seat')
         var html = '';
-        // if (seatbillOld) {
-        //     seatbillOld.forEach(function (seatold) {
-        //         html += seatold.outerHTML
-        //     })
-        // }
+        var seatNames = [];
         seatToBill.forEach(function (seat) {
             var seatheader = seat.parentNode.querySelector('li').textContent
             var nameSeat = seatheader + seat.textContent
             html += `<div class="seat">${nameSeat}</div>`;
+            seatNames.push(nameSeat);
         })
         seatbill.innerHTML = `${html}`
+        document.getElementById('chosenSeats').value = seatNames.join(',');
     }
+    
+    document.getElementById('submitForm').addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default link behavior
+        document.getElementById('paymentForm').submit(); // Submit the form
+    });
     // Hàm xóa các ghế không cần thiết sau khi chọn
     function removeUnnecessarySeats(num) {
         var temp = pair_of_seat.filter(function (pair) {
@@ -580,5 +595,4 @@ function loadContentSeatWrap() {
         });
         return { leftSeats, middleSeats, rightSeats };
     }
-    // });
 }

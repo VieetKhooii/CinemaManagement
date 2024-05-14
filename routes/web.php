@@ -235,7 +235,7 @@ Route::middleware(['jwt.attach', 'refresh.token'])->group(function () {
     Route::put('showtimes/hide/{id}', [ShowtimeController::class,'hide']);
 
     //Transaction Routes
-    Route::get('transactions/customerget', [TransactionController::class,'getAllTransactionsForCustomer']);
+    Route::get('transactions/customerget/{userId}', [TransactionController::class,'getAllTransactionsForCustomer']);
     Route::resource('transactions',TransactionController::class);
     Route::put('transactions/{id}', [TransactionController::class,'update']);
     Route::post('transactions/search', [TransactionController::class,'search']);
@@ -256,9 +256,9 @@ Route::middleware(['jwt.attach', 'refresh.token'])->group(function () {
     Route::post('vouchers/search',[VoucherController::class, 'search']);
     // Auth::routes();
 
-    Route::view('dashboard/film_booking', 'layouts/film_booking');
-    Route::post('dashboard/film_booking_controller',[Film_booking_controller::class, 'filmBooking']);
-    Route::get('dashboard/film_booking_controller',[Film_booking_controller::class, 'filmBooking']);
+    Route::view('film_booking', 'layouts/film_booking');
+    Route::post('film_booking_controller',[Film_booking_controller::class, 'filmBooking']);
+    Route::get('film_booking_controller',[Film_booking_controller::class, 'filmBooking']);
     // Route::view('/seat-wrap', 'layouts/booking/seatwrap');
     Route::post('/seat-wrap', function(){
         return view('layouts/booking/seatwrap');
@@ -307,4 +307,4 @@ Route::view('/login', 'auth/signin')->middleware('pass.login');
 Route::get('detail_film/get', [DetailController::class, 'get']);
 Route::post('detail_film/post', [DetailController::class, 'post']);
 
-Route::view('/dashboard/detail_ticket', 'layouts/booking/detail_ticket');
+Route::view('/detail_ticket', 'layouts/booking/detail_ticket');

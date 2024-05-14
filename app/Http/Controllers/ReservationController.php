@@ -58,7 +58,7 @@ class ReservationController extends Controller
             'showtime_id'=> $request->input('showtime_id'),
             'seat_id'=> $request->input('seat_id'),
             'transaction_id'=> $request->input('transaction_id'),
-            'display'=> 1,
+            'display'=> $request->input('display'),
         ];
         $reservation = $this->reservationService->addReservation($array);
         if ($reservation){

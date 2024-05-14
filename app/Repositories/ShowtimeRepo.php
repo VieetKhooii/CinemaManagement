@@ -25,6 +25,24 @@ class ShowtimeRepo implements ShowtimeRepositoryInterface{
             return null;    
         }
     }
+
+    public function findOverlappingShowtime($roomId, \DateTime $newStartDateTime, \DateTime $newEndDateTime) {
+        $newStartTimeStr = $newStartDateTime->format('Y-m-d H:i:s');
+        $newEndTimeStr = $newEndDateTime->format('Y-m-d H:i:s');
+    
+        return Showtimes::where('room_id', $roomId)
+            ->where(function($query) use ($newStartTimeStr, $newEndTimeStr) {
+                $query->where(function($query) use ($newStartTimeStr, $newEndTimeStr) {
+                    $query->where('start_time', '<', $newEndTimeStr);
+                        //   ->whereRaw("DATE_ADD(start_time, INTERVAL duration MINUTE) > ?", [$newStartTimeStr]);
+                });
+            })
+            ->first();
+    }
+    
+    
+    
+
     public function getAShowtime(string $id){
         try {
             return Showtimes::findOrFail($id);

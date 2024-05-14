@@ -51,6 +51,9 @@ use \Illuminate\Support\Facades\Cookie;
     if (isset($_GET['commentsOfUser'])){
         $commentsOfUser = $_GET['commentsOfUser'];
     }
+    if (isset($_GET['payment'])){
+        $payment = $_GET['payment'];
+    }
 ?>
 <div id="myself">
     <div class="my_info">
@@ -94,16 +97,22 @@ use \Illuminate\Support\Facades\Cookie;
 
         <div class="show_me" id="tab1" style="display:none">
             <div class="item_history">
-                <div class="ticket">
-                    <p>Phim: <span class="phim_display"></span></p>
-                    <p>Ngày: <span class="ngay_display"></span></p>
-                    <p>Suất: <span class="suat_display"></span></p>
-                    <p>Phòng <span class="phong_display"></span></p>
-                    <p>Ghế: <span class="ghe_display"></span></p>
-                </div>
-                <div class="combo">
-                    <p>Combo: <span class="combo_display"></span></p>
-                </div>
+                <?php 
+                    foreach($payment as $row){
+                        echo '
+                        <div class="ticket">
+                            <p>Phim: <span class="phim_display">'.$row['movie_name'].'</span></p>
+                            <p>Ngày: <span class="ngay_display">'.date("Y-m-d", strtotime($row['purchase_date'])).'</span></p>
+                            <p>Suất: <span class="suat_display">'.$row['seat_id'].'</span></p>
+                            <p>Phòng <span class="phong_display">'.$row['room_id'].'</span></p>
+                            <p>Ghế: <span class="ghe_display">'.$row['movie_name'].'</span></p>
+                        </div>
+                        <div class="combo">
+                            <p>Combo: <span class="combo_display"></span></p>
+                        </div>
+                        ';
+                    }
+                ?>
             </div>
         </div>
         <div class="show_me" id="tab2" style="display:none">

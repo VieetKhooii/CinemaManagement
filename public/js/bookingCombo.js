@@ -8,9 +8,10 @@ function showCombo(combo_choosed, description) {
     combo_info.style.display = 'block';
     var name_combo = combo_choosed.querySelector('.combo_txt');
     var price_combo = combo_choosed.querySelector('.price em');
-
+    var id = combo_choosed.querySelector('.id');
     combo_info.innerHTML = `
         <div class="header_combo_info">
+        <input class="showId" type="hidden" value="${id.value}"></input>
             <h1 class="combo_title">${name_combo.innerText}</h1>
             <h1 class="exit_combo" onclick="hideCombo()">X</h1>
         </div>
@@ -48,8 +49,28 @@ function hidden_combo(event,element){
     console.log(combo_exit)
 }
 
+function getComboInfo() {
+    var combo_info = document.querySelector('.combo_info');
+    return {
+        id: combo_info.querySelector(".showId").value,
+        name: combo_info.querySelector(".combo_title").innerText,
+        price: combo_info.querySelector(".price_combo em").innerText,
+    };
+}
+
 // Hàm thêm một mục vào giỏ hàng
 function addToCart() {
+    var comboInfo = getComboInfo()
+    var hiddenInput = document.getElementById('listOfCombos');
+
+    // Parse the current value of the hidden input field (assume it's a JSON string)
+    var currentCombos = hiddenInput.value ? JSON.parse(hiddenInput.value) : [];
+
+    // Add the new combo information
+    currentCombos.push(comboInfo);
+
+    // Update the hidden input field with the new list of combos
+    hiddenInput.value = JSON.stringify(currentCombos);
     // Lấy thông tin của combo đã chọn
     var combo_info = document.getElementById('combo_info_chosen')
     var name_combo = document.querySelector('.combo_title');
@@ -72,9 +93,12 @@ function addToCart() {
         price_total = price_total + parseInt(price.innerText)
     })
     var formatted_price_total = price_total.toLocaleString('vi-VN');
-
-    document.querySelector('.bill_total .title_right .price_total_combo em').innerText = formatted_price_total
-
+    var totalMovieAndSeat = document.querySelector('.bill_total .title_right .price_ticket em').innerText;
+    var totalMovieAndSeatInt = parseInt(totalMovieAndSeat.replace(/,/g, ''));
+    var grandTotal = price_total + totalMovieAndSeatInt;
+    var formattedGrandTotal = grandTotal.toLocaleString('vi-VN');
+    document.querySelector('.bill_total .title_right .price_combo_info em').innerText = formatted_price_total
+    document.querySelector('.price_total_combo em').innerText = formattedGrandTotal
 }
 
 

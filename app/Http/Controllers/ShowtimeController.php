@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Service\ShowtimeService;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Showtimes;
 
 class ShowtimeController extends Controller
 {
@@ -48,34 +49,50 @@ class ShowtimeController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'movie_id' => 'required|string|between:1,6',
-            'date' => 'required|date',
-            // 'start_time' => 'required|date_format:H:i:s', 
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'movie_id' => 'required|string|between:1,6',
+        'date' => 'required|date',
+        'start_time' => 'required|date_format:H:i:s', 
+        // 'room_id' => 'required|numeric', // Assuming room_id is numeric
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'error' => $validator->errors()->first(),
-                'status' => 'error'], 
-                422);
-        }
-        $array = [
-            // 'showtime_id'=> $request->input('showtime_id'),
-            'movie_id'=> $request->input('movie_id'),
-            'date'=> $request->input('date'),
-            'start_time'=> $request->input('start_time'),
-            // 'display'=> 1,
-        ];
-        $showTime = $this->showtimeService->addShowtime($array);
-        if ($showTime){
-            return response()->json(['status' => 'success', 'message' => 'showtime added successfully', 'data' => $showTime], 201);
-        }
-        else {
-            return response()->json(['error' => '$validator->errors()'], 422);
-        }
+    if ($validator->fails()) {
+        return response()->json([
+            'error' => $validator->errors()->first(),
+            'status' => 'error'], 
+            422);
     }
+
+    // Check for conflicting showtimes
+    $conflictingShowtimes = Showtimes::where('date', $request->input('date'))
+                                    ->where('start_time', $request->input('start_time'))
+                                    ->where('room_id', $request->input('room_id'))
+                                    ->exists();
+
+    if ($conflictingShowtimes) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'There is a conflicting showtime for the given date, start time, and room',
+        ], 201);
+    }
+
+    $array = [
+        'movie_id'=> $request->input('movie_id'),
+        'date'=> $request->input('date'),
+        'start_time'=> $request->input('start_time'),
+        'room_id' => $request->input('room_id'),
+    ];
+    
+    $showTime = $this->showtimeService->addShowtime($array);
+    
+    if ($showTime){
+        return response()->json(['status' => 'success', 'message' => 'showtime added successfully', 'data' => $showTime], 201);
+    } else {
+        return response()->json(['status' => 'error', 'message' => 'Failed to add showtime'], 422);
+    }
+}
+
 
     /**
      * Display the specified resource.
@@ -121,13 +138,14 @@ class ShowtimeController extends Controller
             'movie_id'=> $request->input('movie_id'),
             'date'=> $request->input('date'),
             'start_time'=> $request->input('start_time'),
+            'room_id' => $request->input('room_id'),
         ];
         $showTime = $this->showtimeService->updateShowtime( $array, $id );
         if ($showTime){
             return response()->json(['status' => 'success', 'message' => 'showtime updated successfully', 'data' => $showTime], 201);
         }
         else {
-            return response()->json(['error' => '$validator->errors()'], 422);
+            return response()->json(['status' => 'error', 'message' => 'Trùng giờ', 'error' => '$validator->errors()'], 422);
         }
     }
 

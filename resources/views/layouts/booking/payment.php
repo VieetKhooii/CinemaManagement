@@ -31,64 +31,60 @@
             <table id="tbl_item">
                 <tbody>
                     <?php 
-                        if (htmlspecialchars($necessaryData)){
-                            $unserializedData = unserialize($necessaryData);
-                            echo  $necessaryData;
-                        }
-                        foreach($unserializedData as $row){}
-                    ?>
-                    <tr>
-                        <td class="img_item" style="width: 25%;"><img src="../img/ticket_film-removebg-preview.png" alt=""></td>
-                        <td class="info_item" colspan="2" style="width: 50%;">
-                            <div class="info_name">Lật mặt 7:Một điều ước</div>
-                            <div class="info_chosen">
-                                <!-- Nếu là film -->
-                                <p><span class="time">Ngày chiếu: 20/5/2024</span>| <span>Xuất chiếu: 9:30</span>| <span> Phòng: </span>| <span>Ghế:</span></p>
-                                <!-- Nếu là combo -->
-                                <p><span>1 Bắp</span> | <span>1 nước</span></p>
-                            </div>
-                        </td>
-                        <td class="price_item" style="width: 25%;">
-                            <p>300.000</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="img_item" style="width: 25%;"><img src="../img/ticket_film-removebg-preview.png" alt=""></td>
-                        <td class="info_item" colspan="2" style="width: 50%;">
-                            <div class="info_name">Lật mặt 7:Một điều ước</div>
-                            <div class="info_chosen">
-                                <!-- Nếu là film -->
-                                <p><span class="time">Ngày chiếu: 20/5/2024</span>| <span>Xuất chiếu: 9:30</span>| <span> Phòng: </span>| <span>Ghế:</span></p>
-                                <!-- Nếu là combo -->
-                                <p><span>1 Bắp</span> | <span>1 nước</span></p>
-                            </div>
-                        </td>
-                        <td class="price_item" style="width: 25%;">
-                            <p>300.000</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="img_item" style="width: 25%;"><img src="../img/ticket_film-removebg-preview.png" alt=""></td>
-                        <td class="info_item" colspan="2" style="width: 50%;">
-                            <div class="info_name">Lật mặt 7:Một điều ước</div>
-                            <div class="info_chosen">
-                                <!-- Nếu là film -->
-                                <p><span class="time">Ngày chiếu: 20/5/2024</span>| <span>Xuất chiếu: 9:30</span>| <span> Phòng: </span>| <span>Ghế:</span></p>
-                                <!-- Nếu là combo -->
-                                <p><span>1 Bắp</span> | <span>1 nước</span></p>
-                            </div>
-                        </td>
-                        <td class="price_item" style="width: 25%;">
-                            <p>300.000</p>
-                        </td>
-                    </tr>
+                        $elements = explode(',', $_GET['chosenSeats']); // Split the string into an array
 
+                        
+                        $totalPrice = 0; // Initialize total price variable
+                        if (isset($_GET['necessaryData'])){
+                            $unserializedData = json_decode($_GET['necessaryData'], true);
+                            $totalPrice += $unserializedData['bonus_price']; // Add bonus price to total
+                        }
+                        if (isset($_GET['listOfCombos'])){
+                            $jsonString = $_GET['listOfCombos'];
+                            $listOfCombos = json_decode($jsonString, true);
+                        }
+
+                        echo '<tr>
+                        <td class="img_item" style="width: 25%;"><img src="'.$unserializedData['image'].'" alt=""></td>
+                        <td class="info_item" colspan="2" style="width: 50%;">
+                            <div class="info_name">'.$unserializedData['movie_name'].'</div>
+                            <div class="info_chosen">
+                                <!-- Nếu là film -->
+                                <p><span class="time">Ngày chiếu: '.$unserializedData['date'].'</span>| <span>Xuất chiếu: '.$unserializedData['start_time'].'</span>| <span> Phòng: '.$unserializedData['room_id'].'</span>| <span>Ghế: '.$_GET['chosenSeats'].'</span></p>
+                            </div>
+                        </td>
+                        <td class="price_item" style="width: 25%;">
+                            <p>'.$unserializedData['bonus_price'].'</p>
+                        </td>
+                    </tr>';
+                    
+                    if ($listOfCombos){
+                        foreach($listOfCombos as $row){
+                            $totalPrice += $row['price']; // Add each combo price to total
+                            echo '<tr>
+                            <td class="img_item" style="width: 25%;"><img src="../img/ticket_film-removebg-preview.png" alt=""></td>
+                            <td class="info_item" colspan="2" style="width: 50%;">
+                                <input class="comboId" type="hidden" value="'.$row['id'].'"></input>
+                                <div class="info_name">'.$row['name'].'</div>
+                                <div class="info_chosen">
+                                    <!-- Nếu là combo -->
+                                    <p><span>1 Bắp</span> | <span>1 nước</span></p>
+                                </div>
+                            </td>
+                            <td class="price_item" style="width: 25%;">
+                                <p>'.$row['price'].'</p>
+                            </td>
+                        </tr>';
+                        }
+
+                    }
+                    ?>
                 </tbody>
                 <tfoot>
                     <tr>
                         <td colspan="3">Tổng tiền đặt hàng:</td>
                         <td id="total_price">
-                            <p>300.000</p>
+                            <p><?php echo $totalPrice; ?></p> <!-- Echo the total price here -->
                         </td>
                     </tr>
                 </tfoot>
@@ -109,7 +105,7 @@
             <form id="payment_form" method="POST"><!--  action="../views/Momo.php" -->
                 <div class="info_payment">
                     <div class="input_wrapper">
-                        <input type="hidden" id="amount" name="amount" value="500000"> <!-- Giá trị đơn hàng -->
+                        <input type="hidden" id="amount" name="amount" value="<?php echo $totalPrice;  ?>"> <!-- Giá trị đơn hàng -->
                     </div>
 
                     <div class="input_wrapper">
@@ -142,11 +138,11 @@
                 <tbody>
                     <tr>
                         <td>
-                            <div class="film"><span>Đặt trước phim:</span> <span>240.000đ</span></div>
-                            <div class="combo"><span>Mua hàng:</span> <span>155.000đ</span></div>
+                            <div class="film"><span>Đặt trước phim:</span> <span><?php echo $unserializedData['bonus_price'] ?>đ</span></div>
+                            <div class="combo"><span>Mua hàng:</span> <span><?php echo $totalPrice - $unserializedData['bonus_price'] ?>đ</span></div>
                         </td>
-                        <td>20,000₫</td>
-                        <td>80,000₫</td>
+                        <td>0₫</td>
+                        <td><?php echo $totalPrice?>₫</td>
                     </tr>
                 </tbody>
             </table>
@@ -178,37 +174,123 @@
             // Kiểm tra nếu phương thức thanh toán là MoMo thì mới gọi tới momo.php
             if (paymentMethod === 'momo') {
                 // Gửi yêu cầu AJAX tới momo.php để lấy qrCodeFile
+                
+<?php 
+use \Illuminate\Support\Facades\Cookie;
+    $cookie = Cookie::get('jwt_role');
+    $cookie_data = json_decode($cookie, true);
+    $user_id = isset($cookie_data['user_id']) ? $cookie_data['user_id'] : 'Unknown';
+?>
                 $.ajax({
                     type: 'POST',
-                    url: 'momo', // Đường dẫn đến file momo.php
+                    url: 'transactions',
                     data: {
-                        amount: amount
+                        user_id: '<?php echo $user_id; ?>',
+                        total_cost: <?php echo $totalPrice ?>,
+                        payment_method: 'Momo',
+                        purchase_date: '2024-05-14',
+                        display: 1,
                     },
                     dataType: 'json', // Loại dữ liệu trả về là JSON
                     success: function(response) {
-                        if (response.qrCodeFile) {
-                            // Cập nhật src của ảnh QR code
-                            $('.qr_code img').attr('src', response.qrCodeFile);
-                            // Cập nhật tổng tiền
-                            var totalAmount = parseFloat(amount).toLocaleString('vi-VN', {
-                                style: 'currency',
-                                currency: 'VND'
+                        var elements = <?php echo json_encode($elements); ?>; // Pass PHP array to JavaScript
+
+                        elements.forEach(function(element) {
+                            $.ajax({
+                                type: 'POST',
+                                url: 'reservations',
+                                data: {
+                                    showtime_id: '<?php echo $unserializedData['showtime_id']; ?>',
+                                    seat_id: '<?php echo $unserializedData['room_id']; ?>' + element, // Concatenate room_id with element
+                                    transaction_id: response.data.transaction_id,
+                                    display: 1,
+                                },
+                                dataType: 'json', // Data type returned is JSON
+                                success: function(response) {
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: 'momo', // Đường dẫn đến file momo.php
+                                        data: {
+                                            amount: <?php echo $totalPrice ?>
+                                        },
+                                        dataType: 'json', // Loại dữ liệu trả về là JSON
+                                        success: function(response) {
+                                            if (response.qrCodeFile) {
+                                                // Cập nhật src của ảnh QR code
+                                                $('.qr_code img').attr('src', response.qrCodeFile);
+                                                // Cập nhật tổng tiền
+                                                var totalAmount = parseFloat(amount).toLocaleString('vi-VN', {
+                                                    style: 'currency',
+                                                    currency: 'VND'
+                                                });
+                                                // value="500000"
+                                                $('.total_momo span').text(totalAmount);
+                                                // Hiển thị phần tử chứa mã QR code
+                                                $('.qr_code_container').css('display', 'flex');
+                                            } else {
+                                                alert('Không thể tải mã QR. Vui lòng thử lại sau.');
+                                            }
+                                        },
+                                        error: function(error) {
+                                            console.log(error);
+                                            alert('Có lỗi xảy ra khi tải mã QR. Vui lòng thử lại sau.');
+                                        }
+                                    });
+                                },
+                                error: function(error) {
+                                    console.log(error);
+                                    alert('An error occurred while creating reservation for seat: ' + element + '. Please try again later.');
+                                }
                             });
-                            $('.total_momo span').text(totalAmount);
-                            // Hiển thị phần tử chứa mã QR code
-                            $('.qr_code_container').css('display', 'flex');
-                        } else {
-                            alert('Không thể tải mã QR. Vui lòng thử lại sau.');
-                        }
+                        });
                     },
                     error: function(error) {
                         console.log(error);
-                        alert('Có lỗi xảy ra khi tải mã QR. Vui lòng thử lại sau.');
+                        alert('Có lỗi xảy ra khi tạo transaction. Vui lòng thử lại sau.');
                     }
                 });
             } else {
-                // Nếu người dùng chọn phương thức thanh toán khác MoMo, thực hiện các hành động khác ở đây (nếu cần)
-                // Ví dụ: alert('Phương thức thanh toán chưa được hỗ trợ.');
+                $.ajax({
+                    type: 'POST',
+                    url: 'transactions',
+                    data: {
+                        user_id: '<?php echo $user_id; ?>',
+                        total_cost: <?php echo $totalPrice ?>,
+                        payment_method: 'Trả sau',
+                        purchase_date: '2024-05-14',
+                        display: 0,
+                    },
+                    dataType: 'json', // Loại dữ liệu trả về là JSON
+                    success: function(response) {
+                        var elements = <?php echo json_encode($elements); ?>; // Pass PHP array to JavaScript
+
+                        elements.forEach(function(element) {
+                            $.ajax({
+                                type: 'POST',
+                                url: 'reservations',
+                                data: {
+                                    showtime_id: '<?php echo $unserializedData['showtime_id']; ?>',
+                                    seat_id: '<?php echo $unserializedData['room_id']; ?>' + element, // Concatenate room_id with element
+                                    transaction_id: response.data.transaction_id,
+                                    display: 0,
+                                },
+                                dataType: 'json', // Data type returned is JSON
+                                success: function(response) {
+                                    
+                                },
+                                error: function(error) {
+                                    console.log(error);
+                                    alert('An error occurred while creating reservation for seat: ' + element + '. Please try again later.');
+                                }
+                            });
+                        });
+                        alert("Vé đã được đặt thành công")
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        alert('Có lỗi xảy ra khi tạo transaction. Vui lòng thử lại sau.');
+                    }
+                });
             }
         });
     });
