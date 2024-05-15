@@ -1,14 +1,20 @@
 <?php
 namespace App\Http\Controllers;
 use App\Models\Film_booking_model;
+use \Illuminate\Support\Facades\Cookie;
 
 // Xử lý gửi đánh giá khi nhận yêu cầu POST từ JavaScript
 class Film_booking_controller extends Controller{
     protected $film_booking_model;
-    public function __construct(Film_booking_model $film_booking_model){
+    protected $voucherList;
+    public function __construct(Film_booking_model $film_booking_model, VoucherController $voucherController){
+        $this->voucherList = $voucherController;
         $this->film_booking_model = $film_booking_model;
     }
     function filmBooking(){
+        $cookie = Cookie::get('jwt_role');
+        $cookie_data = json_decode($cookie, true);
+        $user_id = isset($cookie_data['user_id']) ? $cookie_data['user_id'] : 'Unknown';
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $date_choose = json_decode(file_get_contents('php://input'), true);
             if ($date_choose["action"] === "load_film") {
@@ -23,6 +29,7 @@ class Film_booking_controller extends Controller{
                     echo json_encode(['message' => 'Hông có phim', 'film_date' => $result]);
                 }
             } elseif ($date_choose["action"] === "load_showtime") {
+                $voucher = $this->voucherList->searchById($user_id);
                 $result = $this->film_booking_model->get_showtime_by_date($date_choose['date'], $date_choose['movie']);
                 if ($result) {
                     // Khởi tạo mảng để lưu thông tin ghế cho mỗi room_id
@@ -41,7 +48,9 @@ class Film_booking_controller extends Controller{
                         $seatcount[$showtime_id] = $seats;
                     }
                     http_response_code(200);
-                    echo json_encode(['message' => 'Load suất chiếu thành công!', 'showtime' => $result, 'seatcount' => $seatcount, 'combos' => $combos, 'reserved_seats' => $reserved_seats]);
+                    echo json_encode(['message' => 'Load suất chiếu thành công!',
+                     'showtime' => $result, 'seatcount' => $seatcount, 'combos' => $combos, 'reserved_seats' => $reserved_seats
+                    ,'voucher' => $voucher]);
                 } else {
                     foreach ($result as $row) {
                         $showtime_id = $row['showtime_id'];
@@ -55,7 +64,7 @@ class Film_booking_controller extends Controller{
                     }
                     // Trả về thông báo lỗi cho client
                     http_response_code(200);
-                    echo json_encode(['message' => 'Hông có suất chiếu', 'showtime' => $result, 'seatcount' => $seatcount, 'combos' => $combos, 'reserved_seats' => $reserved_seats]);
+                    echo json_encode(['message' => 'Hông có suất chiếu', 'showtime' => $result, 'seatcount' => $seatcount, 'combos' => $combos, 'reserved_seats' => $reserved_seats, 'voucher' => $voucher]);
                 }
             }
         } elseif ($_SERVER['REQUEST_METHOD'] === 'GET') {

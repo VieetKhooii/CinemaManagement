@@ -117,6 +117,7 @@ function get_combos()
     return $combos;
 }
 
+
 function get_reserved_seat($showtime_id)
 {
     $con = Database::connection();

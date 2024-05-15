@@ -7,6 +7,12 @@
         <div id="hiddenCombo_list">
             <ul id="combo_list">
                 <?php
+                    if ($_POST['voucher']){
+                        $voucher = $_POST['voucher'];
+                    }
+                    else {
+                        echo "no voucher data ";
+                    }
                     foreach($combos as $row){
                            echo '
                            <li class="combo" onclick="showCombo(this, `'.$row['description'].'`)">
@@ -38,6 +44,8 @@
                 <input type="hidden" name="necessaryData" id="necessaryData" value="<?php echo htmlspecialchars(json_encode($necessaryData)); ?>">
                 <input type="hidden" name="chosenSeats" id="chosenSeats">
                 <input type="hidden" name="listOfCombos" id="listOfCombos">
+                <input type="hidden" name="totalPrice" id="totalPrice">
+                <input type="hidden" name="voucher" id="voucher" value="<?php echo htmlspecialchars(json_encode($voucher))  ?>">
             </form>
             <a href="#" id="submitForm">Tiếp tục<i class="fa-solid fa-right-long"></i></a>
         </div>
@@ -102,7 +110,7 @@
                         </div>
                         <div class="title_right" style="text-align: right;">
                             <div class="ticket_info_price">
-                                <span class="price price_ticket"><em><?php echo $necessaryData['bonus_price'] ?></em><span>₫</span></span>
+                                <span id="price_ticket" class="price price_ticket"><em><?php echo $necessaryData['bonus_price'] ?></em><span>₫</span></span>
                             </div>
                             <div class="combo_info_price">
                                 <span class="price price_combo_info"><em>0</em><span>₫</span></span>
@@ -117,7 +125,8 @@
                     <td>
                         <div class="total_price_ticket">
                             Giá vé:
-                            <span class="price"><em><?php echo $necessaryData['bonus_price'] ?></em><span>₫</span></span>
+                            <span class="price" id="price_default_show"><em><?php echo $necessaryData['bonus_price'] ?></em><span>₫</span></span>
+                            <span id="price_default"  value="<?php echo $necessaryData['bonus_price'] ?>"></span>
                         </div>
                     </td>
                     <td></td>
@@ -133,4 +142,6 @@
     </div>
 
 </div>
+<script src="/js/seatwrap.js"></script>
+
 <script src="/js/bookingCombo.js"></script>

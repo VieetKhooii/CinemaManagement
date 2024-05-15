@@ -252,7 +252,7 @@ Route::middleware(['jwt.attach', 'refresh.token'])->group(function () {
     Route::resource('vouchers', VoucherController::class);
     Route::put('vouchers/{id}', [VoucherController::class,'update']);
     Route::put('vouchers/hide/{id}', [VoucherController::class,'hide']);
-    // Route::post('vouchers/search',[VoucherController::class, 'searchByDate']);
+    Route::get('vouchers/search/{user_id}',[VoucherController::class, 'searchById']);
     Route::post('vouchers/search',[VoucherController::class, 'search']);
     // Auth::routes();
 
@@ -300,7 +300,7 @@ Auth::routes(['verify' => true]);
 
 Route::view('/sign-up', 'auth/signup');
 Route::view('/login', 'auth/signin')->middleware('pass.login');
-
+Route::view('/lienHe','layouts/hoTroKH');
 
 
 // Route::view('/detail_film', 'layouts/detail_film');

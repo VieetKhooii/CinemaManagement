@@ -69,7 +69,7 @@ class TransactionController extends Controller
             // 'transaction_id'=> $request->input('transaction_id'),
             'user_id'=> $request->input('user_id'),
             'total_cost'=> $request->input('total_cost'),
-            // 'voucher_id'=> $request->input('voucher_id'),
+            'voucher_id'=> $request->input('voucher_id'),
             'payment_method'=> $request->input('payment_method'),
             'purchase_date'=> date("Y-m-d H:i:s"),
             'display'=> $request->input('display'),

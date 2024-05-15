@@ -32,18 +32,26 @@
                 <tbody>
                     <?php 
                         $elements = explode(',', $_GET['chosenSeats']); // Split the string into an array
-
+                        $chosenVoucher = "";
                         
-                        $totalPrice = 0; // Initialize total price variable
+                        $totalPrice = 0;
+                        $totalPriceOfCombo = 0;
                         if (isset($_GET['necessaryData'])){
                             $unserializedData = json_decode($_GET['necessaryData'], true);
-                            $totalPrice += $unserializedData['bonus_price']; // Add bonus price to total
+                            // $totalPrice += $unserializedData['bonus_price']; // Add bonus price to total
                         }
                         if (isset($_GET['listOfCombos'])){
                             $jsonString = $_GET['listOfCombos'];
                             $listOfCombos = json_decode($jsonString, true);
                         }
-
+                        if (isset($_GET['voucher'])){
+                            $voucherList = $_GET['voucher'];
+                            $voucher = json_decode($voucherList, true);
+                        }
+                        if (isset($_GET['totalPrice'])){
+                            $totalPriceOfMovie = $_GET['totalPrice'];
+                            $totalPrice += $totalPriceOfMovie;
+                        }
                         echo '<tr>
                         <td class="img_item" style="width: 25%;"><img src="'.$unserializedData['image'].'" alt=""></td>
                         <td class="info_item" colspan="2" style="width: 50%;">
@@ -54,13 +62,15 @@
                             </div>
                         </td>
                         <td class="price_item" style="width: 25%;">
-                            <p>'.$unserializedData['bonus_price'].'</p>
+                            <p>'.$totalPriceOfMovie.'</p>
                         </td>
                     </tr>';
                     
                     if ($listOfCombos){
+
                         foreach($listOfCombos as $row){
-                            $totalPrice += $row['price']; // Add each combo price to total
+                            $totalPrice += $row['price'];
+                            $totalPriceOfCombo += $row['price'];
                             echo '<tr>
                             <td class="img_item" style="width: 25%;"><img src="../img/ticket_film-removebg-preview.png" alt=""></td>
                             <td class="info_item" colspan="2" style="width: 50%;">
@@ -94,8 +104,11 @@
             <div class="voucher">
                 <h3>Danh sách Voucher</h3>
                 <ul class="voucher_list">
-                    <li>Voucher 1</li>
-                    <li>Voucher 2</li>
+                    <?php 
+                        foreach ($voucher as $row){
+                            echo '<li onclick="chooseVoucher(' . $row['voucher_discount'] . ', `' . $row['voucher_id'] . '`)">' . $row['voucher_id'] . '</li>';
+                        }
+                    ?>
                 </ul>
             </div>
         </div>
@@ -105,7 +118,8 @@
             <form id="payment_form" method="POST"><!--  action="../views/Momo.php" -->
                 <div class="info_payment">
                     <div class="input_wrapper">
-                        <input type="hidden" id="amount" name="amount" value="<?php echo $totalPrice;  ?>"> <!-- Giá trị đơn hàng -->
+                        <input type="hidden" id="amount" name="amount" value="<?php echo $totalPrice;  ?>">
+                        <input type="hidden" id="chosenVoucher" name="chosenVoucher" value=" ">
                     </div>
 
                     <div class="input_wrapper">
@@ -138,21 +152,48 @@
                 <tbody>
                     <tr>
                         <td>
-                            <div class="film"><span>Đặt trước phim:</span> <span><?php echo $unserializedData['bonus_price'] ?>đ</span></div>
-                            <div class="combo"><span>Mua hàng:</span> <span><?php echo $totalPrice - $unserializedData['bonus_price'] ?>đ</span></div>
+                            <div class="film"><span>Đặt trước phim:</span> <span><?php echo $totalPriceOfMovie ?>đ</span></div>
+                            <div class="combo"><span>Mua hàng:</span> <span><?php echo $totalPriceOfCombo ?>đ</span></div>
                         </td>
-                        <td>0₫</td>
-                        <td><?php echo $totalPrice?>₫</td>
+                        <td id="discount">0đ</td>
+                        <td id="totalPriceAfterDiscount"><?php echo $totalPrice?>₫</td>
                     </tr>
                 </tbody>
             </table>
-
         </div>
-
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    var total_discount_amount = <?php echo $totalPrice; ?>;
+    function chooseVoucher(percent, voucher_id){
+        var discount = document.getElementById('discount');
+        var totalPriceAfterDiscount = document.getElementById('totalPriceAfterDiscount');
+        var chosenVoucher = document.getElementById('chosenVoucher');
+        var input =document.getElementById('amount')
+
+        var discount_amount = <?php echo $totalPrice  ?> * percent/100;
+        total_discount_amount = <?php echo $totalPrice  ?> * (100-percent)/100;
+
+        chosenVoucher.setAttribute('value', voucher_id)
+        input.setAttribute('value', total_discount_amount)
+        discount.textContent=discount_amount+"₫"
+        totalPriceAfterDiscount.textContent=total_discount_amount+"₫"
+    }
+
+    const voucherListItems = document.querySelectorAll('.voucher_list li');
+
+    voucherListItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+            // Xóa lớp 'action' từ tất cả các phần tử
+            voucherListItems.forEach(function(el) {
+                el.classList.remove('action');
+            });
+            // Thêm lớp 'action' vào phần tử được nhấp
+            this.classList.add('action');
+        });
+    });
+
     function exit(event) {
         event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>
         $('.qr_code img').attr('src', '');
@@ -175,26 +216,44 @@
             if (paymentMethod === 'momo') {
                 // Gửi yêu cầu AJAX tới momo.php để lấy qrCodeFile
                 
-<?php 
-use \Illuminate\Support\Facades\Cookie;
-    $cookie = Cookie::get('jwt_role');
-    $cookie_data = json_decode($cookie, true);
-    $user_id = isset($cookie_data['user_id']) ? $cookie_data['user_id'] : 'Unknown';
-?>
+                <?php 
+                use \Illuminate\Support\Facades\Cookie;
+                    $cookie = Cookie::get('jwt_role');
+                    $cookie_data = json_decode($cookie, true);
+                    $user_id = isset($cookie_data['user_id']) ? $cookie_data['user_id'] : 'Unknown';
+                ?>
+
                 $.ajax({
                     type: 'POST',
                     url: 'transactions',
                     data: {
                         user_id: '<?php echo $user_id; ?>',
-                        total_cost: <?php echo $totalPrice ?>,
+                        total_cost: total_discount_amount,
+                        voucher_id: document.getElementById('chosenVoucher').value, 
                         payment_method: 'Momo',
                         purchase_date: '2024-05-14',
                         display: 1,
                     },
                     dataType: 'json', // Loại dữ liệu trả về là JSON
                     success: function(response) {
-                        var elements = <?php echo json_encode($elements); ?>; // Pass PHP array to JavaScript
+                        var listCombo = <?php echo json_encode($listOfCombos); ?>;
+                        if (listCombo!=null){
+                            listCombo.forEach(function(combo){
+                                $.ajax({
+                                    type: 'POST',
+                                    url: 'comboTransactions',
+                                    data: {
+                                        combo_id: combo.id,
+                                        transaction_id: response.data.transaction_id,
+                                        unit_quantity: 1, 
+                                        unit_price: combo.price,
+                                    },
+                                    dataType: 'json',
+                                });
+                            });
+                        }
 
+                        var elements = <?php echo json_encode($elements); ?>; // Pass PHP array to JavaScript
                         elements.forEach(function(element) {
                             $.ajax({
                                 type: 'POST',
@@ -262,8 +321,24 @@ use \Illuminate\Support\Facades\Cookie;
                     },
                     dataType: 'json', // Loại dữ liệu trả về là JSON
                     success: function(response) {
-                        var elements = <?php echo json_encode($elements); ?>; // Pass PHP array to JavaScript
+                        var listCombo = <?php echo json_encode($listOfCombos); ?>;
+                        if (listCombo!=null){
+                            listCombo.forEach(function(combo){
+                                $.ajax({
+                                    type: 'POST',
+                                    url: 'comboTransactions',
+                                    data: {
+                                        combo_id: combo.id,
+                                        transaction_id: response.data.transaction_id,
+                                        unit_quantity: 1, 
+                                        unit_price: combo.price,
+                                    },
+                                    dataType: 'json',
+                                });
+                            });
+                        }
 
+                        var elements = <?php echo json_encode($elements); ?>; // Pass PHP array to JavaScript
                         elements.forEach(function(element) {
                             $.ajax({
                                 type: 'POST',

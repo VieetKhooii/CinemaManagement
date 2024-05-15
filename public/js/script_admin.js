@@ -225,7 +225,21 @@ function checkEmail(columnName) {
     }
 }
 
-
+function logout() {
+    $.ajax({
+      method: 'GET',
+      url: 'http://localhost:8000/logout',
+      async: false,
+      success: function (data) {
+        if (data.status == 'success') {
+            window.location.replace('/login');
+        }
+        else {
+          alert(data.message)
+        }
+      }
+    });
+  }
 
 // thêm dữ liệu vào database
 function insertDB(tableName, e) {
@@ -243,18 +257,34 @@ function insertDB(tableName, e) {
         contentType: false,
         success: function (response) {
             $('#add_form')[0].reset(); // Đặt lại form sau khi gửi thành công
-            alert(response.message);
+            iziToast.success({
+                title: 'Success',
+                message: response.message,
+                position: 'topRight'
+            });
         },
         error: function (xhr, status, error) {
             if (xhr.status === 422) {
                 var responseJSON = xhr.responseJSON;
                 if (responseJSON && responseJSON.error) {
-                    alert(responseJSON.error);
+                    iziToast.error({
+                        title: 'Error',
+                        message: responseJSON.error,
+                        position: 'topRight'
+                    });
                 } else {
-                    alert('Validation error occurred.');
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Validation error occurred.',
+                        position: 'topRight'
+                    });
                 }
             } else {
-                console.error('AJAX request failed:', status, error, xhr.responseJSON);
+                iziToast.error({
+                    title: 'Error',
+                    message: 'AJAX request failed:', status, error,
+                    position: 'topRight'
+                });
             }
         }
     });
@@ -311,12 +341,24 @@ function updateDB(tableName, id, idtable, e) {
             if (xhr.status === 422) {
                 var responseJSON = xhr.responseJSON;
                 if (responseJSON && responseJSON.error) {
-                    alert(responseJSON.error);
+                    iziToast.error({
+                        title: 'Error',
+                        message: responseJSON.error,
+                        position: 'topRight'
+                    });
                 } else {
-                    alert('Validation error occurred.');
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Validation error occurred.',
+                        position: 'topRight'
+                    });
                 }
             } else {
-                console.error('AJAX request failed:', status, error);
+                iziToast.error({
+                    title: 'Error',
+                    message: 'AJAX request failed:', status, error,
+                    position: 'topRight'
+                });
             }
         }
     });
@@ -325,7 +367,9 @@ function updateDB(tableName, id, idtable, e) {
 
 // xóa 
 function deleteDB(tableName, value) {
-    url = 'http://localhost:8000/' + tableName + '/hide/' + value;
+    var result = confirm("Bạn có chắc chắn muốn thực hiện hành động này?");
+    if (result){
+        url = 'http://localhost:8000/' + tableName + '/hide/' + value;
     console.log(url);
     $.ajax({
         type: 'PUT',
@@ -333,36 +377,36 @@ function deleteDB(tableName, value) {
         // processData: false, // Không xử lý dữ liệu
         success: function (response) {
             // $('#add_form')[0].reset(); // Đặt lại form sau khi gửi thành công
-            alert("Xóa thành công!");
+            iziToast.success({
+                title: 'Success',
+                message: 'Xóa thành công!',
+                position: 'topRight'
+            });
         },
         error: function (xhr, status, error) {
             if (xhr.status === 422) {
                 var responseJSON = xhr.responseJSON;
                 if (responseJSON && responseJSON.error) {
-                    alert(responseJSON.error);
+                    iziToast.error({
+                        title: 'Error',
+                        message: responseJSON.error,
+                        position: 'topRight'
+                    });
                 } else {
-                    alert('Validation error occurred.');
+                    iziToast.error({
+                        title: 'Error',
+                        message: 'Validation error occurred.',
+                        position: 'topRight'
+                    });
                 }
             } else {
-                console.error('AJAX request failed:', status, error);
+                iziToast.error({
+                    title: 'Error',
+                    message: 'AJAX request failed:', status, error,
+                    position: 'topRight'
+                });
             }
         }
     });
-    // alert(name + value);
-    // alert(columnName);
-    // if (confirm("Are you sure you want to delete this record?")) {
-    //     // Gửi yêu cầu AJAX đến máy chủ để xóa bản ghi
-    //     var xhr = new XMLHttpRequest();
-    //     xhr.open("POST", "delete_query.php", true);
-    //     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    //     xhr.onreadystatechange = function() {
-    //         if (xhr.readyState == 4 && xhr.status == 200) {
-    //             // Xử lý phản hồi từ máy chủ nếu cần
-    //             alert(xhr.responseText); // Hiển thị thông báo từ máy chủ
-    //             // Sau khi xóa thành công, có thể thực hiện cập nhật giao diện người dùng
-    //         }
-    //     };
-    //     xhr.send("name=" + encodeURIComponent(name) + "&value=" + encodeURIComponent(value)+"&columnName="+ encodeURIComponent(columnName));
-    // }
-    // showContent(tableName,1);
+    }
 }

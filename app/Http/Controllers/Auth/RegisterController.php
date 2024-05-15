@@ -75,29 +75,26 @@ class RegisterController extends Controller
             'date_of_birth' => 'required|date',
             'gender' => 'required|string|between:1,20',
             'address' => 'required|string|between:1,100',
-            'role_id' => 'required|int',
+            // 'role_id' => 'required|int',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'error' => $validator->errors()->first(),
-                'status' => 'error'], 
-                422);
+                'status' => 'error'],201);
         }
 
         $existingPhone = Users::where('phone', $request->input('phone'))->first();
         if ($existingPhone){
             return response()->json([
                 'error' => "Phone has already existed",
-                'status' => 'error'], 
-                422);
+                'status' => 'error'],201);
         }
         $existingAddress = Users::where('address', $request->input('address'))->first();
         if ($existingAddress){
             return response()->json([
                 'error' => "Address has already existed",
-                'status' => 'error'], 
-                422);
+                'status' => 'error'],201);
         }
 
         try {
@@ -123,19 +120,19 @@ class RegisterController extends Controller
                 // 'token' => Auth::login($user),
                 // 'type' => 'bearer',
                 // ]
-            ]);
+            ],201);
         }
         catch (Exception $exception){
             if (strpos($exception->getMessage(),"Duplicate entry") == true){
                 return response()->json([
                     'status' => 'error',
                     'error' => "Email already existed!",
-                ]);
+                ],201);
             }
             return response()->json([
                 'status' => 'error',
                 'error' => $exception->getMessage(),
-            ]);
+            ],201);
         }
     }
 }

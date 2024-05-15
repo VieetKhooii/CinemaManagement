@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Service\VoucherService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Voucher;
+use App\Models\VoucherOfUser;
 
 class VoucherController extends Controller
 {
@@ -109,15 +111,16 @@ class VoucherController extends Controller
         }
     }
 
-    public function searchById(Request $request){
-        $id = $request->input('voucher_condition');
-        $result = $this->voucherService->searchById($id);
+    public function searchById(string $user_id){
+        // $result = $this->voucherService->searchById($id);
+        $result = array();
+        $voucherOfUser = VoucherOfUser::where('user_id', $user_id)->get();
+        foreach ($voucherOfUser as $sr) {
+            $voucher = Voucher::find($sr->voucher_id);
+            $result[] = $voucher;
+        }
         if ($result){
-            return response()->json([
-                'message' => 'get voucher by id successfully',
-                'status' => 'success',
-                'data' => $result
-            ]);
+            return $result;
         }
         else{
             return response()->json([

@@ -38,7 +38,7 @@ class ReservationService {
     public function getAReservation(string $id){
         return $this->reservationRepository->getAReservation($id);
     }
-    public function addReservation(array $data){  
+    public function addReservation(array $data){
         $tranTotalPrice = $this->transactionRepo->getATransaction($data['transaction_id'])->total_cost;
         $movieId = $this->showTimeRepo->getAShowtime($data['showtime_id'])->movie_id;
         $moviePrice = $this->movieRepo->getAMovie($movieId)->bonus_price;
@@ -47,9 +47,9 @@ class ReservationService {
 
         $data['price'] = $moviePrice + $seatTypePrice;
         $tranTotalPrice += $data['price'];
-        $this->transactionRepo->updateTransaction(
-            ['total_cost' => $tranTotalPrice] , $data['transaction_id']
-        );
+        // $this->transactionRepo->updateTransaction(
+        //     ['total_cost' => $tranTotalPrice] , $data['transaction_id']
+        // );
         return $this->reservationRepository->addReservation($data);
     }
     

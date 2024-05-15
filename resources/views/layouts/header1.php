@@ -30,7 +30,7 @@
         <h3><a id="muave" href="film_booking">MUA VÉ</a></h3>
         <h3 id="phim">PHIM</h3>
         <h3><a id="khuyenmai" onclick="loadSign('vouchers')">KHUYẾN MÃI</a></h3>
-        <h3 id="lienhe">LIÊN HỆ</h3>
+        <h3><a id="khuyenmai" id="lienhe" onclick="loadSign('lienHe')">LIÊN HỆ</a></h3>
     </div>
     <?php include ("menu-container.php");?>
 </header>

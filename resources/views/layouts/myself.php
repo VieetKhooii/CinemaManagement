@@ -45,6 +45,8 @@ use \Illuminate\Support\Facades\Cookie;
         "movie_name" => ""  
     );
 
+    // $comboTransact
+
     if (isset($_GET['personalInfo'])){
         $personalInfo = $_GET['personalInfo'];
     }
@@ -53,6 +55,9 @@ use \Illuminate\Support\Facades\Cookie;
     }
     if (isset($_GET['payment'])){
         $payment = $_GET['payment'];
+    }
+    if (isset($_GET['comboTransact'])){
+        $comboTransact = $_GET['comboTransact'];
     }
 ?>
 <div id="myself">
@@ -96,7 +101,7 @@ use \Illuminate\Support\Facades\Cookie;
         </ul>
 
         <div class="show_me" id="tab1" style="display:none">
-            <div class="item_history">
+        <div class="item_history" style="display: flex; flex-direction: column">
                 <?php 
                     foreach($payment as $row){
                         echo '
@@ -107,8 +112,16 @@ use \Illuminate\Support\Facades\Cookie;
                             <p>Phòng <span class="phong_display">'.$row['room_id'].'</span></p>
                             <p>Ghế: <span class="ghe_display">'.$row['movie_name'].'</span></p>
                         </div>
+                        ';
+                    }
+                ?>
+            </div>
+            <div class="item_history" style="display: flex; flex-direction: column">
+                <?php 
+                    foreach($comboTransact as $row){
+                        echo '
                         <div class="combo">
-                            <p>Combo: <span class="combo_display"></span></p>
+                            <p>Combo: <span class="combo_display">'.$row['combo_id'].'</span></p>
                         </div>
                         ';
                     }
@@ -131,7 +144,7 @@ use \Illuminate\Support\Facades\Cookie;
             <table class="tbl_thongTinVip">
                 <tr>
                     <th>Họ và tên: <strong style="color:red">*</strong></th>
-                    <td> <input value="<?php echo $personalInfo['full_name'] ?>" type="text" id="fullname" name="fullname" maxlength="50" placeholder="Vui lòng nhập họ và tên" oninput="this.setCustomValidity('')">
+                    <td> <input value="<?php echo $personalInfo['full_name'] ?>" type="text" id="fullname" name="fullname" maxlength="50" placeholder="Vui lòng nhập họ và tên" oninput="this.setCustomValidity('')" readonly>
                     </td>
                 </tr>
                 <tr>
@@ -147,17 +160,13 @@ use \Illuminate\Support\Facades\Cookie;
                 <tr>
                     <th>Giới tính<strong style="color:red">*</strong></th>
                     <td>
-                        <select name="gender_choose" id="gender">
-                            <option value="Nam" <?php echo ($personalInfo['gender'] == 'Nam') ? 'selected' : ''; ?>>Nam</option>
-                            <option value="Nữ" <?php echo ($personalInfo['gender'] == 'Nữ') ? 'selected' : ''; ?>>Nữ</option>
-                            <!-- Add more options if needed -->
-                        </select>
+                        <input value="<?php echo $personalInfo['gender'] ?>" id="gender" name="gender" oninput="this.setCustomValidity('')" readonly>
                     </td>
                 </tr>
                 <tr>
                     <th>Ngày sinh:<strong style="color:red">*</strong></th>
                     <td> 
-                        <input value="<?php echo date("Y-m-d", strtotime($personalInfo['date_of_birth'])); ?>" type="date" id="birth" name="birth" required oninvalid="this.setCustomValidity('Vui lòng chọn Ngày sinh.')" oninput="this.setCustomValidity('')">
+                        <input value="<?php echo date("Y-m-d", strtotime($personalInfo['date_of_birth'])); ?>" type="date" id="birth" name="birth" required oninvalid="this.setCustomValidity('Vui lòng chọn Ngày sinh.')" oninput="this.setCustomValidity('')" readonly>
                     </td>
                 </tr>
 

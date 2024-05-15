@@ -350,15 +350,21 @@ body{
 .voucher_box::-webkit-scrollbar-thumb{
     background-color: black;
 }
-.voucher_list {
-    list-style-type: none; 
-    padding: 0;
-    margin-bottom: 0;
+.voucher_list li {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
+    transition: padding-left 0.35s linear, color 0.15s linear; 
+    cursor: pointer;
 }
 
-.voucher_list li {
-    padding: 8px 0;
-    border-bottom: 1px solid #ddd; 
+.voucher_list li.action {
+    color: beige;
+    background: linear-gradient(to right, black 10%, beige 70%);
+    border: 1px solid beige;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+    padding-left: 20px;
 }
 
 .voucher h3 {

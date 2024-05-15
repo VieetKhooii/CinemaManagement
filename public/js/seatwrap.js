@@ -1,5 +1,5 @@
 var isUlDisplayed = false; // biến kiển tra load hay hidden
-$(document).ready(function(){
+$(document).ready(function () {
     loadContentSeatWrap()
 })
 function loadPerson(event, elementClick) {
@@ -230,6 +230,13 @@ function reset_seatwrap() {
             a_default.click();//gọi hàm addnum trong thẻ a
         }
     });
+    var total = document.getElementById('price_default_show')
+    var em = total.querySelector('em')
+    var price_default = document.getElementById('price_default')
+    em.textContent = price_default.getAttribute('value');
+    var total_end = document.getElementById('price_ticket')
+    var em_end = total_end.querySelector('em')
+    em_end.textContent = price_default.getAttribute('value');
 }
 
 function reset_chossen() {
@@ -243,6 +250,14 @@ function reset_chossen() {
             }
         });
     });
+    var total = document.getElementById('price_default_show')
+    var em = total.querySelector('em')
+    var price_default = document.getElementById('price_default')
+    em.textContent = price_default.getAttribute('value');
+
+    var total_end = document.getElementById('price_ticket')
+    var em_end = total_end.querySelector('em')
+    em_end.textContent = price_default.getAttribute('value');
 }
 // *****************************************************Hover seats*************************************************
 function checkCoupLoad() {
@@ -292,7 +307,7 @@ function loadContentSeatWrap() {
     onPageLoad(); // Gọi hàm xử lý khi trang được tải
     checkSeatLoad()
     checkCoupLoad()
-    function onPageLoad(){
+    function onPageLoad() {
         var seatSelectInputs = document.querySelectorAll('.seat_setting input[type="radio"]');
         seatSelectInputs.forEach(function (input) {
             input.addEventListener('change', function (event) {
@@ -335,7 +350,7 @@ function loadContentSeatWrap() {
                         });
                         var startIndex;
                         var endIndex;
-                        if(!seat.classList.contains('bought_seats')){
+                        if (!seat.classList.contains('bought_seats')) {
                             if (seat.id === 'column_seat_coup') {
                                 startIndex = Array.from(seatsInRowCoup).indexOf(seat);
                                 endIndex = startIndex - 1
@@ -350,7 +365,7 @@ function loadContentSeatWrap() {
                                 }
                             }
                         }
-                        
+
                     }
                 }
             })
@@ -382,6 +397,7 @@ function loadContentSeatWrap() {
                     addSeatToBill(seatToBill)
                     checkSeatLoad()
                     checkCoupLoad()
+                    set_total_price(total_price())
                 }
             }
         });
@@ -489,11 +505,54 @@ function loadContentSeatWrap() {
                     // console.log('sumSelectedSeats: ' + sumSelectedSeats)
                     // console.log('sumText: ' + sumText)
                 }
-
+                set_total_price(total_price())
+                // console.log(total_price())
             }
         });
     }
+    function set_total_price(total_price) {
+        var total = document.getElementById('price_default_show')
+        var em = total.querySelector('em')
+        em.textContent = total_price + 'đ';
+        var total_end = document.getElementById('price_ticket')
+        var em_end = total_end.querySelector('em')
+        em_end.textContent = total_price + 'đ';
+    }
+    function total_price() {
+        var seat_amount = 0;
+        var price_default = document.getElementById('price_default')
+        var seatRows = document.querySelectorAll('.seat_Barea .seat ul');
 
+        seatRows.forEach(function (seatRow) {
+            var seats = seatRow.querySelectorAll('li')
+            seats.forEach(function (seat) {
+                if (seat.classList.contains('choosen')) {
+                    var data_price = seat.getAttribute('data-bonus-price')
+                    // console.log(data_price)
+
+                    seat_amount += parseInt(data_price) + parseInt(price_default.getAttribute('value'));
+                }
+            })
+        });
+        return seat_amount
+    }
+    function soLuongChoose(){
+    
+        var seat_amount = 0;
+        var seatRows = document.querySelectorAll('.seat_Barea .seat ul');
+
+        seatRows.forEach(function (seatRow) {
+            var seats = seatRow.querySelectorAll('li')
+            seats.forEach(function (seat) {
+                if (seat.classList.contains('choosen')) {
+
+                    seat_amount ++;
+                }
+            })
+        });
+        return seat_amount
+        
+    }
     function addSeatToBill(seatToBill) {
         // console.log(seatToBill)
         var seatbill = document.querySelector('.info_ticket .title_right .seat_chosen')
@@ -508,10 +567,19 @@ function loadContentSeatWrap() {
         seatbill.innerHTML = `${html}`
         document.getElementById('chosenSeats').value = seatNames.join(',');
     }
-    
-    document.getElementById('submitForm').addEventListener('click', function(event) {
+
+    document.getElementById('submitForm').addEventListener('click', function (event) {
         event.preventDefault(); // Prevent default link behavior
-        document.getElementById('paymentForm').submit(); // Submit the form
+        console.log(parseInt(sumText))
+        console.log(parseInt(soLuongChoose()))
+        if (parseInt(sumText) !== parseInt(soLuongChoose())) {
+            alert("Vui lòng chọn đủ ghế")
+        }
+        else {
+            var totalPrice = total_price();
+            document.getElementById('totalPrice').value = totalPrice;
+            document.getElementById('paymentForm').submit();
+        }
     });
     // Hàm xóa các ghế không cần thiết sau khi chọn
     function removeUnnecessarySeats(num) {

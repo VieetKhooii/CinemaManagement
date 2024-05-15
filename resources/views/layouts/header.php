@@ -14,7 +14,7 @@
                 <h5 id="signUp" onclick="loadSign('sign-up')"> Đăng kí</h5>
                 <h5 id="theTV" onclick="pleaseLogIn()">Thẻ thành viên</h5>
                 <h5 id="htKH">Hỗ trợ khách hàng</h5>
-                <button id="language">ENGLISH</button>
+                <!-- <button id="language">ENGLISH</button> -->
             </div>
         </div>
     </div>
@@ -23,10 +23,10 @@
         <h1>CINEMA</h1>
     </div>
     <div id="header_menu">
-        <h3 id="shopquatang">SHOP QUÀ TẶNG </h3>
-        <h3 id="muave">MUA VÉ</h3>
+        <!-- <h3 id="shopquatang">SHOP QUÀ TẶNG </h3> -->
+        <h3 id="muave"><a id="muave" href="film_booking">MUA VÉ</a></h3>
         <h3 id="phim">PHIM</h3>
-        <h3 id="rapchieuphim">RẠP CHIẾU PHIM</h3>
+        <!-- <h3 id="rapchieuphim">RẠP CHIẾU PHIM</h3> -->
         <h3 id="khuyenmai" onclick="pleaseLogIn()">KHUYẾN MÃI</h3>
         <h3 id="lienhe">LIÊN HỆ</h3>
     </div>

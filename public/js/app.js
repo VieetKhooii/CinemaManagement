@@ -32,7 +32,7 @@ function load_film(date_choose) {
             const a = document.createElement('a');
             // a.setAttribute('href',`/resources/controller/film_booking_controller.php`)
             a.textContent = film.movie_name; // Chỉ định nội dung cho thẻ a, thay thế bằng thông tin phù hợp với phim
-            
+
             li.appendChild(span);
             li.appendChild(a);
             selectFilmDiv.appendChild(li);
@@ -238,7 +238,7 @@ document.getElementById("header_contain").addEventListener("click", function (ev
   //   alert(target.textContent);
   // }
   else if (target.id === 'htKH') {
-    alert(target.textContent);
+    // alert(target.textContent);
   }
 });
 
@@ -282,16 +282,6 @@ function logout() {
   });
 }
 
-function getCookie(cookieName) {
-  const cookies = document.cookie.split(';');
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
-    if (cookie.startsWith(cookieName + '=')) {
-      return cookie.substring(cookieName.length + 1);
-    }
-  }
-  return null;
-}
 
 function pleaseLogIn() {
   alert("Hãy đăng nhập!")
@@ -315,13 +305,23 @@ function loadViewOnly(file) {
               url: 'transactions/customerget/' + $('#user_id').val(),
               async: false,
               success: function (payment) {
+                var comboTransact="";
+                $.ajax({
+                  method: 'GET',
+                  url: 'comboTransactions/' + $('#user_id').val(),
+                  async: false,
+                  success: function (comboTransact) {
+                    comboTransact = comboTransact;
+                  }
+                });
                 $.ajax({
                   method: 'GET',
                   url: 'myself',
                   data: {
                     personalInfo: personalInfo,
                     commentsOfUser: commentsOfUser.data,
-                    payment: payment.data
+                    payment: payment.data,
+                    comboTransact: comboTransact
                   },
                   async: false,
                   success: function (data) {
@@ -336,7 +336,7 @@ function loadViewOnly(file) {
                 })
               }
             })
-            
+
           },
           //Error of getting comments by user
           error: function (xhr, status, error) {
@@ -386,6 +386,9 @@ function loadSign(file) {
   }
   else if (file == 'sign-up') {
     window.location.href = "/sign-up"
+  }
+  else if (file == 'lienHe') {
+    window.location.href = "/lienHe"
   }
   else if (file == 'dashboard') {
     window.location.href = "/dashboard"
@@ -452,35 +455,55 @@ document.getElementById('form_signUp').addEventListener("submit", function (even
 });
 
 function validateSignUp() {
-  // Kiểm tra captcha
-  var isCaptchaValid = validateCaptcha();
-
-  // Kiểm tra các trường của form
   var isFormValid = validateForm();
 
   // Nếu cả form và captcha đều hợp lệ, thì hiển thị thông báo đăng ký thành công và ẩn form
-  if (isCaptchaValid && isFormValid) {
-    alert('Bạn đã đăng kí thành công!');
-    window.location.href = "/login";
-    document.getElementById("form_signUp").style.display = "none";
+  if (isFormValid) {
+    var isCaptchaValid = validateCaptcha();
+    if (isCaptchaValid) {
+      return true;
+    }
+  }
+  else {
+    return false;
   }
 }
 
 // Hàm kiểm tra xem các trường đã được nhập đầy đủ chưa
 function validateForm() {
-  var fullname = document.getElementById('fullname').value;
+  var fullname = document.getElementById('full_name').value;
   var phone = document.getElementById('phone').value;
   var email = document.getElementById('email').value;
   var password = document.getElementById('password').value;
-  var dob = document.getElementById('dob').value;
+  var dob = document.getElementById('date_of_birth').value;
   var gender = document.getElementById('gender').value;
-  var region = document.getElementById('region').value;
+  var region = document.getElementById('address').value;
   var captcha = document.getElementById('captcha').value;
   var check_captcha = document.getElementById('captchaCode').value;
 
   // Kiểm tra điều kiện của từng trường
-  if (fullname === "" || phone === "" || email === "" || password === "" || dob === "" || gender === "" || region === "" || captcha != check_captcha) {
-    // Nếu có trường nào chưa được điền đầy đủ, trả về false
+  if (fullname === "" || phone === "" || email === "" || password === "" || dob === "" || gender === "" || region === "") {
+    iziToast.error({
+      title: 'Error',
+      message: 'Vui lòng không để trống thông tin',
+      position: 'topRight'
+    });
+    return false;
+  }
+  var dobDate = new Date(dob);
+  var today = new Date();
+
+  var age = today.getFullYear() - dobDate.getFullYear();
+  var monthDifference = today.getMonth() - dobDate.getMonth();
+  if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < dobDate.getDate())) {
+    age--;
+  }
+  if (age < 13) {
+    iziToast.error({
+      title: 'Error',
+      message: 'Độ tuổi được đăng kí là trên 13',
+      position: 'topRight'
+    });
     return false;
   }
   // Nếu tất cả các trường đều đã được điền đầy đủ, trả về true
@@ -524,48 +547,65 @@ function validateCaptcha() {
   var captchaInput = document.getElementById("captcha").value;
   var captchaText = document.getElementById("captchaCode").getAttribute("data-captcha");
 
-  if (captchaInput === captchaText) {
-    return submit();
-  } else {
-    alert("Mã captcha không đúng. Vui lòng nhập lại.");
+  if (captchaInput !== captchaText) {
+    iziToast.error({
+      title: 'Error',
+      message: 'Mã capcha không đúng! Vui lòng nhập lại',
+      position: 'topRight'
+    });
     return false;
+  } else {
+    return true;
   }
 }
 
 function submit() {
-  const full_name = $('#full_name').val();
-  const phone = $('#phone').val();
-  const email = $('#email').val();
-  const password = $('#password').val();
-  const dateOfBirth = $('#date_of_birth').val();
-  const gender = $('#gender').val();
-  const address = $('#address').val();
-  flag = false;
-  $.ajax({
-    method: 'POST',
-    url: 'http://localhost:8000/sign-up',
-    data: {
-      'full_name': full_name,
-      'phone': phone,
-      'email': email,
-      'password': password,
-      'date_of_birth': dateOfBirth,
-      'gender': gender,
-      'address': address
-    },
-    async: false,
-    dataType: 'json',
-    success: function (data) {
-      if (data.status === 'success') {
-        // alert('Sign up successful!');
-        flag = true;
-      } else if (data.status === 'error') {
-        const message = data.error;
-        alert(message);
-      }
-    },
-  });
-  return flag;
+  if (validateSignUp()) {
+    const full_name = $('#full_name').val();
+    const phone = $('#phone').val();
+    const email = $('#email').val();
+    const password = $('#password').val();
+    const dateOfBirth = $('#date_of_birth').val();
+    const gender = $('#gender').val();
+    const address = $('#address').val();
+    // flag = false;
+    $.ajax({
+      method: 'POST',
+      url: 'http://localhost:8000/sign-up',
+      data: {
+        'full_name': full_name,
+        'phone': phone,
+        'email': email,
+        'password': password,
+        'date_of_birth': dateOfBirth,
+        'gender': gender,
+        'address': address
+      },
+      async: false,
+      dataType: 'json',
+      success: function (data) {
+        if (data.status === 'success') {
+          iziToast.success({
+            title: 'Success',
+            message: 'Bạn đã đăng kí thành công!',
+            position: 'topRight'
+          });
+          window.location.href = "/login";
+          document.getElementById("form_signUp").style.display = "none";
+        } else if (data.status === 'error') {
+          const message = data.error;
+          console.log(message)
+          iziToast.error({
+            title: 'Error',
+            message: message,
+            position: 'topRight'
+        });
+        }
+      },
+    });
+    // return flag;
+  }
+
 }
 // Hỗ trợ KH 
 
@@ -681,13 +721,13 @@ function load_showtime() {
           selectFilmDiv.innerHTML = ''; // Xóa nội dung cũ của thẻ ul trước khi thêm mới
 
           // Kiểm tra xem data.showtime có dữ liệu hay không
-          if (data.showtime && data.combos && data.reserved_seats) {
+          if (data.showtime && data.combos && data.voucher) {
 
             // Nếu data.showtime là mảng, lặp qua từng suất chiếu
             if (Array.isArray(data.showtime)) {
               data.showtime.forEach((st) => { // Thêm tham số index để sử dụng chỉ số của mảng
                 const li = document.createElement('li');
-                li.setAttribute('onclick', "getSeatsOfRoom(" + JSON.stringify(data.combos) + ", " + JSON.stringify(st) + ", '" + st.room_id + "')");
+                li.setAttribute('onclick', "getSeatsOfRoom(" + JSON.stringify(data.voucher) + ", " + JSON.stringify(data.combos) + ", " + JSON.stringify(st) + ", '" + st.room_id + "')");
                 const showtime_id = st.showtime_id;
 
                 const span1 = document.createElement('span');
@@ -732,53 +772,54 @@ function load_showtime() {
 
 }
 
-function getSeatsOfRoom(combos, st, id) {
+function getSeatsOfRoom(voucher, combos, st, id) {
+  console.log(st)
   $.ajax({
-      method: 'GET',
-      url: 'http://localhost:8000/seats/' + id+'/'+st.showtime_id,
-      async: false,
-      dataType: 'json',
-      success: function (data) {
-          if (data.status === 'success') {
-              const result = data.data;
-              const resultFinal = Array.isArray(result) && result.length === 0 ? "" : result;
-              console.log(combos)
-              $.ajax({
-                  method: 'POST',
-                  url: '/seat-wrap',
-                  async: false,
-                  data: {
-                    combos: combos,
-                    necessaryData: st,
-                    seatArray: resultFinal
-                  },
-                  success: function (response) {
+    method: 'GET',
+    url: 'http://localhost:8000/seats/' + id + '/' + st.showtime_id,
+    async: false,
+    dataType: 'json',
+    success: function (data) {
+      if (data.status === 'success') {
+        const result = data.data;
+        const resultFinal = Array.isArray(result) && result.length === 0 ? "" : result;
+        $.ajax({
+          method: 'POST',
+          url: '/seat-wrap',
+          async: false,
+          data: {
+            voucher: voucher,
+            combos: combos,
+            necessaryData: st,
+            seatArray: resultFinal
+          },
+          success: function (response) {
 
-                    document.getElementById('container_booking').innerHTML = response;
-                    var script1 = document.createElement('script');
-                    var script2 = document.createElement('script');
-                    script1.src = '/js/seatwrap.js';
-                    document.head.appendChild(script1);
-                    script2.src = '/js/bookingCombo.js';
-                    document.head.appendChild(script2);
+            document.getElementById('container_booking').innerHTML = response;
+            var script1 = document.createElement('script');
+            var script2 = document.createElement('script');
+            script1.src = '/js/seatwrap.js';
+            document.head.appendChild(script1);
+            script2.src = '/js/bookingCombo.js';
+            document.head.appendChild(script2);
 
-                  },
-                  error: function (xhr, status, error) {
-                      console.error(error);
-                  }
-              });
-          } else if (data.status === 'error') {
-              const message = data.error;
-              alert(message);
+          },
+          error: function (xhr, status, error) {
+            console.error(error);
           }
-      },
-      error: function (xhr, status, error) {
-        if (xhr.responseJSON && xhr.responseJSON.message) {
-          var errorMessage = xhr.responseJSON.message;
-          alert(errorMessage);
-        } else {
-          alert('An error occurred while getting seat.');
-        }
+        });
+      } else if (data.status === 'error') {
+        const message = data.error;
+        alert(message);
       }
+    },
+    error: function (xhr, status, error) {
+      if (xhr.responseJSON && xhr.responseJSON.message) {
+        var errorMessage = xhr.responseJSON.message;
+        alert(errorMessage);
+      } else {
+        alert('An error occurred while getting seat.');
+      }
+    }
   });
 }

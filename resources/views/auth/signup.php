@@ -1,9 +1,12 @@
 <link rel="stylesheet" href="/css/signup.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
 
 <div id="form_signUp">
-    <form method="post">
+    <form>
         <h2>Đăng ký</h2>
         <label for="full_name">Họ và tên:</label>
         <input type="text" id="full_name" name="full_name" required oninvalid="this.setCustomValidity('Vui lòng nhập Họ và tên.')" oninput="this.setCustomValidity('')">
@@ -21,14 +24,14 @@
             <div>
                 <label for="gender" id="lb_gender">Giới tính:</label>
                 <select id="gender" name="gender" required oninvalid="this.setCustomValidity('Vui lòng chọn Giới tính.')" oninput="this.setCustomValidity('')">
-                    <option value="male">Nam</option>
-                    <option value="female">Nữ</option>
-                    <option value="cat">Mèo</option>
+                    <option value="Nam">Nam</option>
+                    <option value="Nữ">Nữ</option>
+                    <!-- <option value="cat">Mèo</option>
                     <option value="dog">Chó</option>
                     <option value="shark">Cá mập</option>
                     <option value="helicopter">Trực thăng</option>
                     <option value="non-tax">Người không phải đóng thuế</option>
-                    <option value="no">hong thích có giới tính</option>
+                    <option value="no">hong thích có giới tính</option> -->
                 </select>
             </div>
         </div>
@@ -43,7 +46,7 @@
             <button type="button" id="refreshButton" onclick="refreshCaptcha()"><i class="fa-solid fa-rotate-right"></i></button>
         </div>
         <small>Nhập mã gatcha theo hình bên phải. <span id="Notification"></span></small>
-        <input type="submit" value="Đăng ký">
     </form>
+    <input type="submit" onclick="submit()" value="Đăng ký">
 </div>
 <script src="/js/app.js"></script>

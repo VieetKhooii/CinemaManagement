@@ -35,7 +35,11 @@ $(document).ready(function() {
 // console.log('decodedJwtData: ' + decodedJwtData)
 // console.log('Is admin: ' + isAdmin)
                     const message = data.message;
-                    alert(message);
+                    iziToast.warning({
+                        title: 'Warning',
+                        message: message,
+                        position: 'topRight'
+                    });
                     document.getElementById('password').value = '';
                 }
             },

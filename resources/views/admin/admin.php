@@ -1,6 +1,9 @@
 <link rel="stylesheet" href="css/style_admin.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
 <div class="container">
     <div id="menu">
         <h1>Cinema Management</h1>
@@ -46,6 +49,9 @@
         
         <div id="static" >
             <button onclick="showContent('static','admin_static')" >Thống kê</button>
+        </div>
+        <div id="logout" >
+            <button onclick="logout()">Logout</button>
         </div>
     </div>
     <div id="content">

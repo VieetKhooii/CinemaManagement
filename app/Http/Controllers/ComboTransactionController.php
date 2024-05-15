@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\ComboTransaction;
 use App\Service\ComboTransactionService;
 use Illuminate\Http\Request;
 
@@ -38,21 +40,38 @@ class ComboTransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $comboId = $request->input('combo_id');
+        $transactionId = $request->input('transaction_id');
+        $unit_quantity = $request->input('unit_quantity');
+        $unitPrice = $request->input('unit_price');
+
         $array = [
-            'combo_id'=> $request->input('combo_id'),
-            'transaction_id'=> $request->input('transaction_id'),
-            'unit_quantity'=> $request->input('unit_quantity'),
-            'unit_price'=> 0,
-            'display'=> true,
-        ];
-        $comboTran = $this->comboTransactionService->addComboTransaction($array);
-        if ($comboTran){
-            return response()->json(['status' => 'success', 'message' => 'combo_transaction add successfully', 'data' => $comboTran], 201);
+                    'combo_id'=>  $comboId,
+                    'transaction_id'=> $transactionId,
+                    'unit_quantity'=> $unit_quantity,
+                    'unit_price'=> $unitPrice,
+                    'display'=> true,
+                ];
+        // Use the firstOrNew method to either fetch an existing record or create a new instance
+        $comboTransaction = ComboTransaction::firstOrNew(
+            ['combo_id' => $comboId, 'transaction_id' => $transactionId]
+        );
+
+        if ($comboTransaction->exists) {
+            $array['unit_quantity'] = $comboTransaction->unit_quantity + 1;
+            $array['unit_price'] = $comboTransaction->unit_price + $unitPrice;
+            ComboTransaction::where('combo_id', $comboId)->where('transaction_id', $transactionId)->update($array);
+        } else {
+            $comboTransaction->unit_quantity = 1; // Assuming new quantity starts at 1
+            $comboTransaction->unit_price = $unitPrice;
+            $comboTransaction->save();
         }
-        else {
-            return response()->json(['error' => '$validator->errors()'], 422);
-        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'combo_transaction added or updated successfully',
+            'data' => $comboTransaction
+        ], 201);
     }
 
     /**
@@ -60,7 +79,13 @@ class ComboTransactionController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $comboTransact = ComboTransaction::select()->where('user_id', $id);
+        if ($comboTransact){
+            return $comboTransact;
+        }
+        else {
+            return null;
+        }
     }
 
     /**
